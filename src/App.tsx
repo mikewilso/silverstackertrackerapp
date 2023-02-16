@@ -1,11 +1,14 @@
 import './App.css';
 import React, { FC } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { AppContainer } from './components/AppContainer';
 
-export const App: FC = () => {
+export const App = () => {
     return (
         <div className='App'>
-            <AppContainer></AppContainer>
+            <Router>
+                <AppContainer></AppContainer>
+            </Router>
         </div>
     );
 };
