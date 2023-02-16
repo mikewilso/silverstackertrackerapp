@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import type { MenuProps } from 'antd';
 import { HomePage } from './HomePage';
 import { AddItem } from './AddItem';
 import { RemoveItem } from './RemoveItem';
@@ -12,6 +11,7 @@ import {
     MinusCircleOutlined,
     SmileOutlined,
     MailOutlined,
+    EditOutlined,
 } from '@ant-design/icons';
 import { AboutUs } from './AboutUs';
 import { ContactUs } from './ContactUs';
@@ -19,25 +19,6 @@ import { ContactUs } from './ContactUs';
 const { Content, Footer, Header, Sider } = Layout;
 
 export const AppContainer = () => {
-    // const sidebarSectionNames = [
-    //     'Home',
-    //     'Add',
-    //     'Remove',
-    //     'About Us',
-    //     'Contact',
-    // ];
-    // const items: MenuProps['items'] = [
-    //     UserOutlined,
-    //     PlusCircleOutlined,
-    //     MinusCircleOutlined,
-    //     SmileOutlined,
-    //     MailOutlined,
-    // ].map((icon, index) => ({
-    //     key: String(index + 1),
-    //     icon: React.createElement(icon),
-    //     label: `${sidebarSectionNames[index]}`,
-    // }));
-
     return (
         <Layout hasSider>
             <Sider
@@ -71,10 +52,16 @@ export const AppContainer = () => {
                         <Link to='/additem'>Add to Stack</Link>
                     </Menu.Item>
                     <Menu.Item
+                        key='edit'
+                        icon={React.createElement(EditOutlined)}
+                    >
+                        <Link to='/edititem'>Edit Item</Link>
+                    </Menu.Item>
+                    <Menu.Item
                         key='remove'
                         icon={React.createElement(MinusCircleOutlined)}
                     >
-                        <Link to='/removeitem'>Remove</Link>
+                        <Link to='/removeitem'>Remove Item</Link>
                     </Menu.Item>
                     <Menu.Item
                         key='about'
@@ -96,6 +83,7 @@ export const AppContainer = () => {
                     <Routes>
                         <Route path='/' element={<HomePage />} />
                         <Route path='/additem' element={<AddItem />} />
+                        <Route path='/edititem' element={<EditItem />} />
                         <Route path='/removeitem' element={<RemoveItem />} />
                         <Route path='/about' element={<AboutUs />} />
                         <Route path='/contact' element={<ContactUs />} />
