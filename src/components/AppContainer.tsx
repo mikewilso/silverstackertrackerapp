@@ -77,9 +77,9 @@ export const AppContainer = () => {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Layout className='site-layout' style={{ marginLeft: 200 }}>
-                <Header style={{ padding: 0 }} />
-                <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+            <Layout style={{ marginLeft: 200 }}>
+                <Header style={{ padding: 0 }}> SILVER STACKER TRACKER</Header>
+                <Content style={{ margin: '24px 16px 0' }}>
                     <Routes>
                         <Route path='/' element={<HomePage />} />
                         <Route path='/additem' element={<AddItem />} />
