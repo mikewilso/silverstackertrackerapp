@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import { HomePage } from './HomePage';
-import { AddItem } from './AddItem';
-import { RemoveItem } from './RemoveItem';
-import { EditItem } from './EditItem';
+import { HomePage } from './views/HomePage';
+import { AddItem } from './views/AddItem';
+import { RemoveItem } from './views/RemoveItem';
+import { EditItem } from './views/EditItem';
 import {
     UserOutlined,
     PlusCircleOutlined,
@@ -13,8 +13,8 @@ import {
     MailOutlined,
     EditOutlined,
 } from '@ant-design/icons';
-import { AboutUs } from './AboutUs';
-import { ContactUs } from './ContactUs';
+import { AboutUs } from './views/AboutUs';
+import { ContactUs } from './views/ContactUs';
 
 const { Content, Footer, Header, Sider } = Layout;
 

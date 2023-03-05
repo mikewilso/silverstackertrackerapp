@@ -23,11 +23,11 @@ export const AddItem: FC = () => {
                 disabled={false}
                 style={{ maxWidth: 800 }}
             >
-                <Form.Item label='Purchase Date'>
-                    <DatePicker />
-                </Form.Item>
                 <Form.Item label='Name of Item'>
                     <Input />
+                </Form.Item>
+                <Form.Item label='Purchase Date'>
+                    <DatePicker />
                 </Form.Item>
                 <Form.Item label='Purchased from:'>
                     <Input />
