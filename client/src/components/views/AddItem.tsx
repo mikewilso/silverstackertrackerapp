@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     Button,
     DatePicker,
@@ -12,7 +12,12 @@ import {
 
 const { Title } = Typography;
 
+const submitForm = (name: string) => {
+    console.log(name);
+};
+
 export const AddItem: FC = () => {
+    const [name] = useState('');
     return (
         <div>
             <Title>Add to the Stack</Title>
@@ -57,7 +62,12 @@ export const AddItem: FC = () => {
                     <InputNumber />
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'center', marginLeft: '100px' }}>
-                    <Button style={{ width: '100%' }}>Submit</Button>
+                    <Button
+                        onClick={() => submitForm(name)}
+                        style={{ width: '100%' }}
+                    >
+                        Submit
+                    </Button>
                 </Form.Item>
             </Form>
         </div>
