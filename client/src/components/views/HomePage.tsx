@@ -1,14 +1,24 @@
-import React, { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 
 const { Title } = Typography;
 
-const name = 'Michael';
+interface Data {
+    message: string;
+}
 
-export const HomePage: FC = () => {
+export const HomePage = () => {
+    const [data, setData] = useState<Data>({ message: '' });
+
+    useEffect(() => {
+        fetch('http://localhost:5000/home')
+            .then((res) => res.json())
+            .then((data) => setData(data));
+    }, []);
+
     return (
         <div>
-            <Title>{name}'s HOME PAGE</Title>
+            <Title>{data.message}'s Home Page</Title>
         </div>
     );
 };

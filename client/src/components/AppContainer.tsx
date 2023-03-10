@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { HomePage } from './views/HomePage';
@@ -19,6 +19,16 @@ import { ContactUs } from './views/ContactUs';
 const { Content, Footer, Header, Sider } = Layout;
 
 export const AppContainer = () => {
+    // const [backendData, setBackendData] = useState([{}]);
+
+    // useEffect(() => {
+    //     fetch('/api')
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setBackendData(data);
+    //         });
+    // }, []);
+
     return (
         <Layout hasSider>
             <Sider
