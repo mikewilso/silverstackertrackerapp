@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { HomePage } from './views/HomePage';

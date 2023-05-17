@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react';
+// import React, { FC, useEffect, useState } from 'react';
+// import axios from 'axios';
 import {
     Button,
     DatePicker,
@@ -12,12 +13,25 @@ import {
 
 const { Title } = Typography;
 
-const submitForm = (name: string) => {
-    console.log(name);
+const submitForm = () => {
+    console.log('submit form');
 };
 
-export const AddItem: FC = () => {
-    const [name] = useState('');
+export const AddItem = () => {
+    // const [stack, setStack] = useState([]);
+
+    // useEffect(() => {
+    //     const fetchStack = async () => {
+    //         try {
+    //             const res = await axios.get('http://localhost:4000/stack');
+    //             console.log(res);
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     };
+    //     fetchStack();
+    // }, []);
+
     return (
         <div>
             <Title>Add to the Stack</Title>
@@ -34,7 +48,7 @@ export const AddItem: FC = () => {
                 <Form.Item label='Purchase Date'>
                     <DatePicker />
                 </Form.Item>
-                <Form.Item label='Purchased from:'>
+                <Form.Item label='Description'>
                     <Input />
                 </Form.Item>
                 <Form.Item label='Metal'>
@@ -63,7 +77,7 @@ export const AddItem: FC = () => {
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'center', marginLeft: '100px' }}>
                     <Button
-                        onClick={() => submitForm(name)}
+                        onClick={() => submitForm()}
                         style={{ width: '100%' }}
                     >
                         Submit

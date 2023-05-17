@@ -1,24 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from 'antd';
+import axios from 'axios';
 
 const { Title } = Typography;
 
-interface Data {
-    message: string;
-}
-
 export const HomePage = () => {
-    const [data, setData] = useState<Data>({ message: '' });
+    const [stack, setStack] = useState([
+        {
+            name: '',
+            description: '',
+            purchasedate: '',
+            metaltype: '',
+            weight: 0,
+            amount: 0,
+        },
+    ]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/home')
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, []);
+        const fetchStack = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/stack');
+                console.log(res.data);
+                setStack(res.data);
+                console.log('stack', stack);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchStack();
+    });
 
     return (
         <div>
-            <Title>{data.message}'s Home Page</Title>
+            <Title>Michael's Home Page</Title>
+            <div className='stackList'>
+                {stack.map((item) => (
+                    <div className='item'>
+                        <h1>{item.name}</h1>
+                        <ul>
+                            <li>{item.description}</li>
+                            <li>{item.purchasedate}</li>
+                            <li>{item.metaltype}</li>
+                            <li>{item.weight}</li>
+                            <li>{item.amount}</li>
+                        </ul>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
