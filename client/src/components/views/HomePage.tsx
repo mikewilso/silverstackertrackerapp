@@ -7,6 +7,7 @@ const { Title } = Typography;
 export const HomePage = () => {
     const [stack, setStack] = useState([
         {
+            id: '',
             name: '',
             description: '',
             purchasedate: '',
@@ -22,20 +23,19 @@ export const HomePage = () => {
                 const res = await axios.get('http://localhost:4000/stack');
                 console.log(res.data);
                 setStack(res.data);
-                console.log('stack', stack);
             } catch (err) {
                 console.log(err);
             }
         };
         fetchStack();
-    });
+    }, []);
 
     return (
         <div>
             <Title>Michael's Home Page</Title>
             <div className='stackList'>
                 {stack.map((item) => (
-                    <div className='item'>
+                    <div className='item' id={item.id}>
                         <h1>{item.name}</h1>
                         <ul>
                             <li>{item.description}</li>
