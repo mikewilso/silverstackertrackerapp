@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
-import type { FormInstance } from 'antd/es/form';
-import { useForm } from 'antd/lib/form/Form';
+// import React, { FC, useEffect, useState } from 'react';
+// import type { FormInstance } from 'antd/es/form';
+// import { useForm } from 'antd/lib/form/Form';
 import axios from 'axios';
 import moment from 'moment';
 import {
@@ -93,10 +93,10 @@ export const AddItem = () => {
                     <InputNumber />
                 </Form.Item>
                 <Form.Item label='Unit Type' name='unittype'>
-                    <Radio.Group defaultValue={'ozt'}>
-                        <Radio value='ozt'> Troy Ounces </Radio>
-                        <Radio value='oz'> Ounces </Radio>
-                        <Radio value='grams'> Grams </Radio>
+                    <Radio.Group>
+                        <Radio value='ozt'>Troy Ounces</Radio>
+                        <Radio value='oz'>Ounces</Radio>
+                        <Radio value='grams'>Grams</Radio>
                     </Radio.Group>
                 </Form.Item>
                 <Form.Item label='Amount' name='amount'>
