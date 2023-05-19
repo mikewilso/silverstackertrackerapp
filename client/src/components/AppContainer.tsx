@@ -19,16 +19,6 @@ import { ContactUs } from './views/ContactUs';
 const { Content, Footer, Header, Sider } = Layout;
 
 export const AppContainer = () => {
-    // const [backendData, setBackendData] = useState([{}]);
-
-    // useEffect(() => {
-    //     fetch('/api')
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             setBackendData(data);
-    //         });
-    // }, []);
-
     return (
         <Layout hasSider>
             <Sider
