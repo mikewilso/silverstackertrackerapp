@@ -27,6 +27,14 @@ app.get('/stack', (req,res) => {
   })
 })
 
+app.get('/metals', (req,res) => {
+  const q = "SELECT * FROM metals;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
 app.post('/stack', (req,res) => {
   const q = "INSERT INTO stack (\
               `name`,\
@@ -81,6 +89,8 @@ app.post('/stack', (req,res) => {
     return res.json("New addition to the stack officially added.");
   })
 })
+
+
 
 app.listen(port, () => {
   console.log('Server started on port 4000')

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
     Button,
@@ -43,7 +44,7 @@ interface formData {
 
 const handleAddDataFields = (formData: formData) => {
     let newFormData = formData;
-    let purity = newFormData.purity;
+    let purity = Number(newFormData.purity);
     let amount = newFormData.amount;
     newFormData.purchasedate = formatDate(newFormData.purchasedate);
     newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);
@@ -73,6 +74,27 @@ export const AddItem = () => {
             console.log(err);
         }
     };
+
+    const [metals, setMetals] = useState([
+        {
+            id: 0,
+            metalvalue: '',
+            metaltype: ''
+        }
+    ]);
+    
+    useEffect(() => {
+        const fetchMetals = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/metals');
+                console.log(res.data);
+                setMetals(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchMetals();
+    }, []);
 
     return (
         <div>
@@ -109,13 +131,9 @@ export const AddItem = () => {
                 </Form.Item>
                 <Form.Item label='Metal Type' name='metaltype'>
                     <Select>
-                        <Select.Option value='gold'>Gold</Select.Option>
-                        <Select.Option value='silver'>Silver</Select.Option>
-                        <Select.Option value='copper'>Copper</Select.Option>
-                        <Select.Option value='platinum'>Platinum</Select.Option>
-                        <Select.Option value='palladium'>
-                            Palladium
-                        </Select.Option>
+                        {metals.map((metal)=>(
+                            <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
+                        ))}
                     </Select>
                 </Form.Item>
                 <Form.Item label='Weight' name='unitweight'>
@@ -128,8 +146,14 @@ export const AddItem = () => {
                         <Radio value='grams'>Grams</Radio>
                     </Radio.Group>
                 </Form.Item>
-                <Form.Item label='Purity' name='purity'>
-                    <InputNumber />
+                <Form.Item label='Purity' name='purity'>                    
+                    <Select>
+                        <Select.Option value='1'>Pure(.999)</Select.Option>
+                        <Select.Option value='.925'>Sterling(.925)</Select.Option>
+                        <Select.Option value='.9'>Coin(90%)</Select.Option>
+                        <Select.Option value='.958'>Britannia(95.8%)</Select.Option>
+                        <Select.Option value='.8'>Sterling(.800)</Select.Option>
+                    </Select>
                 </Form.Item>
                 <Form.Item label='Amount' name='amount'>
                     <InputNumber />
