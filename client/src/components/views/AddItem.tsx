@@ -1,5 +1,4 @@
 import axios from 'axios';
-import moment from 'moment';
 import {
     Button,
     DatePicker,
@@ -10,6 +9,11 @@ import {
     Select,
     Typography,
 } from 'antd';
+import { 
+    convertToOz, 
+    convertToOzt, 
+    convertToGrams, 
+    formatDate } from '../helpers';
 
 const { Title } = Typography;
 
@@ -17,26 +21,41 @@ interface formData {
     name: string;
     description: string;
     purchasedate: string;
+    purchasedfrom: string;
+    purchaseprice: number;
+    shape: string;
+    mint: string;
     metaltype: string;
-    unittype: string;
-    weight: number;
+    purity: number;
+    weighttype: string;
+    unitweight: number;
+    ozweight: number;
+    oztweight: number;
+    gramweight: number;
+    ozweightpure: number;
+    oztweightpure: number;
+    gramweightpure: number;
     amount: number;
+    totalpureozweight: number;
+    totalpureoztweight: number;
+    totalpuregramweight: number;
 }
 
-const convertToGrams = (num: number, unitType?: string) => {
-    if (unitType === 'oz') {
-        return num * 28.35;
-    } else if (unitType === 'ozt') {
-        return num * 31.103;
-    } else return num;
-};
-
-const handleCleaningData = (formData: formData) => {
+const handleAddDataFields = (formData: formData) => {
     let newFormData = formData;
-    newFormData.purchasedate = moment(formData.purchasedate).format(
-        'YYYY-MM-DD',
-    );
-    newFormData.weight = convertToGrams(formData.weight, formData.unittype);
+    let purity = newFormData.purity;
+    let amount = newFormData.amount;
+    newFormData.purchasedate = formatDate(newFormData.purchasedate);
+    newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);
+    newFormData.ozweight = convertToOz(formData.unitweight, formData.weighttype);
+    newFormData.gramweight = convertToGrams(formData.unitweight, formData.weighttype);
+    newFormData.ozweightpure = newFormData.ozweight * purity;
+    newFormData.oztweightpure = newFormData.oztweight * purity;
+    newFormData.gramweightpure = newFormData.gramweight * purity;
+    newFormData.totalpureozweight = newFormData.ozweightpure * amount;
+    newFormData.totalpureoztweight = newFormData.oztweightpure * amount;
+    newFormData.totalpuregramweight = newFormData.gramweightpure * amount;
+
     return newFormData;
 };
 
@@ -45,10 +64,11 @@ export const AddItem = () => {
 
     const onFinish = async () => {
         const formValues = form.getFieldsValue();
-        const cleanedData = handleCleaningData(formValues);
+        console.log("formvalues", formValues);
+        const fullData = handleAddDataFields(formValues);
         console.log(formValues);
         try {
-            await axios.post('http://localhost:4000/stack', cleanedData);
+            await axios.post('http://localhost:4000/stack', fullData);
         } catch (err) {
             console.log(err);
         }
@@ -69,13 +89,25 @@ export const AddItem = () => {
                 <Form.Item label='Name of Item' name='name'>
                     <Input />
                 </Form.Item>
-                <Form.Item label='Purchase Date' name='purchasedate'>
-                    <DatePicker />
-                </Form.Item>
                 <Form.Item label='Description' name='description'>
                     <Input />
                 </Form.Item>
-                <Form.Item label='Metal' name='metaltype'>
+                <Form.Item label='Purchase Date' name='purchasedate'>
+                    <DatePicker />
+                </Form.Item>
+                <Form.Item label='Purchased From' name='purchasedfrom'>
+                    <Input />
+                </Form.Item>
+                <Form.Item label='Purchase Price' name='purchaseprice'>
+                    <InputNumber />
+                </Form.Item>
+                <Form.Item label='Shape' name='shape'>
+                    <Input />
+                </Form.Item>
+                <Form.Item label='Mint' name='mint'>
+                    <Input />
+                </Form.Item>
+                <Form.Item label='Metal Type' name='metaltype'>
                     <Select>
                         <Select.Option value='gold'>Gold</Select.Option>
                         <Select.Option value='silver'>Silver</Select.Option>
@@ -86,15 +118,18 @@ export const AddItem = () => {
                         </Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item label='Weight' name='weight'>
+                <Form.Item label='Weight' name='unitweight'>
                     <InputNumber />
                 </Form.Item>
-                <Form.Item label='Unit Type' name='unittype'>
+                <Form.Item label='Unit of Weight' name='weighttype'>
                     <Radio.Group>
                         <Radio value='ozt'>Troy Ounces</Radio>
                         <Radio value='oz'>Ounces</Radio>
                         <Radio value='grams'>Grams</Radio>
                     </Radio.Group>
+                </Form.Item>
+                <Form.Item label='Purity' name='purity'>
+                    <InputNumber />
                 </Form.Item>
                 <Form.Item label='Amount' name='amount'>
                     <InputNumber />
