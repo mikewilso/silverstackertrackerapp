@@ -90,7 +90,7 @@ export const AppContainer = () => {
                     </Routes>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
-                    Silver Stacker Tracker Apper ©2023 Created by Michael Wilson
+                    Silver Stacker Tracker App ©2024 Created by Michael Wilson
                 </Footer>
             </Layout>
         </Layout>
