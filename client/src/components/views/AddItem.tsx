@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { InboxOutlined } from '@ant-design/icons';
 import {
     Button,
     DatePicker,
     Form,
     Input,
     InputNumber,
+    message,
     Radio,
     Select,
     Typography,
+    Upload
 } from 'antd';
 import { 
     convertToOz, 
@@ -17,6 +19,7 @@ import {
     convertToGrams, 
     formatDate } from '../helpers';
 
+const { Dragger } = Upload;
 const { Title } = Typography;
 
 interface formData {
@@ -59,6 +62,23 @@ const handleAddDataFields = (formData: formData) => {
     newFormData.totalpuregramweight = newFormData.gramweightpure * amount;
 
     return newFormData;
+};
+
+const uploadProps = {
+    name: 'imagefile',
+    multiple: false,
+    action: 'http://localhost:4000/upload', // replace with your upload API endpoint
+    onChange(info: any) {
+        const { status } = info.file;
+        if (status !== 'uploading') {
+            console.log(info.file, info.fileList);
+        }
+        if (status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully.`);
+        } else if (status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
+    },
 };
 
 export const AddItem = () => {
@@ -176,7 +196,7 @@ export const AddItem = () => {
                     name='form' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
-                    <Select placeholder='Enter form of the item'>
+                    <Select placeholder='Select the form of the item'>
                         {itemForms.map((itemform)=>(
                             <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
                         ))}
@@ -220,7 +240,7 @@ export const AddItem = () => {
                     label='Purity' 
                     name='purity'
                     rules={[{ required: true, message: 'Please input the purchase price!' }]}>                    
-                    <Select>
+                    <Select placeholder='Select purity of item'>
                         <Select.Option value='1'>Pure(.999)</Select.Option>
                         <Select.Option value='0.925'>Sterling(.925)</Select.Option>
                         <Select.Option value='0.9'>Coin(90%)</Select.Option>
@@ -235,6 +255,17 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input the amount!' }]}>
                     <InputNumber min={1} placeholder='0'/>
                 </Form.Item>
+
+                <Form.Item label='Upload Image' name='imagefile'>
+                    <Dragger {...uploadProps}>
+                        <p className="ant-upload-drag-icon">
+                            <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                        <p className="ant-upload-hint">Support for a single upload.</p>
+                    </Dragger>
+                </Form.Item>
+
                 <Form.Item style={{ textAlign: 'center', marginLeft: '100px' }}>
                     <Button htmlType='submit' style={{ width: '100%' }}>
                         Add to the Stack!
