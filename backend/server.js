@@ -132,6 +132,7 @@ app.post('/upload', upload.single('imagefile'), (req, res) => {
   }
 });
 
+// TODO: Figure out how to serve the images with the correct path and corresponding form data
 app.get('/image/:id', (req, res) => {
   const q = "SELECT path FROM images WHERE id = ?;";
   db.query(q, [req.params.id], (err, result) => {

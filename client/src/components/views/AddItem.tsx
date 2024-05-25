@@ -141,7 +141,9 @@ export const AddItem = () => {
         };
         fetchItemForms();
     }, []);
-
+//TODO: Make form input dynamic based on the metal type selected
+//TODO: Add a way to add a new metal type, item form, mint, purchase location
+//TODO: Add name of item lookup to see if it already exists in the stack
     return (
         <div>
             <Title>Add to the Stack</Title>
