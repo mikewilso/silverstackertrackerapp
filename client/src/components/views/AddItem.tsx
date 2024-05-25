@@ -44,6 +44,7 @@ interface formData {
     totalpureozweight: number;
     totalpureoztweight: number;
     totalpuregramweight: number;
+    imagefileid: number;
 }
 
 const handleAddDataFields = (formData: formData) => {
@@ -64,39 +65,8 @@ const handleAddDataFields = (formData: formData) => {
     return newFormData;
 };
 
-const uploadProps = {
-    name: 'imagefile',
-    multiple: false,
-    action: 'http://localhost:4000/upload',
-    onChange(info: any) {
-        const { status } = info.file;
-        if (status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully.`);
-        } else if (status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};
-
 export const AddItem = () => {
     const [form] = Form.useForm();
-
-    const onFinish = async () => {
-        const {purchasedate, ...formValues} = form.getFieldsValue();
-        // purchasedate formatted into a string so it passes correct value to backend
-        const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
-        let fullData = handleAddDataFields(formValues);
-        fullData = { ...fullData, purchasedate: formattedDate };
-        console.log(fullData);
-        try {
-            await axios.post('http://localhost:4000/stack', fullData);
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
     // Fetch metals from the database
     const [metals, setMetals] = useState([
@@ -141,6 +111,45 @@ export const AddItem = () => {
         };
         fetchItemForms();
     }, []);
+
+    const [pictureId, setPictureId] = useState(null);
+
+    const uploadProps = {
+        name: 'imagefile',
+        multiple: false,
+        action: 'http://localhost:4000/upload',
+        onChange(info: any) {
+            const { status } = info.file;
+            console.log("INFO", info.file, info.fileList)
+            if (status !== 'uploading') {
+                console.log("info file response",info.file.response.imageId);
+            }
+            if (status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully.`);
+                // Update pictureId with the image id from the server response
+                setPictureId(info.file.response.imageId);
+            } else if (status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+
+    const onFinish = async () => {
+        const {purchasedate, ...formValues} = form.getFieldsValue();
+        console.log("picture id before data build", pictureId)
+        // purchasedate formatted into a string so it passes correct value to backend
+        const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
+        let fullData = handleAddDataFields(formValues);
+        fullData = { ...fullData, purchasedate: formattedDate, imagefileid: pictureId ?? 0};
+        console.log(fullData);
+        try {
+            await axios.post('http://localhost:4000/stack', fullData);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+
 //TODO: Make form input dynamic based on the metal type selected
 //TODO: Add a way to add a new metal type, item form, mint, purchase location
 //TODO: Add name of item lookup to see if it already exists in the stack
@@ -221,7 +230,7 @@ export const AddItem = () => {
                     </Select>
                 </Form.Item>
                 <Form.Item 
-                    label='Weight' 
+                    label='Unit Weight' 
                     name='unitweight'
                     rules={[{ required: true, message: 'Please input the weight!' }]}>
                     <InputNumber min={0.01} placeholder='0.01'/>

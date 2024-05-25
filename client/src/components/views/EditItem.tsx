@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
 import axios from 'axios';
 
+
 export const EditItem: FC = () => {
     const [data, setData] = useState([]);
 
@@ -18,9 +19,11 @@ export const EditItem: FC = () => {
         fetchStack();
     }, []);
 
+    // Handle button click,
     const handleButtonClick = (record: object) => {
         console.log(record);
         // Handle button click here
+        alert('Edit button clicked');
     };
 
     const columns = [

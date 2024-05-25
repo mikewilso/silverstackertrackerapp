@@ -70,11 +70,10 @@ app.post('/stack', (req,res) => {
               `purchasedate`,\
               `purchasedfrom`,\
               `purchaseprice`,\
-              `shape`,\
+              `form`,\
               `mint`,\
               `metaltype`,\
               `purity`,\
-              `weighttype`,\
               `unitweight`,\
               `ozweight`,\
               `oztweight`,\
@@ -85,7 +84,8 @@ app.post('/stack', (req,res) => {
               `amount`,\
               `totalpureozweight`,\
               `totalpureoztweight`,\
-              `totalpuregramweight`) VALUES(?)";
+              `totalpuregramweight`,\
+              `imagefileid`) VALUES(?)";
 
   
   const values = [
@@ -94,11 +94,10 @@ app.post('/stack', (req,res) => {
     req.body.purchasedate,
     req.body.purchasedfrom,
     req.body.purchaseprice,
-    req.body.shape,
+    req.body.form,
     req.body.mint,
     req.body.metaltype,
     req.body.purity,
-    req.body.weighttype,
     req.body.unitweight,
     req.body.ozweight,
     req.body.oztweight,
@@ -109,7 +108,8 @@ app.post('/stack', (req,res) => {
     req.body.amount,
     req.body.totalpureozweight,
     req.body.totalpureoztweight,
-    req.body.totalpuregramweight
+    req.body.totalpuregramweight,
+    req.body.imagefileid
   ];
   console.log(values);
   db.query(q,[values], (err, data) => {
@@ -125,7 +125,10 @@ app.post('/upload', upload.single('imagefile'), (req, res) => {
     const q = "INSERT INTO images (path) VALUES (?);";
     db.query(q, [filePath], (err, result) => {
       if (err) throw err;
-      res.status(201).json({ message: "File uploaded and path saved successfully" });
+      res.status(201).json({ 
+        message: "File uploaded and path saved successfully",
+        imageId: result.insertId 
+      });
     });
   } catch (error) {
     console.error(error);
