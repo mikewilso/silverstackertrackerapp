@@ -67,7 +67,7 @@ const handleAddDataFields = (formData: formData) => {
 const uploadProps = {
     name: 'imagefile',
     multiple: false,
-    action: 'http://localhost:4000/upload', // replace with your upload API endpoint
+    action: 'http://localhost:4000/upload',
     onChange(info: any) {
         const { status } = info.file;
         if (status !== 'uploading') {
@@ -141,8 +141,6 @@ export const AddItem = () => {
         };
         fetchItemForms();
     }, []);
-
-
 
     return (
         <div>
