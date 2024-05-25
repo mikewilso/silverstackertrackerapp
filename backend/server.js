@@ -53,7 +53,7 @@ app.get('/metals', (req,res) => {
   })
 })
 
-// fetches all the shapes from the database
+// fetches all the item forms from the database
 app.get('/itemforms', (req,res) => {
   const q = "SELECT * FROM itemforms;"
   db.query(q,(err, data)=>{
@@ -61,6 +61,16 @@ app.get('/itemforms', (req,res) => {
     return res.json(data)
   })
 })
+
+// fetches all the purchase places from the database
+app.get('/purchasedfrom', (req,res) => {
+  const q = "SELECT DISTINCT purchasedfrom FROM stack;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
 
 // adds a new stack item to the database
 app.post('/stack', (req,res) => {

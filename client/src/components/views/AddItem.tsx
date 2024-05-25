@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { InboxOutlined } from '@ant-design/icons';
 import {
+    AutoComplete,
     Button,
     DatePicker,
     Form,
@@ -149,6 +150,20 @@ export const AddItem = () => {
         }
     };
 
+    const [autoCompleteOptions, setAutoCompleteOptions] = useState([]);
+
+    useEffect(() => {
+        // Fetch existing values from the database
+        fetch('http://localhost:4000/purchasedfrom')
+          .then(response => response.json())
+          .then(data => {
+            // Map the data to the format required by AutoComplete
+            const options = data.map((item: any) => ({ value: item.purchasedfrom }));
+            console.log("options",options);
+            setAutoCompleteOptions(options);
+          });
+      }, []);
+
 
 //TODO: Make form input dynamic based on the metal type selected
 //TODO: Add a way to add a new metal type, item form, mint, purchase location
@@ -191,7 +206,13 @@ export const AddItem = () => {
                     name='purchasedfrom'
                     rules={[{ required: true, message: 'Please input where it was purchased from!' }]}
                 >
-                    <Input placeholder='Enter place of purchase(coin shop, APMEX, etc.)'/>
+                      <AutoComplete
+                            options={autoCompleteOptions}
+                            placeholder='Enter place of purchase(coin shop, APMEX, etc.)'
+                            filterOption={(inputValue: string, option: any) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                            }
+                        />
                 </Form.Item>
                 <Form.Item 
                     label='Purchase Price' 
