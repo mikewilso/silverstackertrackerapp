@@ -66,7 +66,7 @@ export const AddItem = () => {
 
     const onFinish = async () => {
         const {purchasedate, ...formValues} = form.getFieldsValue();
-        // purchasedate formatted into a string so it passes correctly to the backend
+        // purchasedate formatted into a string so it passes correct value to backend
         const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
         let fullData = handleAddDataFields(formValues);
         fullData = { ...fullData, purchasedate: formattedDate };
@@ -78,6 +78,7 @@ export const AddItem = () => {
         }
     };
 
+    // Fetch metals from the database
     const [metals, setMetals] = useState([
         {
             id: 0,
@@ -98,6 +99,30 @@ export const AddItem = () => {
         };
         fetchMetals();
     }, []);
+
+    // Fetch item forms from the database
+    const [itemForms, setItemForms] = useState([
+        {
+            id: 0,
+            itemformvalue: '',
+            itemformtype: ''
+        }
+    ]);
+
+    useEffect(() => {
+        const fetchItemForms = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/itemforms');
+                console.log(res.data);
+                setItemForms(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchItemForms();
+    }, []);
+
+
 
     return (
         <div>
@@ -151,7 +176,11 @@ export const AddItem = () => {
                     name='form' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
-                    <Input placeholder='Enter form of the item'/>
+                    <Select placeholder='Enter form of the item'>
+                        {itemForms.map((itemform)=>(
+                            <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
+                        ))}
+                    </Select>
                 </Form.Item>
                 <Form.Item 
                     label='Mint' 
