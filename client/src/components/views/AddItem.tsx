@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
 import {
     Button,
     DatePicker,
@@ -64,10 +65,12 @@ export const AddItem = () => {
     const [form] = Form.useForm();
 
     const onFinish = async () => {
-        const formValues = form.getFieldsValue();
-        console.log("formvalues", formValues);
-        const fullData = handleAddDataFields(formValues);
-        console.log(formValues);
+        const {purchasedate, ...formValues} = form.getFieldsValue();
+        // purchasedate formatted into a string so it passes correctly to the backend
+        const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
+        let fullData = handleAddDataFields(formValues);
+        fullData = { ...fullData, purchasedate: formattedDate };
+        console.log(fullData);
         try {
             await axios.post('http://localhost:4000/stack', fullData);
         } catch (err) {
@@ -82,7 +85,7 @@ export const AddItem = () => {
             metaltype: ''
         }
     ]);
-    
+
     useEffect(() => {
         const fetchMetals = async () => {
             try {
