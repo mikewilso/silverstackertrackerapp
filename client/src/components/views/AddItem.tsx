@@ -242,7 +242,7 @@ export const AddItem = () => {
                 >
                     <InputNumber
                         min={0} 
-                        prefix="$"
+                        prefix={<span style={{ color: 'rgba(0,0,0,.25)' }}>$</span>}
                         style={{ width: '25%' }}
                     />
                 </Form.Item>
