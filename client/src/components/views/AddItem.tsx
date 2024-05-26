@@ -24,7 +24,6 @@ import {
 const { Dragger } = Upload;
 const { Title } = Typography;
 
-
 interface formData {
     name: string;
     description: string;
@@ -54,7 +53,7 @@ const handleAddDataFields = (formData: formData) => {
     let newFormData = formData;
     let purity = Number(newFormData.purity);
     let amount = newFormData.amount;
-    // Convert the weight to all three types of weight and the pure weight
+    // Convert the weight to all three types of weight with their pure weight
     newFormData.purchasedate = formatDate(newFormData.purchasedate);
     newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);
     newFormData.ozweight = convertToOz(formData.unitweight, formData.weighttype);
@@ -243,7 +242,7 @@ export const AddItem = () => {
                 >
                     <InputNumber
                         min={0} 
-                        formatter={value => `$ ${value}`} 
+                        prefix="$"
                         style={{ width: '25%' }}
                     />
                 </Form.Item>
@@ -325,6 +324,7 @@ export const AddItem = () => {
                     <InputNumber min={1} placeholder='0'/>
                 </Form.Item>
 
+                //TODO: add default image in case of no image uploaded
                 <Form.Item label='Upload Image' name='imagefile'>
                     <Dragger {...uploadProps}>
                         <p className="ant-upload-drag-icon">
