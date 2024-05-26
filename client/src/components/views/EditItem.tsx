@@ -20,11 +20,17 @@ export const EditItem: FC = () => {
         fetchStack();
     }, []);
 
+    const [searchTerm, setSearchTerm] = React.useState("");
+
+    const filteredData = data.filter((data: { name: string }) =>
+            data.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
     // Handle button click,
     const handleButtonClick = (record: object) => {
-        console.log(record);
-        // Handle button click here
-        alert('Edit button clicked');
+            console.log(record);
+            // Handle button click here
+            alert('Edit button clicked');
     };
 
     const columns = [
@@ -75,7 +81,8 @@ export const EditItem: FC = () => {
 
     return (
         <div>
-            <Table columns={columns} dataSource={data} />
+            <input type="text" placeholder="Search" onChange={event => {setSearchTerm(event.target.value)}} />
+            <Table columns={columns} dataSource={filteredData} />
         </div>
     );
 };

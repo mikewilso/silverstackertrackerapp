@@ -44,15 +44,6 @@ app.get('/stack', (req,res) => {
   })
 })
 
-// fetches all the stack items with images from the database
-// app.get('/stackwithimages', (req,res) => {
-//   const q = "SELECT * FROM stack JOIN images ON stack.imagefileid=images.id;"
-//   db.query(q,(err, data)=>{
-//     if(err) return res.json(err)
-//     return res.json(data)
-//   })
-// })
-
 // fetches all the metal types from the database
 app.get('/metals', (req,res) => {
   const q = "SELECT * FROM metals;"
