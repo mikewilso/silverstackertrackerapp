@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import {
     AutoComplete,
     Button,
@@ -11,6 +11,7 @@ import {
     message,
     Radio,
     Select,
+    Tooltip,
     Typography,
     Upload
 } from 'antd';
@@ -22,6 +23,7 @@ import {
 
 const { Dragger } = Upload;
 const { Title } = Typography;
+
 
 interface formData {
     name: string;
@@ -150,7 +152,8 @@ export const AddItem = () => {
         }
     };
 
-    const [autoCompleteOptions, setAutoCompleteOptions] = useState([]);
+    // Fetch existing purchase place values from the database for the AutoComplete component
+    const [autoCompletePurchaseOptions, setautoCompletePurchaseOptions] = useState([]);
 
     useEffect(() => {
         // Fetch existing values from the database
@@ -160,9 +163,24 @@ export const AddItem = () => {
             // Map the data to the format required by AutoComplete
             const options = data.map((item: any) => ({ value: item.purchasedfrom }));
             console.log("options",options);
-            setAutoCompleteOptions(options);
+            setautoCompletePurchaseOptions(options);
           });
       }, []);
+
+      // Fetch existing mint values from the database
+      const [autoCompleteMintOptions, setautoCompleteMintOptions] = useState([]);
+
+      useEffect(() => {
+          // Fetch existing values from the database
+          fetch('http://localhost:4000/mints')
+            .then(response => response.json())
+            .then(data => {
+              // Map the data to the format required by AutoComplete
+              const options = data.map((item: any) => ({ value: item.mint }));
+              console.log("options",options);
+              setautoCompleteMintOptions(options);
+            });
+        }, []);
 
 //TODO: Make form input dynamic based on the metal type selected
 //TODO: Add a way to add a new metal type, item form, mint, purchase location
@@ -208,7 +226,7 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input where it was purchased from!' }]}
                 >
                     <AutoComplete
-                        options={autoCompleteOptions}
+                        options={autoCompletePurchaseOptions}
                         placeholder='Enter place of purchase(coin shop, APMEX, etc.)'
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -217,7 +235,13 @@ export const AddItem = () => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Purchase Price' 
+                    label={
+                        <span>
+                            Unit Price <Tooltip title="Price per unit at time of purchase.">
+                                            <InfoCircleOutlined />
+                                        </Tooltip>
+                        </span>
+                    }
                     name='purchaseprice'
                     rules={[{ required: true, message: 'Please input the purchase price!' }]}
                 >
@@ -245,7 +269,13 @@ export const AddItem = () => {
                     name='mint'
                     rules={[{ required: true, message: 'Please input the maker of this item!' }]}
                 >
-                    <Input placeholder='Enter maker of the item'/>
+                    <AutoComplete
+                        options={autoCompleteMintOptions}
+                        placeholder='Enter maker of the item'
+                        filterOption={(inputValue: string, option: any) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                    />
                 </Form.Item>
 
                 <Form.Item 
@@ -304,8 +334,8 @@ export const AddItem = () => {
                         <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                         </p>
-                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                        <p className="ant-upload-hint">Support for a single upload.</p>
+                        <p className="ant-upload-text">Click or drag image to this area to upload</p>
+                        <p className="ant-upload-hint">Add a picture of your item.</p>
                     </Dragger>
                 </Form.Item>
 

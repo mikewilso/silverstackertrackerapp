@@ -71,6 +71,15 @@ app.get('/purchasedfrom', (req,res) => {
   })
 })
 
+// fetches all the mints from the database
+app.get('/mints', (req,res) => {
+  const q = "SELECT DISTINCT mint FROM stack;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
 
 // adds a new stack item to the database
 app.post('/stack', (req,res) => {
