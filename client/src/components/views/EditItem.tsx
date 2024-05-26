@@ -1,10 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Table } from 'antd';
+import { Button, Drawer, Table } from 'antd';
 import axios from 'axios';
 
 
 export const EditItem: FC = () => {
     const [data, setData] = useState([]);
+    const [drawerVisible, setDrawerVisible] = useState(false);
+    const showDrawer = (record: object) => {
+        setDrawerVisible(true);
+    };
+    const onClose = () => {
+        setDrawerVisible(false);
+    };
 
     useEffect(() => {
         const fetchStack = async () => {
@@ -29,8 +36,7 @@ export const EditItem: FC = () => {
     // Handle button click,
     const handleButtonClick = (record: object) => {
             console.log(record);
-            // Handle button click here
-            alert('Edit button clicked');
+            showDrawer(record);
     };
 
     const columns = [
@@ -81,6 +87,15 @@ export const EditItem: FC = () => {
 
     return (
         <div>
+            <Drawer
+                title="Edit Item"
+                placement="right"
+                closable={false}
+                onClose={onClose}
+                open={drawerVisible}
+                width='50vw'
+            >
+            </Drawer>
             <input type="text" placeholder="Search" onChange={event => {setSearchTerm(event.target.value)}} />
             <Table columns={columns} dataSource={filteredData} />
         </div>
