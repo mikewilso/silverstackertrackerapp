@@ -54,6 +54,7 @@ const handleAddDataFields = (formData: formData) => {
     let newFormData = formData;
     let purity = Number(newFormData.purity);
     let amount = newFormData.amount;
+    // Convert the weight to all three types of weight and the pure weight
     newFormData.purchasedate = formatDate(newFormData.purchasedate);
     newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);
     newFormData.ozweight = convertToOz(formData.unitweight, formData.weighttype);
@@ -156,7 +157,6 @@ export const AddItem = () => {
     const [autoCompletePurchaseOptions, setautoCompletePurchaseOptions] = useState([]);
 
     useEffect(() => {
-        // Fetch existing values from the database
         fetch('http://localhost:4000/purchasedfrom')
           .then(response => response.json())
           .then(data => {
@@ -171,7 +171,6 @@ export const AddItem = () => {
       const [autoCompleteMintOptions, setautoCompleteMintOptions] = useState([]);
 
       useEffect(() => {
-          // Fetch existing values from the database
           fetch('http://localhost:4000/mints')
             .then(response => response.json())
             .then(data => {
@@ -182,9 +181,6 @@ export const AddItem = () => {
             });
         }, []);
 
-//TODO: Make form input dynamic based on the metal type selected
-//TODO: Add a way to add a new metal type, item form, mint, purchase location
-//TODO: Add name of item lookup to see if it already exists in the stack
     return (
         <div>
             <Title>Add to the Stack</Title>

@@ -7,6 +7,8 @@ import { dirname } from 'path';
 
 const app = express();
 const port = 4000;
+
+// required for __dirname in ES6 modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -24,6 +26,7 @@ app.get('/', (req, res) => {
   res.json('hello this is the backend')
 })
 
+// create middleware to handle the image upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './images/')
@@ -154,7 +157,6 @@ app.post('/upload', upload.single('imagefile'), (req, res) => {
   }
 });
 
-// TODO: Figure out how to serve the images with the correct path and corresponding form data
 app.get('/image/:id', (req, res) => {
   const q = "SELECT path FROM images WHERE id = ?;";
   db.query(q, [req.params.id], (err, result) => {

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Drawer, Table } from 'antd';
+import { Button, Drawer, Input, Table } from 'antd';
 import axios from 'axios';
 
 interface formData {
@@ -71,7 +71,11 @@ export const EditItem: FC = () => {
             title: 'Image',
             dataIndex: 'imagefileid', 
             key: 'image',
-            render: (imagefileid: string) => <img src={`http://localhost:4000/image/${imagefileid}`} alt="item" style={{width: '50px', height: '50px'}}/> // adjust the style as needed
+            render: (imagefileid: string) => 
+                <img 
+                    src={`http://localhost:4000/image/${imagefileid}`} 
+                    alt="item" style={{width: '50px', height: '50px'}}
+                /> 
         },
         {
             title: 'Name',
@@ -149,7 +153,7 @@ export const EditItem: FC = () => {
                 </div> 
                 )} 
             </Drawer>
-            <input type="text" placeholder="Search" onChange={event => {setSearchTerm(event.target.value)}} />
+            <Input style={{ width: '25%' }} type="text" placeholder="Search" onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} />
             <Table columns={columns} dataSource={filteredData} />
         </div>
     );
