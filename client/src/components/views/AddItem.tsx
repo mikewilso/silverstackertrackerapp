@@ -164,7 +164,6 @@ export const AddItem = () => {
           });
       }, []);
 
-
 //TODO: Make form input dynamic based on the metal type selected
 //TODO: Add a way to add a new metal type, item form, mint, purchase location
 //TODO: Add name of item lookup to see if it already exists in the stack
@@ -187,6 +186,7 @@ export const AddItem = () => {
                 >
                     <Input placeholder='Enter item name'/>
                 </Form.Item>
+
                 <Form.Item 
                     label='Description' 
                     name='description'
@@ -201,26 +201,33 @@ export const AddItem = () => {
                 >
                     <DatePicker />
                 </Form.Item>
+
                 <Form.Item 
                     label='Purchased From' 
                     name='purchasedfrom'
                     rules={[{ required: true, message: 'Please input where it was purchased from!' }]}
                 >
-                      <AutoComplete
-                            options={autoCompleteOptions}
-                            placeholder='Enter place of purchase(coin shop, APMEX, etc.)'
-                            filterOption={(inputValue: string, option: any) =>
-                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                            }
-                        />
+                    <AutoComplete
+                        options={autoCompleteOptions}
+                        placeholder='Enter place of purchase(coin shop, APMEX, etc.)'
+                        filterOption={(inputValue: string, option: any) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                    />
                 </Form.Item>
+
                 <Form.Item 
                     label='Purchase Price' 
                     name='purchaseprice'
                     rules={[{ required: true, message: 'Please input the purchase price!' }]}
                 >
-                    <InputNumber min={0} formatter={value => `$ ${value}`} style={{ width: '25%' }}/>
+                    <InputNumber
+                        min={0} 
+                        formatter={value => `$ ${value}`} 
+                        style={{ width: '25%' }}
+                    />
                 </Form.Item>
+
                 <Form.Item 
                     label='Form' 
                     name='form' 
@@ -232,6 +239,7 @@ export const AddItem = () => {
                         ))}
                     </Select>
                 </Form.Item>
+
                 <Form.Item 
                     label='Mint' 
                     name='mint'
@@ -239,6 +247,7 @@ export const AddItem = () => {
                 >
                     <Input placeholder='Enter maker of the item'/>
                 </Form.Item>
+
                 <Form.Item 
                     label='Metal Type' 
                     name='metaltype'
@@ -250,12 +259,14 @@ export const AddItem = () => {
                         ))}
                     </Select>
                 </Form.Item>
+
                 <Form.Item 
                     label='Unit Weight' 
                     name='unitweight'
                     rules={[{ required: true, message: 'Please input the weight!' }]}>
                     <InputNumber min={0.01} placeholder='0.01'/>
                 </Form.Item>
+
                 <Form.Item 
                     label='Unit of Weight' 
                     name='weighttype'
@@ -266,6 +277,7 @@ export const AddItem = () => {
                         <Radio value='grams'>Grams</Radio>
                     </Radio.Group>
                 </Form.Item>
+
                 <Form.Item 
                     label='Purity' 
                     name='purity'
@@ -279,6 +291,7 @@ export const AddItem = () => {
                         <Select.Option value='0.35'>War Nickel(35%)</Select.Option>
                     </Select>
                 </Form.Item>
+
                 <Form.Item 
                     label='Amount' 
                     name='amount'
