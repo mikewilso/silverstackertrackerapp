@@ -20,7 +20,7 @@ package-lock.json
 .env.production.local
 .vscode
 queries.sql
-backend/uploads/*
+backend/images/*
 
 npm-debug.log*
 yarn-debug.log*

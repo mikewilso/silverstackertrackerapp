@@ -10,6 +10,7 @@ export const EditItem: FC = () => {
         const fetchStack = async () => {
             try {
                 const response = await axios.get('http://localhost:4000/stack');
+                console.log("response.data",response.data);
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data: ', error);
@@ -28,6 +29,12 @@ export const EditItem: FC = () => {
 
     const columns = [
         {
+            title: 'Image',
+            dataIndex: 'imagefileid', 
+            key: 'image',
+            render: (imagefileid: string) => <img src={`http://localhost:4000/image/${imagefileid}`} alt="item" style={{width: '50px', height: '50px'}}/> // adjust the style as needed
+        },
+        {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
@@ -43,9 +50,9 @@ export const EditItem: FC = () => {
             key: 'mint',
         },
         {
-            title: 'Shape',
-            dataIndex: 'shape',
-            key: 'shape',
+            title: 'Form',
+            dataIndex: 'form',
+            key: 'form',
         },
         {
             title: 'Metal Type',

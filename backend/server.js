@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    cb(null, './images/')
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)
@@ -43,6 +43,15 @@ app.get('/stack', (req,res) => {
     return res.json(data)
   })
 })
+
+// fetches all the stack items with images from the database
+// app.get('/stackwithimages', (req,res) => {
+//   const q = "SELECT * FROM stack JOIN images ON stack.imagefileid=images.id;"
+//   db.query(q,(err, data)=>{
+//     if(err) return res.json(err)
+//     return res.json(data)
+//   })
+// })
 
 // fetches all the metal types from the database
 app.get('/metals', (req,res) => {
