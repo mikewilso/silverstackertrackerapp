@@ -2,11 +2,38 @@ import React, { FC, useEffect, useState } from 'react';
 import { Button, Drawer, Table } from 'antd';
 import axios from 'axios';
 
+interface formData {
+    name: string;
+    description: string;
+    purchasedate: string;
+    purchasedfrom: string;
+    purchaseprice: number;
+    form: string;
+    mint: string;
+    metaltype: string;
+    purity: number;
+    weighttype: string;
+    unitweight: number;
+    ozweight: number;
+    oztweight: number;
+    gramweight: number;
+    ozweightpure: number;
+    oztweightpure: number;
+    gramweightpure: number;
+    amount: number;
+    totalpureozweight: number;
+    totalpureoztweight: number;
+    totalpuregramweight: number;
+    imagefileid: number;
+}
+
 
 export const EditItem: FC = () => {
     const [data, setData] = useState([]);
     const [drawerVisible, setDrawerVisible] = useState(false);
-    const showDrawer = (record: object) => {
+    const [currentRecord, setCurrentRecord] = useState<formData | null>(null);
+    const showDrawer = (record: formData) => {
+        setCurrentRecord(record);
         setDrawerVisible(true);
     };
     const onClose = () => {
@@ -34,7 +61,7 @@ export const EditItem: FC = () => {
         );
 
     // Handle button click,
-    const handleButtonClick = (record: object) => {
+    const handleButtonClick = (record: formData) => {
             console.log(record);
             showDrawer(record);
     };
@@ -79,7 +106,7 @@ export const EditItem: FC = () => {
         {
             title: '',
             key: 'edit',
-            render: (text: any, record: any) => (
+            render: (text: string, record: formData) => (
                 <Button onClick={() => handleButtonClick(record)}>Edit</Button>
             ),
         },
@@ -95,6 +122,32 @@ export const EditItem: FC = () => {
                 open={drawerVisible}
                 width='50vw'
             >
+            {currentRecord && (
+                <div>
+                    <p>{currentRecord.name}</p>
+                    <p>{currentRecord.description}</p>
+                    <p>{currentRecord.purchasedate}</p>
+                    <p>{currentRecord.purchasedfrom}</p>
+                    <p>{currentRecord.purchaseprice}</p>
+                    <p>{currentRecord.form}</p>
+                    <p>{currentRecord.mint}</p>
+                    <p>{currentRecord.metaltype}</p>
+                    <p>{currentRecord.purity}</p>
+                    <p>{currentRecord.weighttype}</p>
+                    <p>{currentRecord.unitweight}</p>
+                    <p>{currentRecord.ozweight}</p>
+                    <p>{currentRecord.oztweight}</p>
+                    <p>{currentRecord.gramweight}</p>
+                    <p>{currentRecord.ozweightpure}</p>
+                    <p>{currentRecord.oztweightpure}</p>
+                    <p>{currentRecord.gramweightpure}</p>
+                    <p>{currentRecord.amount}</p>
+                    <p>{currentRecord.totalpureozweight}</p>
+                    <p>{currentRecord.totalpureoztweight}</p>
+                    <p>{currentRecord.totalpuregramweight}</p>
+                    <p>{currentRecord.imagefileid}</p>
+                </div> 
+                )} 
             </Drawer>
             <input type="text" placeholder="Search" onChange={event => {setSearchTerm(event.target.value)}} />
             <Table columns={columns} dataSource={filteredData} />
