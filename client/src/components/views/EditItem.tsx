@@ -100,6 +100,7 @@ export const EditItem = () => {
     return (
         <div>
             <Drawer
+                //TODO: Add name of item to the drawer title
                 title="Edit Item"
                 placement="right"
                 closable={false}

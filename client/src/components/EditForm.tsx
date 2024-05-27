@@ -15,12 +15,16 @@ type EditFormProps = {
     currentRecord: formData;
 }
 
+// TODO: Add AutoComplete options for fields, put in a separate file?
+// TODO: Add Select options for fields, put in a separate file?
+// TODO: Add the rest of the form fields
+// TODO: Add ability to change the image file
 export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
         console.log('Form values:', values);
-        // Add your logic here to handle form submission
+        // TODO: Add API call to update the record
     };
 
     // Update form fields whenever currentRecord changes

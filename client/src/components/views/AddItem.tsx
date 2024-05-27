@@ -113,7 +113,8 @@ export const AddItem = () => {
             }
         },
     };
-
+    // TODO: Add a function to reset form fields after submission
+    // TODO: Remove console.log statements
     const onFinish = async () => {
         const {purchasedate, ...formValues} = form.getFieldsValue();
         console.log("picture id before data build", pictureId)
@@ -169,6 +170,7 @@ export const AddItem = () => {
                 form={form}
                 onFinish={onFinish}
             >
+                {/* TODO: Add AutoComplete to name field, if item already exists, give option to update existing record */}
                 <Form.Item 
                     label='Name of Item' 
                     name='name'
