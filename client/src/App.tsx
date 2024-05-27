@@ -4,7 +4,7 @@ import { AppContainer } from './components/AppContainer';
 
 export const App = () => {
     return (
-        <div className='App'>
+        <div className='App' data-testid="app-container">
             <Router>
                 <AppContainer></AppContainer>
             </Router>

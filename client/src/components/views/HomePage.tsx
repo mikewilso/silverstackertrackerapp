@@ -35,7 +35,7 @@ export const HomePage = () => {
             <Title>Michael's Home Page</Title>
             <div className='stackList'>
                 {stack.map((item) => (
-                    <div className='item' id={item.id}>
+                    <div className='item' key={item.id}>
                         <h1>{item.name}</h1>
                         <ul>
                             <li>{item.description}</li>
