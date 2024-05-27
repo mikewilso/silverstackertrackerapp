@@ -31,6 +31,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
 
     // Update form fields whenever currentRecord changes
     useEffect(() => {
+        console.log('Current record:', currentRecord);
         form.setFieldsValue(currentRecord);
     }, [currentRecord, form]);
 

@@ -97,6 +97,7 @@ app.post('/stack', (req,res) => {
               `metaltype`,\
               `purity`,\
               `unitweight`,\
+              `weighttype`,\
               `ozweight`,\
               `oztweight`,\
               `gramweight`,\
@@ -121,6 +122,7 @@ app.post('/stack', (req,res) => {
     req.body.metaltype,
     req.body.purity,
     req.body.unitweight,
+    req.body.weighttype,
     req.body.ozweight,
     req.body.oztweight,
     req.body.gramweight,
