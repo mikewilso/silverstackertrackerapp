@@ -19,7 +19,11 @@ import {
     convertToOz, 
     convertToOzt, 
     convertToGrams, 
-    formatDate } from '../helpers';
+    formatDate } from '../helpers/useUnitConversions';
+import { useFetchMetals } from '../../getters/useFetchMetals';
+import { useFetchItemForms } from '../../getters/useFetchItemForms';
+import { useFetchPurchasePlaces } from '../../getters/useFetchPurchasePlaces';
+import { useFetchMints } from '../../getters/useFetchMints';
 import { formData } from '../interfaces';
 
 const { Dragger } = Upload;
@@ -47,28 +51,6 @@ const handleAddDataFields = (formData: formData) => {
 
 export const AddItem = () => {
     const [form] = Form.useForm();
-
-    // Fetch metals from the database
-    const [metals, setMetals] = useState([
-        {
-            id: 0,
-            metalvalue: '',
-            metaltype: ''
-        }
-    ]);
-
-    useEffect(() => {
-        const fetchMetals = async () => {
-            try {
-                const res = await axios.get('http://localhost:4000/metals');
-                console.log(res.data);
-                setMetals(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchMetals();
-    }, []);
 
     // Fetch item forms from the database
     const [itemForms, setItemForms] = useState([
@@ -130,34 +112,6 @@ export const AddItem = () => {
         }
     };
 
-    // Fetch existing purchase place values from the database for the AutoComplete component
-    const [autoCompletePurchaseOptions, setautoCompletePurchaseOptions] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:4000/purchasedfrom')
-          .then(response => response.json())
-          .then(data => {
-            // Map the data to the format required by AutoComplete
-            const options = data.map((item: any) => ({ value: item.purchasedfrom }));
-            console.log("options",options);
-            setautoCompletePurchaseOptions(options);
-          });
-      }, []);
-
-      // Fetch existing mint values from the database
-      const [autoCompleteMintOptions, setautoCompleteMintOptions] = useState([]);
-
-      useEffect(() => {
-          fetch('http://localhost:4000/mints')
-            .then(response => response.json())
-            .then(data => {
-              // Map the data to the format required by AutoComplete
-              const options = data.map((item: any) => ({ value: item.mint }));
-              console.log("options",options);
-              setautoCompleteMintOptions(options);
-            });
-        }, []);
-
     return (
         <div>
             <Title>Add to the Stack</Title>
@@ -184,7 +138,7 @@ export const AddItem = () => {
                     name='description'
                     rules={[{ required: false, message: 'Please input the description!' }]}
                 >
-                    <Input placeholder="Enter item description (optional)" />
+                    <Input.TextArea placeholder="Enter item description (optional)" />
                 </Form.Item>
                 <Form.Item 
                     label='Purchase Date' 
@@ -200,7 +154,7 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input where it was purchased from!' }]}
                 >
                     <AutoComplete
-                        options={autoCompletePurchaseOptions}
+                        options={useFetchPurchasePlaces()}
                         placeholder='Enter place of purchase(coin shop, APMEX, etc.)'
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -233,7 +187,7 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
                     <Select placeholder='Select the form of the item'>
-                        {itemForms.map((itemform)=>(
+                        {useFetchItemForms().map((itemform)=>(
                             <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
                         ))}
                     </Select>
@@ -245,7 +199,7 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input the maker of this item!' }]}
                 >
                     <AutoComplete
-                        options={autoCompleteMintOptions}
+                        options={useFetchMints()}
                         placeholder='Enter maker of the item'
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -259,7 +213,7 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please choose the precious metal type!' }]}
                 >
                     <Select placeholder='Enter metal type'>
-                        {metals.map((metal)=>(
+                        {useFetchMetals().map((metal)=>(
                             <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
                         ))}
                     </Select>

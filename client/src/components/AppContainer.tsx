@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate, Route, Routes } from 'react-router-dom'
+import { useNavigate, Route, Routes } from 'react-router-dom'
 import { Layout, Menu } from 'antd';
 import { HomePage } from './views/HomePage';
 import { AddItem } from './views/AddItem';
