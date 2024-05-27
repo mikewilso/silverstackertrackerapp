@@ -20,10 +20,10 @@ import {
     convertToOzt, 
     convertToGrams, 
     formatDate } from '../helpers/useUnitConversions';
-import { useFetchMetals } from '../../getters/useFetchMetals';
-import { useFetchItemForms } from '../../getters/useFetchItemForms';
-import { useFetchPurchasePlaces } from '../../getters/useFetchPurchasePlaces';
-import { useFetchMints } from '../../getters/useFetchMints';
+import { useFetchMetals } from '../getters/useFetchMetals';
+import { useFetchItemForms } from '../getters/useFetchItemForms';
+import { useFetchPurchasePlaces } from '../getters/useFetchPurchasePlaces';
+import { useFetchMints } from '../getters/useFetchMints';
 import { formData } from '../interfaces';
 
 const { Dragger } = Upload;
