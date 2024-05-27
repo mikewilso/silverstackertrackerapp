@@ -20,34 +20,11 @@ import {
     convertToOzt, 
     convertToGrams, 
     formatDate } from '../helpers';
+import { formData } from '../interfaces';
 
 const { Dragger } = Upload;
 const { Title } = Typography;
 
-interface formData {
-    name: string;
-    description: string;
-    purchasedate: string;
-    purchasedfrom: string;
-    purchaseprice: number;
-    form: string;
-    mint: string;
-    metaltype: string;
-    purity: number;
-    weighttype: string;
-    unitweight: number;
-    ozweight: number;
-    oztweight: number;
-    gramweight: number;
-    ozweightpure: number;
-    oztweightpure: number;
-    gramweightpure: number;
-    amount: number;
-    totalpureozweight: number;
-    totalpureoztweight: number;
-    totalpuregramweight: number;
-    imagefileid: number;
-}
 
 const handleAddDataFields = (formData: formData) => {
     let newFormData = formData;
@@ -244,6 +221,7 @@ export const AddItem = () => {
                         min={0} 
                         prefix={<span style={{ color: 'rgba(0,0,0,.25)' }}>$</span>}
                         style={{ width: '25%' }}
+                        placeholder='0.00'
                     />
                 </Form.Item>
 
@@ -324,7 +302,6 @@ export const AddItem = () => {
                     <InputNumber min={1} placeholder='0'/>
                 </Form.Item>
 
-                //TODO: add default image in case of no image uploaded
                 <Form.Item label='Upload Image' name='imagefile'>
                     <Dragger {...uploadProps}>
                         <p className="ant-upload-drag-icon">

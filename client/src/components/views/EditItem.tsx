@@ -1,41 +1,28 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Button, Drawer, Input, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { 
+    Button,
+    Drawer, 
+    Input,
+    Table
+        } from 'antd';
 import axios from 'axios';
+import { formData } from '../interfaces';
+import { EditForm } from '../EditForm';
 
-interface formData {
-    name: string;
-    description: string;
-    purchasedate: string;
-    purchasedfrom: string;
-    purchaseprice: number;
-    form: string;
-    mint: string;
-    metaltype: string;
-    purity: number;
-    weighttype: string;
-    unitweight: number;
-    ozweight: number;
-    oztweight: number;
-    gramweight: number;
-    ozweightpure: number;
-    oztweightpure: number;
-    gramweightpure: number;
-    amount: number;
-    totalpureozweight: number;
-    totalpureoztweight: number;
-    totalpuregramweight: number;
-    imagefileid: number;
-}
-
-
-export const EditItem: FC = () => {
+export const EditItem = () => {
     const [data, setData] = useState([]);
     const [drawerVisible, setDrawerVisible] = useState(false);
-    const [currentRecord, setCurrentRecord] = useState<formData | null>(null);
+    const [currentRecord, setCurrentRecord] = React.useState<formData | undefined>();
+
     const showDrawer = (record: formData) => {
         setCurrentRecord(record);
         setDrawerVisible(true);
     };
+    const handleButtonClick = (record: formData) => {
+        setCurrentRecord(record);  // Update the currentRecord state
+        showDrawer(record);
+      };
+      
     const onClose = () => {
         setDrawerVisible(false);
     };
@@ -59,13 +46,7 @@ export const EditItem: FC = () => {
     const filteredData = data.filter((data: { name: string }) =>
             data.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
-
-    // Handle button click,
-    const handleButtonClick = (record: formData) => {
-            console.log(record);
-            showDrawer(record);
-    };
-
+    
     const columns = [
         {
             title: 'Image',
@@ -110,7 +91,7 @@ export const EditItem: FC = () => {
         {
             title: '',
             key: 'edit',
-            render: (text: string, record: formData) => (
+            render: (record: formData) => (
                 <Button onClick={() => handleButtonClick(record)}>Edit</Button>
             ),
         },
@@ -126,32 +107,10 @@ export const EditItem: FC = () => {
                 open={drawerVisible}
                 width='50vw'
             >
-            {currentRecord && (
-                <div>
-                    <p>{currentRecord.name}</p>
-                    <p>{currentRecord.description}</p>
-                    <p>{currentRecord.purchasedate}</p>
-                    <p>{currentRecord.purchasedfrom}</p>
-                    <p>{currentRecord.purchaseprice}</p>
-                    <p>{currentRecord.form}</p>
-                    <p>{currentRecord.mint}</p>
-                    <p>{currentRecord.metaltype}</p>
-                    <p>{currentRecord.purity}</p>
-                    <p>{currentRecord.weighttype}</p>
-                    <p>{currentRecord.unitweight}</p>
-                    <p>{currentRecord.ozweight}</p>
-                    <p>{currentRecord.oztweight}</p>
-                    <p>{currentRecord.gramweight}</p>
-                    <p>{currentRecord.ozweightpure}</p>
-                    <p>{currentRecord.oztweightpure}</p>
-                    <p>{currentRecord.gramweightpure}</p>
-                    <p>{currentRecord.amount}</p>
-                    <p>{currentRecord.totalpureozweight}</p>
-                    <p>{currentRecord.totalpureoztweight}</p>
-                    <p>{currentRecord.totalpuregramweight}</p>
-                    <p>{currentRecord.imagefileid}</p>
-                </div> 
-                )} 
+                {currentRecord && (
+                    <EditForm currentRecord={currentRecord}/>
+                )}
+
             </Drawer>
             <Input style={{ width: '25%' }} type="text" placeholder="Search" onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} />
             <Table columns={columns} dataSource={filteredData} />
