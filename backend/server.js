@@ -172,6 +172,7 @@ app.put('/stack/:id', (req,res) => {
   const q = "UPDATE stack SET \
               `name` = ?,\
               `description` = ?,\
+              `purchasedate` = ?,\
               `purchasedfrom` = ?,\
               `purchaseprice` = ?,\
               `form` = ?,\
@@ -180,12 +181,22 @@ app.put('/stack/:id', (req,res) => {
               `purity` = ?,\
               `unitweight` = ?,\
               `weighttype` = ?,\
-              `amount` = ?\
+              `ozweight` = ?,\
+              `oztweight` = ?,\
+              `gramweight` = ?,\
+              `ozweightpure` = ?,\
+              `oztweightpure` = ?,\
+              `gramweightpure` = ?,\
+              `totalpureozweight` = ?,\
+              `totalpureoztweight` = ?,\
+              `totalpuregramweight` = ?,\
+              `amount` = ? \
               WHERE id = ?";
 
   const values = [
     req.body.name, 
     req.body.description,
+    req.body.purchasedate,
     req.body.purchasedfrom,
     req.body.purchaseprice,
     req.body.form,
@@ -194,8 +205,17 @@ app.put('/stack/:id', (req,res) => {
     req.body.purity,
     req.body.unitweight,
     req.body.weighttype,
+    req.body.ozweight,
+    req.body.oztweight,
+    req.body.gramweight,
+    req.body.ozweightpure,
+    req.body.oztweightpure,
+    req.body.gramweightpure,
+    req.body.totalpureozweight,
+    req.body.totalpureoztweight,
+    req.body.totalpuregramweight,
     req.body.amount,
-    req.params.id
+    req.params.id 
   ];
   db.query(q, values, (err, data) => {
     if(err) return res.json(err)
