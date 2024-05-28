@@ -6,7 +6,7 @@ import {
     Input,
     Table
         } from 'antd';
-import { formData } from '../interfaces';
+import { formData } from '../types';
 import { EditForm } from '../EditForm';
 import { useFetchStack } from '../getters/useFetchStack';
 

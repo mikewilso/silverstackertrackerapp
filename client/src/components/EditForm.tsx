@@ -10,17 +10,19 @@ import {
     Select,
     Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { formData } from './interfaces';
+import { formData } from './types';
 import { useFetchMetals } from './getters/useFetchMetals'
 import { useFetchItemForms } from './getters/useFetchItemForms'
 import { useFetchPurchasePlaces } from './getters/useFetchPurchasePlaces'
 import { useFetchMints } from './getters/useFetchMints'
+import { handleAddDataFields } from './helpers/useDataConversions';
 
 type EditFormProps = {
     currentRecord: formData;
 }
 
 // TODO: Add ability to change the image file
+// TODO: Add ability to change the purchase date
 export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
 
@@ -32,8 +34,10 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
 
     const onFinish = async (values: any) => {
         try {
-            const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, values);
-            console.log('Updated record:', response.data);
+            await handleAddDataFields(values).then(async (updatedValues) => {
+                const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, updatedValues);
+                console.log('Updated record:', response.data);
+            });
         } catch (error) {
             console.error('Error updating record:', error);
         }

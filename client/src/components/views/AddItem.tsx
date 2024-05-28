@@ -24,7 +24,7 @@ import { useFetchMetals } from '../getters/useFetchMetals';
 import { useFetchItemForms } from '../getters/useFetchItemForms';
 import { useFetchPurchasePlaces } from '../getters/useFetchPurchasePlaces';
 import { useFetchMints } from '../getters/useFetchMints';
-import { formData } from '../interfaces';
+import { formData } from '../types';
 
 const { Dragger } = Upload;
 const { Title } = Typography;
