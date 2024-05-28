@@ -26,16 +26,14 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
 
     const [recordId, setRecordId] = useState({id: 0});
 
-
-
     useEffect(() => {
         setRecordId({ id: currentRecord.id });
     }, [currentRecord]);
 
     const onFinish = async (values: any) => {
-        console.log('Form values:', values);
         try {
             const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, values);
+            console.log('Updated record:', response.data);
         } catch (error) {
             console.error('Error updating record:', error);
         }
