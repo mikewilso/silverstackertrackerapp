@@ -3,11 +3,13 @@ import axios from 'axios';
 import { 
     AutoComplete,
     Button,  
+    DatePicker,
     Form, 
     Input,
     InputNumber,
     Radio,
     Select,
+    Space,
     Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { formData } from './types';
@@ -22,7 +24,7 @@ type EditFormProps = {
 }
 
 // TODO: Add ability to change the image file
-// TODO: Add ability to change the purchase date
+// TODO: Data validation on date field
 export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
 
@@ -43,9 +45,9 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
         }
     };
 
-    // Update form fields whenever currentRecord changes
     useEffect(() => {
         console.log('Current record:', currentRecord);
+        currentRecord.purchasedate = currentRecord.purchasedate.split('T')[0];
         form.setFieldsValue(currentRecord);
     }, [currentRecord, form]);
 
@@ -64,7 +66,17 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                 name="description"
                 rules={[{ required: true, message: 'Please enter a description' }]}
             >
-                <Input.TextArea placeholder="Enter item description (optional)" />
+                 <Input.TextArea placeholder="Enter item description (optional)" />
+            </Form.Item>
+
+            <Form.Item 
+                    label='Purchase Date' 
+                    name='purchasedate'
+                    rules={[{ required: true, message: 'Please select the purchase date!' }]}
+                    style={{ width: '35%' }}
+                    
+                >
+                    <Input />
             </Form.Item>
 
             <Form.Item 

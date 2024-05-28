@@ -48,7 +48,7 @@ export const handleAddDataFields = async (formData: formData) => {
     let purity = Number(newFormData.purity);
     let amount = newFormData.amount;
     // Convert the weight to all three types of weight with their pure weight
-    // newFormData.purchasedate = formatDate(newFormData.purchasedate);
+    newFormData.purchasedate = formatDate(newFormData.purchasedate);
     newFormData.ozweight = convertToOz(formData.unitweight, formData.weighttype);
     console.log("newFormData.ozweight",newFormData.ozweight);
     newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);

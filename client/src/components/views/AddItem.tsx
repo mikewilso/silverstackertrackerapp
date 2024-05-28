@@ -140,6 +140,7 @@ export const AddItem = () => {
                 >
                     <Input.TextArea placeholder="Enter item description (optional)" />
                 </Form.Item>
+                
                 <Form.Item 
                     label='Purchase Date' 
                     name='purchasedate'
