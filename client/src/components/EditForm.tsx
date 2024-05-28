@@ -72,7 +72,8 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
             <Form.Item 
                     label='Purchase Date' 
                     name='purchasedate'
-                    rules={[{ required: true, message: 'Please select the purchase date!' }]}
+                    rules={[{ required: true, message: 'Please select the purchase date!' },
+                    { pattern: /^\d{4}-\d{2}-\d{2}$/, message: 'Please enter a date in the format YYYY-MM-DD!' }]}
                     style={{ width: '35%' }}
                     
                 >
