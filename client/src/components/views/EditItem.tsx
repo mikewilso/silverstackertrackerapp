@@ -1,51 +1,57 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { 
     Button,
     Drawer, 
     Input,
     Table
         } from 'antd';
-import axios from 'axios';
 import { formData } from '../interfaces';
 import { EditForm } from '../EditForm';
+import { useFetchStack } from '../getters/useFetchStack';
 
 export const EditItem = () => {
-    const [data, setData] = useState([]);
-    const [drawerVisible, setDrawerVisible] = useState(false);
+    const [drawerOpen, setdrawerOpen] = useState(false);
     const [currentRecord, setCurrentRecord] = React.useState<formData | undefined>();
+    let fetchStack = useFetchStack();
+    const [data, setData] = useState(fetchStack);
+    const [filteredData, setFilteredData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        setData(fetchStack);
+    }, [fetchStack]);
 
     const showDrawer = (record: formData) => {
         setCurrentRecord(record);
-        setDrawerVisible(true);
+        setdrawerOpen(true);
     };
     const handleButtonClick = (record: formData) => {
         setCurrentRecord(record);  // Update the currentRecord state
         showDrawer(record);
       };
-      
+
+    const setUpdatedData = async () => {
+        try {
+            const response = await axios.get('http://localhost:4000/stack');
+            console.log("response.data",response.data);
+            setData(response.data);
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    };
     const onClose = () => {
-        setDrawerVisible(false);
+        setdrawerOpen(false);
+        setUpdatedData();
     };
 
+
     useEffect(() => {
-        const fetchStack = async () => {
-            try {
-                const response = await axios.get('http://localhost:4000/stack');
-                console.log("response.data",response.data);
-                setData(response.data);
-            } catch (error) {
-                console.error('Error fetching data: ', error);
-            }
-        };
-
-        fetchStack();
-    }, []);
-
-    const [searchTerm, setSearchTerm] = React.useState("");
-
-    const filteredData = data.filter((data: { name: string }) =>
-            data.name.toLowerCase().includes(searchTerm.toLowerCase())
+        const filteredData = data.filter((item: { name: string }) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
+        setFilteredData(filteredData);
+    }, [data, searchTerm]);
     
     const columns = [
         {
@@ -105,7 +111,7 @@ export const EditItem = () => {
                 placement="right"
                 closable={false}
                 onClose={onClose}
-                open={drawerVisible}
+                open={drawerOpen}
                 width='50vw'
             >
                 {currentRecord && (
@@ -113,7 +119,11 @@ export const EditItem = () => {
                 )}
 
             </Drawer>
-            <Input style={{ width: '25%' }} type="text" placeholder="Search" onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} />
+            <Input 
+                style={{ width: '25%' }} 
+                type="text" placeholder="Search" 
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} 
+            />
             <Table columns={columns} dataSource={filteredData} />
         </div>
     );

@@ -269,7 +269,7 @@ export const AddItem = () => {
                 </Form.Item>
 
                 <Form.Item style={{ textAlign: 'center', marginLeft: '100px' }}>
-                    <Button htmlType='submit' style={{ width: '100%' }} onSubmit={onFinish}>
+                    <Button htmlType='submit' style={{ width: '100%' }}>
                         Add to the Stack!
                     </Button>
                 </Form.Item>

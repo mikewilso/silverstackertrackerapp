@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { 
     AutoComplete,
     Button,  
@@ -19,14 +20,25 @@ type EditFormProps = {
     currentRecord: formData;
 }
 
-// TODO: Add the rest of the form fields
 // TODO: Add ability to change the image file
 export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
 
-    const onFinish = (values: any) => {
+    const [recordId, setRecordId] = useState({id: 0});
+
+
+
+    useEffect(() => {
+        setRecordId({ id: currentRecord.id });
+    }, [currentRecord]);
+
+    const onFinish = async (values: any) => {
         console.log('Form values:', values);
-        // TODO: Add API call to update the record
+        try {
+            const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, values);
+        } catch (error) {
+            console.error('Error updating record:', error);
+        }
     };
 
     // Update form fields whenever currentRecord changes
