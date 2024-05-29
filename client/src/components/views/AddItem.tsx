@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ImgCrop from "antd-img-crop";
 import { InboxOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import {
     AutoComplete,
@@ -76,6 +77,27 @@ export const AddItem = () => {
 
     const [pictureId, setPictureId] = useState(null);
 
+    const getSrcFromFile = (file: any) => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file.originFileObj);
+          reader.onload = () => resolve(reader.result);
+        });
+      };
+    
+    const onPreview = async (file: any) => {
+        const src = file.url || (await getSrcFromFile(file));
+        const imgWindow = window.open(src);
+    
+        if (imgWindow) {
+          const image = new Image();
+          image.src = src;
+          imgWindow.document.write(image.outerHTML);
+        } else {
+          window.location.href = src;
+        }
+      };
+
     const uploadProps = {
         name: 'imagefile',
         multiple: false,
@@ -140,7 +162,7 @@ export const AddItem = () => {
                 >
                     <Input.TextArea placeholder="Enter item description (optional)" />
                 </Form.Item>
-                
+
                 <Form.Item 
                     label='Purchase Date' 
                     name='purchasedate'
@@ -260,13 +282,19 @@ export const AddItem = () => {
                 </Form.Item>
 
                 <Form.Item label='Upload Image' name='imagefile'>
-                    <Dragger {...uploadProps}>
-                        <p className="ant-upload-drag-icon">
-                            <InboxOutlined />
-                        </p>
-                        <p className="ant-upload-text">Click or drag image to this area to upload</p>
-                        <p className="ant-upload-hint">Add a picture of your item.</p>
-                    </Dragger>
+                    <ImgCrop showGrid rotationSlider showReset>
+                        <Dragger 
+                            onPreview={onPreview} 
+                            {...uploadProps}
+                            accept=".jpg,.jpeg,.png"
+                        >
+                            <p className="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p className="ant-upload-text">Click or drag image to this area to upload</p>
+                            <p className="ant-upload-hint">Add a picture of your item.</p>
+                        </Dragger>
+                    </ImgCrop>
                 </Form.Item>
 
                 <Form.Item style={{ textAlign: 'center', marginLeft: '100px' }}>
