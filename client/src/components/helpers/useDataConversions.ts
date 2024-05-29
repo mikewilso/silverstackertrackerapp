@@ -50,18 +50,14 @@ export const handleAddDataFields = async (formData: formData) => {
     // Convert the weight to all three types of weight with their pure weight
     newFormData.purchasedate = formatDate(newFormData.purchasedate);
     newFormData.ozweight = convertToOz(formData.unitweight, formData.weighttype);
-    console.log("newFormData.ozweight",newFormData.ozweight);
     newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);
-    console.log("newFormData.oztweight",newFormData.oztweight);
     newFormData.gramweight = convertToGrams(formData.unitweight, formData.weighttype);
-    console.log("newFormData.gramweight",newFormData.gramweight);
     newFormData.ozweightpure = newFormData.ozweight * purity;
     newFormData.oztweightpure = newFormData.oztweight * purity;
     newFormData.gramweightpure = newFormData.gramweight * purity;
     newFormData.totalpureozweight = newFormData.ozweightpure * amount;
     newFormData.totalpureoztweight = newFormData.oztweightpure * amount;
     newFormData.totalpuregramweight = newFormData.gramweightpure * amount;
-    console.log("newFormData",newFormData);
 
     return newFormData;
 };

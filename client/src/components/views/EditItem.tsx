@@ -98,7 +98,7 @@ export const EditItem = () => {
             title: '',
             key: 'edit',
             render: (record: formData) => (
-                <Button onClick={() => handleButtonClick(record)}>Edit</Button>
+                <Button onClick={() => handleButtonClick(record)} type="primary">Edit</Button>
             ),
         },
     ];
@@ -106,7 +106,6 @@ export const EditItem = () => {
     return (
         <div>
             <Drawer
-                //TODO: Add name of item to the drawer title
                 title={`Edit Item: ${currentRecord?.name}`}
                 placement="right"
                 closable={false}
