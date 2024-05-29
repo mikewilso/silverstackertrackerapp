@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
     Button,
-    Drawer, 
     Input,
+    Modal,
     Table
         } from 'antd';
 import { formData } from '../types';
 import { useFetchStack } from '../getters/useFetchStack';
+import { on } from 'events';
+const { confirm } = Modal;
 
 export const RemoveItem = () => {
     const [currentRecord, setCurrentRecord] = React.useState<formData | undefined>();
@@ -28,6 +30,24 @@ export const RemoveItem = () => {
         } catch (error) {
             console.error('Error fetching data: ', error);
         }
+    };
+
+    const confirmRemoval = async (record: formData) => {
+        confirm({
+            title: 'Are you sure you want to delete this item?',
+            onOk: async () => {
+                try {
+                    const response = await axios.delete(`http://localhost:4000/stack/remove/${record.id}`);
+                    console.log(response.data);
+                    setUpdatedData();
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
     };
 
 
@@ -85,20 +105,12 @@ export const RemoveItem = () => {
             key: 'remove',
             render: (record: formData) => (
                 <Button 
-                    onClick={async () => {
-                        try {
-                            const response = await axios.delete(`http://localhost:4000/stack/remove/${record.id}`);
-                            console.log(response.data);
-                            setUpdatedData();
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    }}
-        type="primary" 
-        danger
-    >
-        Remove
-    </Button>
+                    onClick={() => confirmRemoval(record)}
+                    type="primary" 
+                    danger
+                >
+                    Remove
+                </Button>
             ),
         },
     ];
