@@ -107,7 +107,7 @@ export const EditItem = () => {
         <div>
             <Drawer
                 //TODO: Add name of item to the drawer title
-                title="Edit Item"
+                title={`Edit Item: ${currentRecord?.name}`}
                 placement="right"
                 closable={false}
                 onClose={onClose}
