@@ -164,7 +164,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                     rules={[{ required: true, message: 'Please input the weight!' }]}>
                     <InputNumber min={0.01} placeholder='0.01'/>
                 </Form.Item>
-                FIX ME -- defaults to ozt
+           
                 <Form.Item 
                     label='Unit of Weight' 
                     name='weighttype'

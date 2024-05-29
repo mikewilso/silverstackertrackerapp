@@ -93,6 +93,7 @@ export const EditItem = () => {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
+            sorter: (a:any, b:any) => a.amount - b.amount,
         },
         {
             title: '',
@@ -118,11 +119,12 @@ export const EditItem = () => {
                 )}
 
             </Drawer>
-            <Input 
+            <Input
                 style={{ width: '25%' }} 
                 type="text" placeholder="Search" 
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} 
             />
+            <br />
             <Table columns={columns} dataSource={filteredData} />
         </div>
     );

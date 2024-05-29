@@ -223,6 +223,17 @@ app.put('/stack/:id', (req,res) => {
   });
 });
 
+app.delete('/stack/remove/:id', (req, res) => {
+  const id = req.params.id;
+  const q = 'DELETE FROM stack WHERE id = ?';
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Stack item deleted successfully.');
+  });
+});
+
 app.listen(port, () => {
   console.log('Server started on port 4000')
 })
