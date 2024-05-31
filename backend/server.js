@@ -190,7 +190,8 @@ app.put('/stack/:id', (req,res) => {
               `totalpureozweight` = ?,\
               `totalpureoztweight` = ?,\
               `totalpuregramweight` = ?,\
-              `amount` = ? \
+              `amount` = ?, \
+              `imagefileid` = ? \
               WHERE id = ?";
 
   const values = [
@@ -215,6 +216,7 @@ app.put('/stack/:id', (req,res) => {
     req.body.totalpureoztweight,
     req.body.totalpuregramweight,
     req.body.amount,
+    req.body.imagefileid,
     req.params.id 
   ];
   db.query(q, values, (err, data) => {

@@ -7,10 +7,12 @@ import {
     Image,
     Input,
     InputNumber,
+    message,
     Radio,
     Select,
-    Tooltip } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+    Tooltip,
+    Upload } from 'antd';
+import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { formData } from './types';
 import { useFetchMetals } from './getters/useFetchMetals'
 import { useFetchItemForms } from './getters/useFetchItemForms'
@@ -25,7 +27,7 @@ type EditFormProps = {
 // TODO: Add ability to change the image file
 export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
-
+    const [pictureId, setPictureId] = useState(null);
     const [recordId, setRecordId] = useState({id: 0});
 
     useEffect(() => {
@@ -35,6 +37,9 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
     const onFinish = async (values: any) => {
         try {
             await handleAddDataFields(values).then(async (updatedValues) => {
+                console.log("pictureid", pictureId);
+                updatedValues.imagefileid = pictureId || 0;
+                console.log('Updated values:', updatedValues);
                 const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, updatedValues);
                 console.log('Updated record:', response.data);
             });
@@ -57,9 +62,40 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                     width={250} 
                     height={250}
                 />
+                <Upload 
+                    name= 'imagefile'
+                    action = 'http://localhost:4000/upload'
+                    multiple = {false}
+                    accept=".jpg,.jpeg,.png"
+                    onChange = {(info: any) => {
+                        const { status } = info.file;
+                        console.log("INFO", info.file, info.fileList)
+                        if (status !== 'uploading') {
+                            console.log("info file response",info.file.response.imageId);
+                        }
+                        if (status === 'done') {
+                            message.success(`${info.file.name} file uploaded successfully.`);
+                            // Update pictureId with the image id from the server response
+                            setPictureId(info.file.response.imageId);
+                
+                        } else if (status === 'error') {
+                            message.error(`${info.file.name} file upload failed.`);
+                        }
+                    }
+                }
+                >
+                    <Button icon={<UploadOutlined />}>Change Picture</Button>
+                </Upload>
             </div>
             <br />
             <Form form={form} onFinish={onFinish}>
+                <Form.Item
+                    name="imagefileid"
+                    hidden
+                >
+                    <Input />
+                </Form.Item>
+
                 <Form.Item
                     label="Name"
                     name="name"
