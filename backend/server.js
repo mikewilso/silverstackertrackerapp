@@ -83,6 +83,14 @@ app.get('/mints', (req,res) => {
   })
 })
 
+app.get('/purities', (req,res) => {
+  const q = "SELECT * FROM purity;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
 
 // adds a new stack item to the database
 app.post('/stack', (req,res) => {
