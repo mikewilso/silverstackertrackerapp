@@ -163,8 +163,13 @@ app.get('/image/:id', (req, res) => {
   const q = "SELECT path FROM images WHERE id = ?;";
   db.query(q, [req.params.id], (err, result) => {
     if (err) throw err;
-    console.log(result);
-    res.sendFile(result[0].path, { root: __dirname });
+    if (result[0]) {
+      console.log('result[0].path:', result[0].path);
+      res.sendFile(result[0].path, { root: __dirname });
+    } else {
+      console.log('No results found');
+      res.status(404).send('No results found');
+  }
   });
 });
 
@@ -248,3 +253,8 @@ app.get('/home', (req, res) => {
   }
   res.send(data);
 })
+
+// 404 error handler
+app.use((req, res, next) => {
+  res.status(404).send('Sorry, we cannot find that!');
+});
