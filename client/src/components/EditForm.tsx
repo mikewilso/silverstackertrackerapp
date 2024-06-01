@@ -29,9 +29,11 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
     const [pictureId, setPictureId] = useState(null);
     const [recordId, setRecordId] = useState({id: 0});
+    const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {
         setRecordId({ id: currentRecord.id });
+        setImageUrl(`http://localhost:4000/image/${currentRecord.imagefileid}`);
     }, [currentRecord]);
 
     const onFinish = async (values: any) => {
@@ -58,7 +60,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
         <div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Image 
-                    src={`http://localhost:4000/image/${currentRecord.imagefileid}`}
+                    src={imageUrl}
                     width={250} 
                     height={250}
                 />
@@ -77,6 +79,8 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                             message.success(`${info.file.name} file uploaded successfully.`);
                             // Update pictureId with the image id from the server response
                             setPictureId(info.file.response.imageId);
+                            // Update imageUrl with the URL of the uploaded image
+                        setImageUrl(`http://localhost:4000/image/${info.file.response.imageId}`);
                 
                         } else if (status === 'error') {
                             message.error(`${info.file.name} file upload failed.`);
