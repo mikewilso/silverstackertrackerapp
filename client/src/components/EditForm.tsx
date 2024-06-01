@@ -70,7 +70,15 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
     const onFinish = async (values: any) => {
         try {
             await handleAddDataFields(values).then(async (updatedValues) => {
-                console.log("pictureid", pictureId);
+
+                // Get the current record from the database
+                const currentRecordResponse = await axios.get(`http://localhost:4000/stack/${currentRecord.id}`);
+                const oldPictureId = currentRecordResponse.data[0].imagefileid;
+
+                // Delete the old image record from the database
+                if(oldPictureId !== pictureId){
+                    await axios.delete(`http://localhost:4000/image/remove/${oldPictureId}`);
+                }
                 // Update the imagefileid with the new pictureId or keep the current imagefileid
                 updatedValues.imagefileid = pictureId || currentRecord.imagefileid;
                 console.log('Updated values:', updatedValues);
@@ -106,7 +114,6 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                         accept=".jpg,.jpeg,.png"
                         onChange = {(info: any) => {
                             const { status } = info.file;
-                            console.log("INFO", info.file, info.fileList)
                             if (status !== 'uploading') {
                                 console.log("info file response",info.file.response.imageId);
                             }

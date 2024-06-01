@@ -4,6 +4,8 @@ import mysql from 'mysql2';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
 const port = 4000;
@@ -42,6 +44,16 @@ const upload = multer({ storage: storage, dest: 'uploads/'});
 app.get('/stack', (req,res) => {
   const q = "SELECT * FROM stack;"
   db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
+// fetches single stack item from the database
+app.get('/stack/:id', (req,res) => {
+  const q = "SELECT * FROM stack WHERE id = ?;"
+  const id = req.params.id;
+  db.query(q, [id], (err, data)=>{
     if(err) return res.json(err)
     return res.json(data)
   })
@@ -172,12 +184,33 @@ app.get('/image/:id', (req, res) => {
   db.query(q, [req.params.id], (err, result) => {
     if (err) throw err;
     if (result[0]) {
-      console.log('result[0].path:', result[0].path);
       res.sendFile(result[0].path, { root: __dirname });
     } else {
-      console.log('No results found');
       res.status(404).send('No results found');
   }
+  });
+});
+
+app.delete('/image/remove/:id', (req, res) => {
+  const q = "SELECT path FROM images WHERE id = ?;";
+  const q2 = 'DELETE FROM images WHERE id = ?';
+  const id = req.params.id;
+  db.query(q, [id], (err, result) => {
+    console.log("result of q",result);
+    const imagePath = path.join(__dirname, `${result[0].path}`);
+    console.log("imagepath",imagePath);
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error('Error deleting image file:', err);
+        return res.status(500).json({ error: 'Error deleting image file' });
+      }
+    });
+  });
+  db.query(q2, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Image deleted successfully.');
   });
 });
 
