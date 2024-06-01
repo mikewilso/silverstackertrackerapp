@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import ImgCrop from "antd-img-crop";
 import { InboxOutlined, InfoCircleOutlined } from '@ant-design/icons';

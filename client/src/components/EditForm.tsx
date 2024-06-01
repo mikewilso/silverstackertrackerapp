@@ -26,6 +26,7 @@ type EditFormProps = {
 }
 
 // Add Image type to window
+//eslint-disable-next-line
 interface Window {
     Image: {   
         prototype: HTMLImageElement;
