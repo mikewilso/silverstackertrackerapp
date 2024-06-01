@@ -40,7 +40,8 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
         try {
             await handleAddDataFields(values).then(async (updatedValues) => {
                 console.log("pictureid", pictureId);
-                updatedValues.imagefileid = pictureId || 0;
+                // Update the imagefileid with the new pictureId or keep the current imagefileid
+                updatedValues.imagefileid = pictureId || currentRecord.imagefileid;
                 console.log('Updated values:', updatedValues);
                 const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, updatedValues);
                 console.log('Updated record:', response.data);
@@ -80,7 +81,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                             // Update pictureId with the image id from the server response
                             setPictureId(info.file.response.imageId);
                             // Update imageUrl with the URL of the uploaded image
-                        setImageUrl(`http://localhost:4000/image/${info.file.response.imageId}`);
+                            setImageUrl(`http://localhost:4000/image/${info.file.response.imageId}`);
                 
                         } else if (status === 'error') {
                             message.error(`${info.file.name} file upload failed.`);

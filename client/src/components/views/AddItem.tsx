@@ -82,7 +82,6 @@ export const AddItem = () => {
         action: 'http://localhost:4000/upload',
         onChange(info: any) {
             const { status } = info.file;
-            console.log("INFO", info.file, info.fileList)
             if (status !== 'uploading') {
                 console.log("info file response",info.file.response.imageId);
             }
@@ -99,12 +98,10 @@ export const AddItem = () => {
     // TODO: Remove console.log statements
     const onFinish = async () => {
         const {purchasedate, ...formValues} = form.getFieldsValue();
-        console.log("picture id before data build", pictureId)
         // purchasedate formatted into a string so it passes correct value to backend
         const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
         let fullData = handleAddDataFields(formValues);
         fullData = { ...fullData, purchasedate: formattedDate, imagefileid: pictureId ?? 0};
-        console.log(fullData);
         try {
             await axios.post('http://localhost:4000/stack', fullData);
         } catch (err) {
