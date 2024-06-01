@@ -19,9 +19,18 @@ import { useFetchItemForms } from './getters/useFetchItemForms'
 import { useFetchPurchasePlaces } from './getters/useFetchPurchasePlaces'
 import { useFetchMints } from './getters/useFetchMints'
 import { handleAddDataFields } from './helpers/useDataConversions';
+import ImgCrop from "antd-img-crop";
 
 type EditFormProps = {
     currentRecord: formData;
+}
+
+// Add Image type to window
+interface Window {
+    Image: {   
+        prototype: HTMLImageElement;
+        new (): HTMLImageElement;
+    };
 }
 
 // TODO: Add ability to change the image file
@@ -36,6 +45,27 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
         setPictureId(currentRecord.imagefileid);
         setImageUrl(`http://localhost:4000/image/${currentRecord.imagefileid}`);
     }, [currentRecord]);
+
+    const getSrcFromFile = (file: any) => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file.originFileObj);
+          reader.onload = () => resolve(reader.result);
+        });
+      };
+    
+    const onPreview = async (file: any) => {
+        const src = file.url || (await getSrcFromFile(file));
+        const imgWindow = window.open(src);
+    
+        if (imgWindow) {
+          const image = new window.Image()
+          image.src = src;
+          imgWindow.document.write(image.outerHTML);
+        } else {
+          window.location.href = src;
+        }
+      };
 
     const onFinish = async (values: any) => {
         try {
@@ -66,33 +96,36 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                     width={250} 
                     height={250}
                 />
-                <Upload 
-                    name= 'imagefile'
-                    showUploadList={false}
-                    action = 'http://localhost:4000/upload'
-                    multiple = {false}
-                    accept=".jpg,.jpeg,.png"
-                    onChange = {(info: any) => {
-                        const { status } = info.file;
-                        console.log("INFO", info.file, info.fileList)
-                        if (status !== 'uploading') {
-                            console.log("info file response",info.file.response.imageId);
-                        }
-                        if (status === 'done') {
-                            message.success(`${info.file.name} file uploaded successfully.`);
-                            // Update pictureId with the image id from the server response
-                            setPictureId(info.file.response.imageId);
-                            // Update imageUrl with the URL of the uploaded image
-                            setImageUrl(`http://localhost:4000/image/${info.file.response.imageId}`);
-                
-                        } else if (status === 'error') {
-                            message.error(`${info.file.name} file upload failed.`);
+                <ImgCrop showGrid rotationSlider showReset>
+                    <Upload 
+                        name= 'imagefile'
+                        onPreview={onPreview}
+                        showUploadList={false}
+                        action = 'http://localhost:4000/upload'
+                        multiple = {false}
+                        accept=".jpg,.jpeg,.png"
+                        onChange = {(info: any) => {
+                            const { status } = info.file;
+                            console.log("INFO", info.file, info.fileList)
+                            if (status !== 'uploading') {
+                                console.log("info file response",info.file.response.imageId);
+                            }
+                            if (status === 'done') {
+                                message.success(`${info.file.name} file uploaded successfully.`);
+                                // Update pictureId with the image id from the server response
+                                setPictureId(info.file.response.imageId);
+                                // Update imageUrl with the URL of the uploaded image
+                                setImageUrl(`http://localhost:4000/image/${info.file.response.imageId}`);
+                    
+                            } else if (status === 'error') {
+                                message.error(`${info.file.name} file upload failed.`);
+                            }
                         }
                     }
-                }
-                >
-                    <Button icon={<UploadOutlined />}>Change Picture</Button>
-                </Upload>
+                    >
+                        <Button icon={<UploadOutlined />}>Change Picture</Button>
+                    </Upload>   
+                </ImgCrop>
             </div>
             <br />
             <Form form={form} onFinish={onFinish}>
