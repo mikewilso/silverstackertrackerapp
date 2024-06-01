@@ -25,6 +25,7 @@ import { useFetchMetals } from '../getters/useFetchMetals';
 import { useFetchItemForms } from '../getters/useFetchItemForms';
 import { useFetchPurchasePlaces } from '../getters/useFetchPurchasePlaces';
 import { useFetchMints } from '../getters/useFetchMints';
+import { useFetchPurities } from '../getters/useFetchPurities';
 import { formData } from '../types';
 
 const { Dragger } = Upload;
@@ -52,51 +53,6 @@ const handleAddDataFields = (formData: formData) => {
 
 export const AddItem = () => {
     const [form] = Form.useForm();
-
-    // Fetch item forms from the database
-    const [itemForms, setItemForms] = useState([
-        {
-            id: 0,
-            itemformvalue: '',
-            itemformtype: ''
-        }
-    ]);
-
-    useEffect(() => {
-        const fetchItemForms = async () => {
-            try {
-                const res = await axios.get('http://localhost:4000/itemforms');
-                console.log(res.data);
-                setItemForms(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchItemForms();
-    }, []);
-
-        // Fetch item forms from the database
-        const [purity, setPurity] = useState([
-            {
-                id: 0,
-                name: '',
-                purity: ''
-            }
-        ]);
-    
-        useEffect(() => {
-            const fetchPurities = async () => {
-                try {
-                    const res = await axios.get('http://localhost:4000/purities');
-                    console.log(res.data);
-                    setPurity(res.data);
-                } catch (err) {
-                    console.log(err);
-                }
-            };
-            fetchPurities();
-        }, []);
-
     const [pictureId, setPictureId] = useState(null);
 
     const getSrcFromFile = (file: any) => {
@@ -287,15 +243,9 @@ export const AddItem = () => {
                     name='purity'
                     rules={[{ required: true, message: 'Please input the purchase price!' }]}>                    
                     <Select placeholder='Select purity of item'>
-                        {purity.map((purity)=>(
+                        {useFetchPurities().map((purity)=>(
                             <Select.Option value={purity.purity}>{purity.name}</Select.Option>
                         ))};
-                        {/* <Select.Option value='1'>Pure(.999)</Select.Option>
-                        <Select.Option value='0.925'>Sterling(.925)</Select.Option>
-                        <Select.Option value='0.9'>Coin(90%)</Select.Option>
-                        <Select.Option value='0.958'>Britannia(95.8%)</Select.Option>
-                        <Select.Option value='0.8'>Sterling(.800)</Select.Option>
-                        <Select.Option value='0.35'>War Nickel(35%)</Select.Option> */}
                     </Select>
                 </Form.Item>
 
