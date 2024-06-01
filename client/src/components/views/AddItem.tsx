@@ -10,8 +10,10 @@ import {
     Input,
     InputNumber,
     message,
+    Popover,
     Radio,
     Select,
+    Space,
     Tooltip,
     Typography,
     Upload
@@ -54,6 +56,14 @@ const handleAddDataFields = (formData: formData) => {
 export const AddItem = () => {
     const [form] = Form.useForm();
     const [pictureId, setPictureId] = useState(null);
+
+    const handleAddMetal = (values: any) => {
+        console.log("Adding new metal", values.newMetal);
+    };
+
+    const handleAddForm = (values: any) => {
+        console.log("Adding new form", values.newForm);
+    };
 
     const getSrcFromFile = (file: any) => {
         return new Promise((resolve) => {
@@ -184,11 +194,29 @@ export const AddItem = () => {
                     name='form' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
-                    <Select placeholder='Select the form of the item'>
-                        {useFetchItemForms().map((itemform)=>(
-                            <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
-                        ))}
-                    </Select>
+                    <Space>
+                        <Select placeholder='Select the form of the item'>
+                            {useFetchItemForms().map((itemform)=>(
+                                <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
+                            ))}
+                        </Select>
+                        <Popover
+                            content={
+                                <Form onFinish={handleAddForm}>
+                                    <Form.Item name='newForm' rules={[{ required: true, message: 'Please input the new metal type!' }]}>
+                                        <Input placeholder='Enter new form' />
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type='primary' htmlType='submit'>Add</Button>
+                                    </Form.Item>
+                                </Form>
+                            }
+                            title='Add New Form'
+                            trigger='click'
+                        >
+                            <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Form</Button>
+                        </Popover>                    
+                    </Space>
                 </Form.Item>
 
                 <Form.Item 
@@ -210,11 +238,29 @@ export const AddItem = () => {
                     name='metaltype'
                     rules={[{ required: true, message: 'Please choose the precious metal type!' }]}
                 >
-                    <Select placeholder='Enter metal type'>
-                        {useFetchMetals().map((metal)=>(
-                            <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
-                        ))}
-                    </Select>
+                    <Space>
+                        <Select placeholder='Enter metal type'>
+                            {useFetchMetals().map((metal)=>(
+                                <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
+                            ))}
+                        </Select>
+                        <Popover
+                            content={
+                                <Form onFinish={handleAddMetal}>
+                                    <Form.Item name='newMetal' rules={[{ required: true, message: 'Please input the new metal type!' }]}>
+                                        <Input placeholder='Enter new metal type' />
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type='primary' htmlType='submit'>Add</Button>
+                                    </Form.Item>
+                                </Form>
+                            }
+                            title='Add New Metal'
+                            trigger='click'
+                        >
+                            <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Metal</Button>
+                        </Popover>
+                    </Space>
                 </Form.Item>
 
                 <Form.Item 
@@ -270,7 +316,7 @@ export const AddItem = () => {
                 </Form.Item>
 
                 <Form.Item style={{ textAlign: 'center', marginLeft: '100px' }}>
-                    <Button htmlType='submit' style={{ width: '100%' }}>
+                    <Button htmlType='submit' type='primary' style={{ width: '100%' }}>
                         Add to the Stack!
                     </Button>
                 </Form.Item>
