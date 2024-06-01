@@ -27,12 +27,13 @@ type EditFormProps = {
 // TODO: Add ability to change the image file
 export const EditForm = ({ currentRecord }: EditFormProps) => {
     const [form] = Form.useForm();
-    const [pictureId, setPictureId] = useState(null);
+    const [pictureId, setPictureId] = useState(0);
     const [recordId, setRecordId] = useState({id: 0});
     const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {
         setRecordId({ id: currentRecord.id });
+        setPictureId(currentRecord.imagefileid);
         setImageUrl(`http://localhost:4000/image/${currentRecord.imagefileid}`);
     }, [currentRecord]);
 
@@ -67,6 +68,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                 />
                 <Upload 
                     name= 'imagefile'
+                    showUploadList={false}
                     action = 'http://localhost:4000/upload'
                     multiple = {false}
                     accept=".jpg,.jpeg,.png"
