@@ -147,7 +147,8 @@ export const AddItem = () => {
         },
     };
     // TODO: Add a function to reset form fields after submission
-    const onFinish = async () => {
+    const onFinishForm = async () => {
+        console.log('Received values of form: ', form.getFieldsValue());
         const {purchasedate, ...formValues} = form.getFieldsValue();
         // purchasedate formatted into a string so it passes correct value to backend
         const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
@@ -170,7 +171,7 @@ export const AddItem = () => {
                 disabled={false}
                 style={{ maxWidth: 800 }}
                 form={form}
-                onFinish={onFinish}
+                onFinish={onFinishForm}
             >
                 {/* TODO: Add AutoComplete to name field, if item already exists, give option to update existing record */}
                 <Form.Item 
@@ -235,7 +236,6 @@ export const AddItem = () => {
                     name='form' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
-                    <div style={{ display: "flex", gap: "8px" }}>
                         <Select placeholder='Select the form of the item' optionLabelProp="label">
                             {itemForms.map((itemform) => (
                                 <Select.Option key={itemform.id} value={itemform.itemformvalue}>
@@ -252,6 +252,8 @@ export const AddItem = () => {
                                 </Select.Option>
                             ))}
                         </Select>
+                    </Form.Item>
+                        <div style={{ display: "flex", gap: "8px" }}>
                         <Popover
                             content={
                                 <Form onFinish={handleAddForm}>
@@ -285,8 +287,6 @@ export const AddItem = () => {
                             </Button>
                         </Popover>                    
                     </div>
-                </Form.Item>
-
                 <Form.Item 
                     label='Mint' 
                     name='mint'
@@ -306,30 +306,30 @@ export const AddItem = () => {
                     name='metaltype'
                     rules={[{ required: true, message: 'Please choose the precious metal type!' }]}
                 >
-                    <div style={{ display: "flex", gap: "8px" }}>
-                        <Select placeholder='Enter metal type'>
-                            {useFetchMetals().map((metal)=>(
-                                <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
-                            ))}
-                        </Select>
-                        <Popover
-                            content={
-                                <Form onFinish={handleAddMetal}>
-                                    <Form.Item name='newMetal' rules={[{ required: true, message: 'Please input the new metal type!' }]}>
-                                        <Input placeholder='Enter new metal type' />
-                                    </Form.Item>
-                                    <Form.Item>
-                                        <Button type='primary' htmlType='submit'>Add</Button>
-                                    </Form.Item>
-                                </Form>
-                            }
-                            title='Add New Metal'
-                            trigger='click'
-                        >
-                            <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Metal</Button>
-                        </Popover>
-                    </div>
+                    <Select placeholder='Enter metal type'>
+                        {useFetchMetals().map((metal)=>(
+                            <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
+                        ))}
+                    </Select>
                 </Form.Item>
+                <div style={{ display: "flex", gap: "8px" }}>
+                    <Popover
+                        content={
+                            <Form onFinish={handleAddMetal}>
+                                <Form.Item name='newMetal' rules={[{ required: false}]}>
+                                    <Input placeholder='Enter new metal type' />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type='primary' htmlType='submit'>Add</Button>
+                                </Form.Item>
+                            </Form>
+                        }
+                        title='Add New Metal'
+                        trigger='click'
+                    >
+                        <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Metal</Button>
+                    </Popover>
+                </div>
                         
                 <Form.Item 
                     label='Unit Weight' 
@@ -352,17 +352,18 @@ export const AddItem = () => {
                 <Form.Item 
                     label='Purity' 
                     name='purity'
-                    rules={[{ required: true, message: 'Please input the purchase price!' }]}>   
-                    <div style={{ display: "flex", gap: "8px" }}>                 
+                    rules={[{ required: true, message: 'Please input the purity of the item!' }]}>                   
                         <Select placeholder='Select purity of item'>
                             {useFetchPurities().map((purity)=>(
                                 <Select.Option value={purity.purity}>{purity.name}</Select.Option>
                             ))};
                         </Select>
+                </Form.Item>
+                <div style={{ display: "flex", gap: "8px" }}> 
                         <Popover
                             content={
                                 <Form onFinish={handleAddPurity}>
-                                    <Form.Item name='newPurity' rules={[{ required: true, message: 'Please input the new purity level!' }]}>
+                                    <Form.Item name='newPurity' rules={[{ required: false}]}>
                                         <Input placeholder='Enter new purity level' />
                                     </Form.Item>
                                     <Form.Item>
@@ -375,8 +376,7 @@ export const AddItem = () => {
                         >
                             <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Purity</Button>
                         </Popover>
-                    </div> 
-                </Form.Item>
+                    </div>
 
                 <Form.Item 
                     label='Amount' 
