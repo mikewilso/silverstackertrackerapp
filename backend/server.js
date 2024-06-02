@@ -77,6 +77,16 @@ app.get('/itemforms', (req,res) => {
   })
 })
 
+app.post('/addform', (req,res) => {
+  const q = "INSERT INTO itemforms (itemformvalue, itemformtype) VALUES (?);"
+  console.log("req.body.form", req.body.form);
+  const values = [req.body.itemformvalue, req.body.itemformtype];
+  db.query(q, [values], (err, data) => {
+    if(err) return res.json(err)
+    return res.json("New form added successfully.");
+  });
+});
+
 // fetches all the purchase places from the database
 app.get('/purchasedfrom', (req,res) => {
   const q = "SELECT DISTINCT purchasedfrom FROM stack;"
