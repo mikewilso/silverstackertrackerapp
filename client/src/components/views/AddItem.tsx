@@ -66,6 +66,11 @@ export const AddItem = () => {
         console.log("Adding new form", values.newForm);
         const itemFormValue = values.newForm.toLowerCase();
         const itemFormType = values.newForm.charAt(0).toUpperCase() + values.newForm.slice(1);
+        
+        if(itemForms.some((itemform) => itemform.itemformvalue === itemFormValue)) {
+            message.error('This item form already exists');
+            return;
+        }
         try {
             await axios.post('http://localhost:4000/addform', { itemformvalue: itemFormValue, itemformtype: itemFormType});
             console.log("Form added successfully");
