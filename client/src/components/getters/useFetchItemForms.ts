@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const useFetchItemForms = () => {
+export const useFetchItemForms = (refreshKey: number) => {
     const [itemForms, setItemForms] = useState([
         {
             id: 0,
@@ -21,7 +21,7 @@ export const useFetchItemForms = () => {
             }
         };
         fetchItemForms();
-    }, []);
+    }, [refreshKey]);
 
     return itemForms;
 };

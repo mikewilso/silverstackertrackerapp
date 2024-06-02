@@ -210,7 +210,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
                     <Select placeholder='Select the form of the item'>
-                        {useFetchItemForms().map((itemform)=>(
+                        {useFetchItemForms(0).map((itemform)=>(
                             <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
                         ))}
                     </Select>

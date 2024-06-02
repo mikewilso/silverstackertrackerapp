@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ImgCrop from "antd-img-crop";
 import { InboxOutlined, InfoCircleOutlined } from '@ant-design/icons';
@@ -53,17 +53,25 @@ const handleAddDataFields = (formData: formData) => {
     return newFormData;
 };
 
+
 export const AddItem = () => {
     const [form] = Form.useForm();
     const [pictureId, setPictureId] = useState(null);
+    const [popoverVisible, setPopoverVisible] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
 
-    const handleAddForm = (values: any) => {
+    const itemForms = useFetchItemForms(refreshKey);
+    
+    const handleAddForm = async (values: any) => {
         console.log("Adding new form", values.newForm);
         const itemFormValue = values.newForm.toLowerCase();
         const itemFormType = values.newForm.charAt(0).toUpperCase() + values.newForm.slice(1);
         try {
-            axios.post('http://localhost:4000/addform', { itemformvalue: itemFormValue, itemformtype: itemFormType});
+            await axios.post('http://localhost:4000/addform', { itemformvalue: itemFormValue, itemformtype: itemFormType});
             console.log("Form added successfully");
+            // Close the popover
+            setPopoverVisible(false);
+            setRefreshKey(prevKey => prevKey + 1);
         }
         catch (err) {
             console.log(err);
@@ -208,8 +216,8 @@ export const AddItem = () => {
                 >
                     <Space>
                         <Select placeholder='Select the form of the item'>
-                            {useFetchItemForms().map((itemform)=>(
-                                <Select.Option value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
+                            {itemForms.map((itemform) => (
+                                <Select.Option key={itemform.id} value={itemform.itemformvalue}>{itemform.itemformtype}</Select.Option>
                             ))}
                         </Select>
                         <Popover
@@ -220,13 +228,28 @@ export const AddItem = () => {
                                     </Form.Item>
                                     <Form.Item>
                                         <Button type='primary' htmlType='submit'>Add</Button>
+                                        <Button type='default' onClick={() => setPopoverVisible(false)}>Close</Button>
                                     </Form.Item>
                                 </Form>
                             }
                             title='Add New Form'
                             trigger='click'
+                            open={popoverVisible}
                         >
-                            <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Form</Button>
+                            <Button 
+                                type='default' 
+                                size='small' 
+                                style={{ marginLeft: '10px' }}
+                                onClick={() => {
+                                    if(popoverVisible) {
+                                        setPopoverVisible(false);
+                                    } else {
+                                        setPopoverVisible(true);
+                                    }}
+                                }
+                                >
+                                Add Form
+                            </Button>
                         </Popover>                    
                     </Space>
                 </Form.Item>
