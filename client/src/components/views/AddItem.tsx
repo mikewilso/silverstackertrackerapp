@@ -353,29 +353,29 @@ export const AddItem = () => {
                     label='Purity' 
                     name='purity'
                     rules={[{ required: true, message: 'Please input the purchase price!' }]}>   
-                    <Space>                 
-                    <Select placeholder='Select purity of item'>
-                        {useFetchPurities().map((purity)=>(
-                            <Select.Option value={purity.purity}>{purity.name}</Select.Option>
-                        ))};
-                    </Select>
-                    <Popover
-                        content={
-                            <Form onFinish={handleAddPurity}>
-                                <Form.Item name='newPurity' rules={[{ required: true, message: 'Please input the new purity level!' }]}>
-                                    <Input placeholder='Enter new purity level' />
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button type='primary' htmlType='submit'>Add</Button>
-                                </Form.Item>
-                            </Form>
-                        }
-                        title='Add New Purity'
-                        trigger='click'
-                    >
-                        <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Purity</Button>
-                    </Popover>
-                    </Space> 
+                    <div style={{ display: "flex", gap: "8px" }}>                 
+                        <Select placeholder='Select purity of item'>
+                            {useFetchPurities().map((purity)=>(
+                                <Select.Option value={purity.purity}>{purity.name}</Select.Option>
+                            ))};
+                        </Select>
+                        <Popover
+                            content={
+                                <Form onFinish={handleAddPurity}>
+                                    <Form.Item name='newPurity' rules={[{ required: true, message: 'Please input the new purity level!' }]}>
+                                        <Input placeholder='Enter new purity level' />
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type='primary' htmlType='submit'>Add</Button>
+                                    </Form.Item>
+                                </Form>
+                            }
+                            title='Add New Purity'
+                            trigger='click'
+                        >
+                            <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Purity</Button>
+                        </Popover>
+                    </div> 
                 </Form.Item>
 
                 <Form.Item 
