@@ -87,6 +87,17 @@ app.post('/addform', (req,res) => {
   });
 });
 
+app.delete('/removeform/:id', (req, res) => {
+  const id = req.params.id;
+  const q = 'DELETE FROM itemforms WHERE id = ?';
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Form deleted successfully.');
+  });
+});
+
 // fetches all the purchase places from the database
 app.get('/purchasedfrom', (req,res) => {
   const q = "SELECT DISTINCT purchasedfrom FROM stack;"
@@ -206,9 +217,7 @@ app.delete('/image/remove/:id', (req, res) => {
   const q2 = 'DELETE FROM images WHERE id = ?';
   const id = req.params.id;
   db.query(q, [id], (err, result) => {
-    console.log("result of q",result);
     const imagePath = path.join(__dirname, `${result[0].path}`);
-    console.log("imagepath",imagePath);
     fs.unlink(imagePath, (err) => {
       if (err) {
         console.error('Error deleting image file:', err);
