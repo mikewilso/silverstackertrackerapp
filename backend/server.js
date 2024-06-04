@@ -98,6 +98,27 @@ app.delete('/removeform/:id', (req, res) => {
   });
 });
 
+app.post('/addmetal', (req,res) => {
+  const q = "INSERT INTO metals (metaltype) VALUES (?);"
+  const values = [req.body.metaltype];
+  db.query(q, [values], (err, data) => {
+    if(err) return res.json(err)
+    return res.json("New metal added successfully.");
+  });
+});
+
+
+app.delete('/removemetal/:id', (req, res) => {
+  const id = req.params.id;
+  const q = 'DELETE FROM metals WHERE id = ?';
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Metal deleted successfully.');
+  });
+});
+
 // fetches all the purchase places from the database
 app.get('/purchasedfrom', (req,res) => {
   const q = "SELECT DISTINCT purchasedfrom FROM stack;"

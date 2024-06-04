@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ImgCrop from "antd-img-crop";
-import { CloseOutlined, InboxOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { 
+    CloseOutlined, 
+    InboxOutlined, 
+    InfoCircleOutlined, 
+    PlusOutlined } from '@ant-design/icons';
 import {
     AutoComplete,
     Button,
     DatePicker,
+    Divider,
     Form,
     Input,
     InputNumber,
     message,
-    Popover,
     Radio,
     Select,
     Space,
@@ -57,19 +61,21 @@ const handleAddDataFields = (formData: formData) => {
 export const AddItem = () => {
     const [form] = Form.useForm();
     const [pictureId, setPictureId] = useState(null);
-    const [popoverVisible, setPopoverVisible] = useState(false);
     const [formRefreshKey, setFormRefreshKey] = useState(0);
+    const [newFormValue, setNewFormValue] = useState('');
+    const [newMetalValue, setNewMetalValue] = useState('');
+    const [metalRefreshKey, setMetalRefreshKey] = useState(0);
 
     const itemForms = useFetchItemForms(formRefreshKey);
-    
-    const handleAddForm = async (values: any) => {
-        console.log("Adding new form", values.newForm);
-        if(values.newForm === undefined || values.newForm === '') {
-            setPopoverVisible(false);
+    const metals = useFetchMetals(metalRefreshKey);
+
+    const handleAddForm = async () => { 
+        console.log("new form value", newFormValue);
+        if(newFormValue === undefined || newFormValue === '') {
             return;
         }
-        const itemFormValue = values.newForm.toLowerCase();
-        const itemFormType = values.newForm.charAt(0).toUpperCase() + values.newForm.slice(1).toLowerCase();
+        const itemFormValue = newFormValue.toLowerCase();
+        const itemFormType = newFormValue.charAt(0).toUpperCase() + newFormValue.slice(1).toLowerCase();
 
         if(itemForms.some((itemform) => itemform.itemformvalue === itemFormValue)) {
             message.error('This item form already exists');
@@ -78,15 +84,14 @@ export const AddItem = () => {
         try {
             await axios.post('http://localhost:4000/addform', { itemformvalue: itemFormValue, itemformtype: itemFormType});
             console.log("Form added successfully");
-            // Close the popover
-            setPopoverVisible(false);
             setFormRefreshKey(prevKey => prevKey + 1);
-            form.resetFields();
+            setNewFormValue('');
         }
         catch (err) {
             console.log(err);
         }
-    };
+    }
+        
 
     const handleRemoveForm = async (id: number) => {
         try {
@@ -99,13 +104,55 @@ export const AddItem = () => {
         }
     };
 
-    const handleAddMetal = (values: any) => {
-        console.log("Adding new metal", values.newMetal);
+    const onFormNameChange = (e: any) => {
+        setNewFormValue(e.target.value);
+        console.log(e.target.value);
+    }
+
+    const handleAddMetal = async () => {
+        console.log("new metal value", newMetalValue);
+        if(newMetalValue === undefined || newMetalValue === '') {
+            return;
+        }
+        const metalValue = newMetalValue.toLowerCase();
+        const metalType = newMetalValue.charAt(0).toUpperCase() + newMetalValue.slice(1).toLowerCase();
+
+        if(metals.some((metal) => metal.metalvalue === metalValue)) {
+            message.error('This metal type already exists');
+            return;
+        }
+        try {
+            await axios.post('http://localhost:4000/addmetal', { metalvalue: metalValue, metaltype: metalType});
+            console.log("Metal added successfully");
+            setMetalRefreshKey(prevKey => prevKey + 1);
+            setNewMetalValue('');
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handleRemoveMetal = async (id: number) => {
+        try {
+            await axios.delete(`http://localhost:4000/removemetal/${id}`);
+            console.log("Metal removed successfully");
+            setMetalRefreshKey(prevKey => prevKey + 1);
+        }
+        catch (err) {
+            console.log(err);
+        }
     };
 
-    const handleAddPurity = (values: any) => {
-        console.log("Adding new purity", values.newPurity);
-    };
+    const onMetalNameChange = (e: any) => {
+        setNewMetalValue(e.target.value);
+        console.log(e.target.value);
+    }
+
+    // const handleAddPurity = (values: any) => {
+    //     console.log("Adding new purity", values.newPurity);
+    // };
+
+    const inputRef = React.useRef(null);
 
     const getSrcFromFile = (file: any) => {
         return new Promise((resolve) => {
@@ -230,15 +277,45 @@ export const AddItem = () => {
                         placeholder='0.00'
                     />
                 </Form.Item>
-
+                    
                 <Form.Item 
                     label='Form' 
                     name='form' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
-                        <Select placeholder='Select the form of the item' optionLabelProp="label">
+                        <Select 
+                            placeholder='Select the form of the item' 
+                            optionLabelProp='itemformtype'
+                            dropdownRender={(menu) => (
+                                <>
+                                  {menu}
+                                  <Divider
+                                    style={{
+                                      margin: '8px 0',
+                                    }}
+                                  />
+                                  <Space
+                                    style={{
+                                      padding: '0 8px 4px',
+                                    }}
+                                  >
+                                    <Input
+                                      placeholder="Please enter item form"
+                                      ref={inputRef}
+                                      value={newFormValue}
+                                      onChange={onFormNameChange}
+                                      onKeyDown={(e) => e.stopPropagation()}
+                                    />
+                                    <Button type="text" icon={<PlusOutlined />} onClick={handleAddForm}>
+                                      Add new item form
+                                    </Button>
+                                  </Space>
+                                </>
+                              )}
+                        >
+
                             {itemForms.map((itemform) => (
-                                <Select.Option key={itemform.id} value={itemform.itemformvalue}>
+                                <Select.Option key={itemform.id} value={itemform.itemformtype}>
                                     <span>{itemform.itemformtype}</span>
                                     <span style={{ float: "right" }}>
                                     <CloseOutlined
@@ -253,40 +330,7 @@ export const AddItem = () => {
                             ))}
                         </Select>
                     </Form.Item>
-                        <div style={{ display: "flex", gap: "8px" }}>
-                        <Popover
-                            content={
-                                <Form onFinish={handleAddForm}>
-                                    <Form.Item name='newForm' rules={[{ required: false }]} style={{ width: '100px' }}  >
-                                        <Input placeholder='Enter new form'/>
-                                    </Form.Item>
-                                    <Form.Item>
-                                        <Button type='primary' htmlType='submit'>Add</Button>
-                                        <Button type='default' onClick={() => setPopoverVisible(false)}>Close</Button>
-                                    </Form.Item>
-                                </Form>
-                            }
-                            title='Add New Form'
-                            trigger='click'
-                            open={popoverVisible}
-                            onOpenChange={(visible) => setPopoverVisible(visible)}
-                        >
-                            <Button 
-                                type='default' 
-                                size='small' 
-                                style={{ marginLeft: '10px' }}
-                                onClick={() => {
-                                    if(popoverVisible) {
-                                        setPopoverVisible(false);
-                                    } else {
-                                        setPopoverVisible(true);
-                                    }}
-                                }
-                                >
-                                Add Form
-                            </Button>
-                        </Popover>                    
-                    </div>
+                                  
                 <Form.Item 
                     label='Mint' 
                     name='mint'
@@ -306,30 +350,52 @@ export const AddItem = () => {
                     name='metaltype'
                     rules={[{ required: true, message: 'Please choose the precious metal type!' }]}
                 >
-                    <Select placeholder='Enter metal type'>
-                        {useFetchMetals().map((metal)=>(
-                            <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
-                        ))}
+                    <Select 
+                        placeholder='Select metal type'
+                        optionLabelProp='label'
+                        dropdownRender={(menu) => (
+                            <>
+                              {menu}
+                              <Divider
+                                style={{
+                                  margin: '8px 0',
+                                }}
+                              />
+                              <Space
+                                style={{
+                                  padding: '0 8px 4px',
+                                }}
+                              >
+                                <Input
+                                  placeholder="Please enter item form"
+                                  ref={inputRef}
+                                  value={newMetalValue}
+                                  onChange={onMetalNameChange}
+                                  onKeyDown={(e) => e.stopPropagation()}
+                                />
+                                <Button type="text" icon={<PlusOutlined />} onClick={handleAddMetal}>
+                                  Add new metal type
+                                </Button>
+                              </Space>
+                            </>
+                            )}
+                    >
+                        {metals.map((metal) => (
+                                <Select.Option key={metal.id} value={metal.metaltype}>
+                                    <span>{metal.metaltype}</span>
+                                    <span style={{ float: "right" }}>
+                                    <CloseOutlined
+                                        style={{ color: 'lightgrey' }}
+                                        onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleRemoveMetal(metal.id);
+                                        }}
+                                    />
+                                    </span>
+                                </Select.Option>
+                            ))}
                     </Select>
                 </Form.Item>
-                <div style={{ display: "flex", gap: "8px" }}>
-                    <Popover
-                        content={
-                            <Form onFinish={handleAddMetal}>
-                                <Form.Item name='newMetal' rules={[{ required: false}]}>
-                                    <Input placeholder='Enter new metal type' />
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button type='primary' htmlType='submit'>Add</Button>
-                                </Form.Item>
-                            </Form>
-                        }
-                        title='Add New Metal'
-                        trigger='click'
-                    >
-                        <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Metal</Button>
-                    </Popover>
-                </div>
                         
                 <Form.Item 
                     label='Unit Weight' 
@@ -359,24 +425,6 @@ export const AddItem = () => {
                             ))};
                         </Select>
                 </Form.Item>
-                <div style={{ display: "flex", gap: "8px" }}> 
-                        <Popover
-                            content={
-                                <Form onFinish={handleAddPurity}>
-                                    <Form.Item name='newPurity' rules={[{ required: false}]}>
-                                        <Input placeholder='Enter new purity level' />
-                                    </Form.Item>
-                                    <Form.Item>
-                                        <Button type='primary' htmlType='submit'>Add</Button>
-                                    </Form.Item>
-                                </Form>
-                            }
-                            title='Add New Purity'
-                            trigger='click'
-                        >
-                            <Button type='default' size='small' style={{ marginLeft: '10px' }}>Add Purity</Button>
-                        </Popover>
-                    </div>
 
                 <Form.Item 
                     label='Amount' 

@@ -236,7 +236,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                     rules={[{ required: true, message: 'Please choose the precious metal type!' }]}
                 >
                     <Select placeholder='Enter metal type'>
-                        {useFetchMetals().map((metal)=>(
+                        {useFetchMetals(0).map((metal)=>(
                             <Select.Option value={metal.metalvalue}>{metal.metaltype}</Select.Option>
                         ))}
                     </Select>
