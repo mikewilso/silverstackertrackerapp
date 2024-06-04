@@ -7,6 +7,7 @@ import { dirname } from 'path';
 import fs from 'fs';
 import path from 'path';
 
+// create the express app
 const app = express();
 const port = 4000;
 
@@ -14,6 +15,7 @@ const port = 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// create the connection to the database
 const db = mysql.createConnection({
   host:"127.0.0.1",
   user:"root",
@@ -21,11 +23,13 @@ const db = mysql.createConnection({
   database:"stackdb"
 })
 
+// connect to the database
 app.use(express.json());
 app.use(cors());
 
+// test the connection
 app.get('/', (req, res) => {
-  res.json('hello this is the backend')
+  res.json('hello this is the backend.')
 })
 
 // create middleware to handle the image upload
@@ -38,8 +42,10 @@ const storage = multer.diskStorage({
   }
 })
 
+// create the upload instance
 const upload = multer({ storage: storage, dest: 'uploads/'});
 
+// STACK API
 // fetches all the stack items from the database
 app.get('/stack', (req,res) => {
   const q = "SELECT * FROM stack;"
@@ -58,93 +64,6 @@ app.get('/stack/:id', (req,res) => {
     return res.json(data)
   })
 })
-
-// fetches all the metal types from the database
-app.get('/metals', (req,res) => {
-  const q = "SELECT * FROM metals;"
-  db.query(q,(err, data)=>{
-    if(err) return res.json(err)
-    return res.json(data)
-  })
-})
-
-// fetches all the item forms from the database
-app.get('/itemforms', (req,res) => {
-  const q = "SELECT * FROM itemforms;"
-  db.query(q,(err, data)=>{
-    if(err) return res.json(err)
-    return res.json(data)
-  })
-})
-
-app.post('/addform', (req,res) => {
-  const q = "INSERT INTO itemforms (itemformvalue, itemformtype) VALUES (?);"
-  console.log("req.body.form", req.body.form);
-  const values = [req.body.itemformvalue, req.body.itemformtype];
-  db.query(q, [values], (err, data) => {
-    if(err) return res.json(err)
-    return res.json("New form added successfully.");
-  });
-});
-
-app.delete('/removeform/:id', (req, res) => {
-  const id = req.params.id;
-  const q = 'DELETE FROM itemforms WHERE id = ?';
-  db.query(q, [id], (err, result) => {
-    if (err) {
-      return res.json(err);
-    }
-    return res.json('Form deleted successfully.');
-  });
-});
-
-app.post('/addmetal', (req,res) => {
-  const q = "INSERT INTO metals (metalvalue, metaltype) VALUES (?);"
-  const values = [req.body.metalvalue, req.body.metaltype];
-  db.query(q, [values], (err, data) => {
-    if(err) return res.json(err)
-    return res.json("New metal added successfully.");
-  });
-});
-
-
-app.delete('/removemetal/:id', (req, res) => {
-  const id = req.params.id;
-  const q = 'DELETE FROM metals WHERE id = ?';
-  db.query(q, [id], (err, result) => {
-    if (err) {
-      return res.json(err);
-    }
-    return res.json('Metal deleted successfully.');
-  });
-});
-
-// fetches all the purchase places from the database
-app.get('/purchasedfrom', (req,res) => {
-  const q = "SELECT DISTINCT purchasedfrom FROM stack;"
-  db.query(q,(err, data)=>{
-    if(err) return res.json(err)
-    return res.json(data)
-  })
-})
-
-// fetches all the mints from the database
-app.get('/mints', (req,res) => {
-  const q = "SELECT DISTINCT mint FROM stack;"
-  db.query(q,(err, data)=>{
-    if(err) return res.json(err)
-    return res.json(data)
-  })
-})
-
-app.get('/purities', (req,res) => {
-  const q = "SELECT * FROM purity;"
-  db.query(q,(err, data)=>{
-    if(err) return res.json(err)
-    return res.json(data)
-  })
-})
-
 
 // adds a new stack item to the database
 app.post('/stack', (req,res) => {
@@ -204,56 +123,7 @@ app.post('/stack', (req,res) => {
   })
 })
 
-app.post('/upload', upload.single('imagefile'), (req, res) => {
-  try {
-    // Save the file path in the database
-    const filePath = req.file.path;
-    const q = "INSERT INTO images (path) VALUES (?);";
-    db.query(q, [filePath], (err, result) => {
-      if (err) throw err;
-      res.status(201).json({ 
-        message: "File uploaded and path saved successfully",
-        imageId: result.insertId 
-      });
-    });
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-app.get('/image/:id', (req, res) => {
-  const q = "SELECT path FROM images WHERE id = ?;";
-  db.query(q, [req.params.id], (err, result) => {
-    if (err) throw err;
-    if (result[0]) {
-      res.sendFile(result[0].path, { root: __dirname });
-    } else {
-      res.status(404).send('No results found');
-  }
-  });
-});
-
-app.delete('/image/remove/:id', (req, res) => {
-  const q = "SELECT path FROM images WHERE id = ?;";
-  const q2 = 'DELETE FROM images WHERE id = ?';
-  const id = req.params.id;
-  db.query(q, [id], (err, result) => {
-    const imagePath = path.join(__dirname, `${result[0].path}`);
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error('Error deleting image file:', err);
-        return res.status(500).json({ error: 'Error deleting image file' });
-      }
-    });
-  });
-  db.query(q2, [id], (err, result) => {
-    if (err) {
-      return res.json(err);
-    }
-    return res.json('Image deleted successfully.');
-  });
-});
-
+// updates a stack item in the database
 app.put('/stack/:id', (req,res) => {
   const q = "UPDATE stack SET \
               `name` = ?,\
@@ -311,6 +181,7 @@ app.put('/stack/:id', (req,res) => {
   });
 });
 
+// deletes a stack item from the database
 app.delete('/stack/remove/:id', (req, res) => {
   const id = req.params.id;
   const q = 'DELETE FROM stack WHERE id = ?';
@@ -322,12 +193,170 @@ app.delete('/stack/remove/:id', (req, res) => {
   });
 });
 
+
+// METALS API
+// fetches all the metals from the database
+app.get('/metals', (req,res) => {
+  const q = "SELECT * FROM metals;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
+// adds a new metal to the database
+app.post('/metals/add', (req,res) => {
+  const q = "INSERT INTO metals (metalvalue, metaltype) VALUES (?);"
+  const values = [req.body.metalvalue, req.body.metaltype];
+  db.query(q, [values], (err, data) => {
+    if(err) return res.json(err)
+    return res.json("New metal added successfully.");
+  });
+});
+
+//deletes a metal from the database
+app.delete('/metals/remove/:id', (req, res) => {
+  const id = req.params.id;
+  const q = 'DELETE FROM metals WHERE id = ?';
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Metal deleted successfully.');
+  });
+});
+
+
+// ITEM FORMS API
+// fetches all the item forms from the database
+app.get('/itemforms', (req,res) => {
+  const q = "SELECT * FROM itemforms;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
+// adds a new item form to the database
+app.post('/itemforms/add', (req,res) => {
+  const q = "INSERT INTO itemforms (itemformvalue, itemformtype) VALUES (?);"
+  console.log("req.body.form", req.body.form);
+  const values = [req.body.itemformvalue, req.body.itemformtype];
+  db.query(q, [values], (err, data) => {
+    if(err) return res.json(err)
+    return res.json("New form added successfully.");
+  });
+});
+
+// deletes an item form from the database
+app.delete('/itemforms/remove/:id', (req, res) => {
+  const id = req.params.id;
+  const q = 'DELETE FROM itemforms WHERE id = ?';
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Form deleted successfully.');
+  });
+});
+
+
+// PURCHASED FROM API
+// fetches all the purchased from locations from the database
+app.get('/purchasedfrom', (req,res) => {
+  const q = "SELECT DISTINCT purchasedfrom FROM stack;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
+
+// MINTS API
+// fetches all the mints from the database
+app.get('/mints', (req,res) => {
+  const q = "SELECT DISTINCT mint FROM stack;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
+
+// PURITIES API
+// fetches all the purities from the database
+app.get('/purities', (req,res) => {
+  const q = "SELECT * FROM purity;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+})
+
+
+// IMAGE API
+// upload an image file
+app.post('/image/upload', upload.single('imagefile'), (req, res) => {
+  try {
+    // Save the file path in the database
+    const filePath = req.file.path;
+    const q = "INSERT INTO images (path) VALUES (?);";
+    db.query(q, [filePath], (err, result) => {
+      if (err) throw err;
+      res.status(201).json({ 
+        message: "File uploaded and path saved successfully",
+        imageId: result.insertId 
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// fetches an image file
+app.get('/image/:id', (req, res) => {
+  const q = "SELECT path FROM images WHERE id = ?;";
+  db.query(q, [req.params.id], (err, result) => {
+    if (err) throw err;
+    if (result[0]) {
+      res.sendFile(result[0].path, { root: __dirname });
+    } else {
+      res.status(404).send('No results found');
+  }
+  });
+});
+
+// deletes an image file
+app.delete('/image/remove/:id', (req, res) => {
+  const q = "SELECT path FROM images WHERE id = ?;";
+  const q2 = 'DELETE FROM images WHERE id = ?';
+  const id = req.params.id;
+  db.query(q, [id], (err, result) => {
+    const imagePath = path.join(__dirname, `${result[0].path}`);
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error('Error deleting image file:', err);
+        return res.status(500).json({ error: 'Error deleting image file' });
+      }
+    });
+  });
+  db.query(q2, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Image deleted successfully.');
+  });
+});
+
+// start the server
 app.listen(port, () => {
   console.log('Server started on port 4000')
 })
 
+// enable CORS
 app.use(cors());
 
+// Home route
 app.get('/home', (req, res) => {
   const data = {
     message: 'Michael'
