@@ -110,7 +110,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
                         name= 'imagefile'
                         onPreview={onPreview}
                         showUploadList={false}
-                        action = 'http://localhost:4000/upload'
+                        action = 'http://localhost:4000/image/upload'
                         multiple = {false}
                         accept=".jpg,.jpeg,.png"
                         onChange = {(info: any) => {

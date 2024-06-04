@@ -82,7 +82,7 @@ export const AddItem = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:4000/addform', { itemformvalue: itemFormValue, itemformtype: itemFormType});
+            await axios.post('http://localhost:4000/itemforms/add', { itemformvalue: itemFormValue, itemformtype: itemFormType});
             console.log("Form added successfully");
             setFormRefreshKey(prevKey => prevKey + 1);
             setNewFormValue('');
@@ -95,7 +95,7 @@ export const AddItem = () => {
 
     const handleRemoveForm = async (id: number) => {
         try {
-            await axios.delete(`http://localhost:4000/removeform/${id}`);
+            await axios.delete(`http://localhost:4000/itemforms/remove/${id}`);
             console.log("Form removed successfully");
             setFormRefreshKey(prevKey => prevKey + 1);
         }
@@ -122,7 +122,7 @@ export const AddItem = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:4000/addmetal', { metalvalue: metalValue, metaltype: metalType});
+            await axios.post('http://localhost:4000/metals/add', { metalvalue: metalValue, metaltype: metalType});
             console.log("Metal added successfully");
             setMetalRefreshKey(prevKey => prevKey + 1);
             setNewMetalValue('');
@@ -134,7 +134,7 @@ export const AddItem = () => {
 
     const handleRemoveMetal = async (id: number) => {
         try {
-            await axios.delete(`http://localhost:4000/removemetal/${id}`);
+            await axios.delete(`http://localhost:4000/metals/remove/${id}`);
             console.log("Metal removed successfully");
             setMetalRefreshKey(prevKey => prevKey + 1);
         }
@@ -178,7 +178,7 @@ export const AddItem = () => {
     const uploadProps = {
         name: 'imagefile',
         multiple: false,
-        action: 'http://localhost:4000/upload',
+        action: 'http://localhost:4000/image/upload',
         onChange(info: any) {
             const { status } = info.file;
             if (status !== 'uploading') {
