@@ -99,8 +99,8 @@ app.delete('/removeform/:id', (req, res) => {
 });
 
 app.post('/addmetal', (req,res) => {
-  const q = "INSERT INTO metals (metaltype) VALUES (?);"
-  const values = [req.body.metaltype];
+  const q = "INSERT INTO metals (metalvalue, metaltype) VALUES (?);"
+  const values = [req.body.metalvalue, req.body.metaltype];
   db.query(q, [values], (err, data) => {
     if(err) return res.json(err)
     return res.json("New metal added successfully.");
