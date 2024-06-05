@@ -14,10 +14,10 @@ import {
     Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { formData } from './types';
-import { useFetchMetals } from './getters/useFetchMetals'
-import { useFetchItemForms } from './getters/useFetchItemForms'
-import { useFetchPurchasePlaces } from './getters/useFetchPurchasePlaces'
-import { useFetchMints } from './getters/useFetchMints'
+import { useFetchMetals } from './hooks/useFetchMetals'
+import { useFetchItemForms } from './hooks/useFetchItemForms'
+import { useFetchPurchasePlaces } from './hooks/useFetchPurchasePlaces'
+import { useFetchMints } from './hooks/useFetchMints'
 import { handleAddDataFields } from './helpers/useDataConversions';
 import ImgCrop from "antd-img-crop";
 

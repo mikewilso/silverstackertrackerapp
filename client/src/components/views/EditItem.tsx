@@ -8,7 +8,7 @@ import {
         } from 'antd';
 import { formData } from '../types';
 import { EditForm } from '../EditForm';
-import { useFetchStack } from '../getters/useFetchStack';
+import { useFetchStack } from '../hooks/useFetchStack';
 
 export const EditItem = () => {
     const [drawerOpen, setdrawerOpen] = useState(false);

@@ -22,11 +22,11 @@ import {
     Typography,
     Upload
 } from 'antd';
-import { useFetchMetals } from '../getters/useFetchMetals';
-import { useFetchItemForms } from '../getters/useFetchItemForms';
-import { useFetchPurchasePlaces } from '../getters/useFetchPurchasePlaces';
-import { useFetchMints } from '../getters/useFetchMints';
-import { useFetchPurities } from '../getters/useFetchPurities';
+import { useFetchMetals } from '../hooks/useFetchMetals';
+import { useFetchItemForms } from '../hooks/useFetchItemForms';
+import { useFetchPurchasePlaces } from '../hooks/useFetchPurchasePlaces';
+import { useFetchMints } from '../hooks/useFetchMints';
+import { useFetchPurities } from '../hooks/useFetchPurities';
 import { handleAddDataFields } from '../helpers/useDataConversions';
 
 const { Dragger } = Upload;

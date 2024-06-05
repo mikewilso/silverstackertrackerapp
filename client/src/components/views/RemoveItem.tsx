@@ -4,10 +4,11 @@ import {
     Button,
     Input,
     Modal,
-    Table
+    Table,
+    message
         } from 'antd';
 import { formData } from '../types';
-import { useFetchStack } from '../getters/useFetchStack';
+import { useFetchStack } from '../hooks/useFetchStack';
 
 const { confirm } = Modal;
 
@@ -39,11 +40,13 @@ export const RemoveItem = () => {
                     const response = await axios.delete(`http://localhost:4000/stack/remove/${record.id}`);
                     console.log(response.data);
                     setUpdatedData();
+                    message.success('Item removed successfully');
                 } catch (error) {
                     console.error(error);
                 }
             },
             onCancel() {
+                message.error('Phew, that was a close one!');
                 console.log('Cancel');
             },
         });
