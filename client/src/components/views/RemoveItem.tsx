@@ -8,11 +8,10 @@ import {
         } from 'antd';
 import { formData } from '../types';
 import { useFetchStack } from '../getters/useFetchStack';
-//import { on } from 'events';
+
 const { confirm } = Modal;
 
 export const RemoveItem = () => {
-    //const [currentRecord, setCurrentRecord] = React.useState<formData | undefined>();
     let fetchStack = useFetchStack();
     const [data, setData] = useState(fetchStack);
     const [filteredData, setFilteredData] = useState([]);
