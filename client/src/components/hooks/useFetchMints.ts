@@ -18,6 +18,7 @@ export const useFetchMints = () => {
                 setMintOptions(options);
             } catch (err) {
                 console.log(err);
+                setMintOptions([{ value: '' }]);
             }
         };
         fetchMints();

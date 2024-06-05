@@ -19,6 +19,7 @@ export const useFetchPurities = () => {
                 setPurity(res.data);
             } catch (err) {
                 console.log(err);
+                setPurity([ { id: 0, name: '', purity: '' } ]);
             }
         };
         fetchPurities();

@@ -18,6 +18,7 @@ export const useFetchItemForms = (refreshKey: number) => {
                 setItemForms(res.data);
             } catch (err) {
                 console.log(err);
+                setItemForms([{ id: 0, itemformvalue: '', itemformtype: '' }]);
             }
         };
         fetchItemForms();

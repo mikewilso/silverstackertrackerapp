@@ -18,6 +18,7 @@ export const useFetchPurchasePlaces = () => {
                 setPurchasePlaces(options);
             } catch (err) {
                 console.log(err);
+                setPurchasePlaces([{ value: '' }]);
             }
         };
         fetchPurchasePlaces();

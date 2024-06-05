@@ -25,7 +25,6 @@ export const RemoveItem = () => {
     const setUpdatedData = async () => {
         try {
             const response = await axios.get('http://localhost:4000/stack');
-            console.log("response.data",response.data);
             setData(response.data);
         } catch (error) {
             console.error('Error fetching data: ', error);
@@ -38,7 +37,6 @@ export const RemoveItem = () => {
             onOk: async () => {
                 try {
                     const response = await axios.delete(`http://localhost:4000/stack/remove/${record.id}`);
-                    console.log(response.data);
                     setUpdatedData();
                     message.success('Item removed successfully');
                 } catch (error) {

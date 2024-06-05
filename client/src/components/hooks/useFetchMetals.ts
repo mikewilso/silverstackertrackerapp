@@ -19,6 +19,7 @@ export const useFetchMetals = (refreshKey: number) => {
                 setMetals(res.data);
             } catch (err) {
                 console.log(err);
+                setMetals([{ id: 0, metalvalue: '', metaltype: '' }]);
             }
         };
         fetchMetals();

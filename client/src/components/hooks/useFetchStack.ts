@@ -12,6 +12,7 @@ export const useFetchStack = () => {
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching data: ', error);
+                setData([]);
             }
         };
 
