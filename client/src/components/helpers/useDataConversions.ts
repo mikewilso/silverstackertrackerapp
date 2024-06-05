@@ -37,11 +37,13 @@ export const convertToGrams = (weight: number, type: string) => {
     else return weight;
 }
 
-export const formatDate = (dateString: string) => {
-    return moment(dateString).format(
-        'YYYY-MM-DD',
-    );
-}
+export function formatDate(dateString: string): string {
+    const date = moment(dateString, moment.ISO_8601);
+    if (!date.isValid()) {
+      return 'Invalid date';
+    }
+    return date.format('YYYY-MM-DD');
+  }
 
 export const handleAddDataFields = async (formData: formData) => {
     let newFormData = formData;

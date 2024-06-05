@@ -1,5 +1,4 @@
 import { convertToOzt, convertToOz, convertToGrams, formatDate } from './useDataConversions';
-import moment from 'moment';
 
 describe('convertToOzt', () => {
     it('should convert grams to ozt', () => {
@@ -55,13 +54,19 @@ describe('convertToGrams', () => {
 
 describe('formatDate', () => {
     it('should format date string to YYYY-MM-DD', () => {
-        const date = moment('2022-01-01T00:00:00').toISOString();
+        const date = '2022-01-01T00:00:00';
         const result = formatDate(date);
         expect(result).toBe('2022-01-01');
     });
 
-    it('should return the same date for invalid date strings', () => {
+    it('should return "Invalid date" for invalid date strings', () => {
         const date = 'invalid date';
+        const result = formatDate(date);
+        expect(result).toBe('Invalid date');
+    });
+
+    it('should return "Invalid date" for non-ISO date strings', () => {
+        const date = '01-01-2022';
         const result = formatDate(date);
         expect(result).toBe('Invalid date');
     });
