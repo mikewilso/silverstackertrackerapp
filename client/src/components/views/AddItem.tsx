@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import ImgCrop from "antd-img-crop";
 import { 
@@ -22,11 +22,6 @@ import {
     Typography,
     Upload
 } from 'antd';
-import { 
-    convertToOz, 
-    convertToOzt, 
-    convertToGrams, 
-    formatDate } from '../helpers/useDataConversions';
 import { useFetchMetals } from '../getters/useFetchMetals';
 import { useFetchItemForms } from '../getters/useFetchItemForms';
 import { useFetchPurchasePlaces } from '../getters/useFetchPurchasePlaces';
