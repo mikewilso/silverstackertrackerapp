@@ -8,7 +8,7 @@ export const convertToOzt = (weight: number, type: string) => {
     }
     else if(type === 'oz') {
         //convert oz to ozt
-        return weight * 1.09714;
+        return weight / 1.09714;
     }
     else return weight;
 }
