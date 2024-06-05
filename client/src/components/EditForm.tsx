@@ -70,22 +70,21 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
 
     const onFinish = async (values: any) => {
         try {
-            await handleAddDataFields(values).then(async (updatedValues) => {
+            let updatedValues = handleAddDataFields(values);
+            // Get the current record from the database
+            const currentRecordResponse = await axios.get(`http://localhost:4000/stack/${currentRecord.id}`);
+            const oldPictureId = currentRecordResponse.data[0].imagefileid;
 
-                // Get the current record from the database
-                const currentRecordResponse = await axios.get(`http://localhost:4000/stack/${currentRecord.id}`);
-                const oldPictureId = currentRecordResponse.data[0].imagefileid;
-
-                // Delete the old image record from the database
-                if(oldPictureId !== pictureId){
-                    await axios.delete(`http://localhost:4000/image/remove/${oldPictureId}`);
-                }
-                // Update the imagefileid with the new pictureId or keep the current imagefileid
-                updatedValues.imagefileid = pictureId || currentRecord.imagefileid;
-                console.log('Updated values:', updatedValues);
-                const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, updatedValues);
-                console.log('Updated record:', response.data);
-            });
+            // Delete the old image record from the database
+            if(oldPictureId !== pictureId){
+                await axios.delete(`http://localhost:4000/image/remove/${oldPictureId}`);
+            }
+            // Update the imagefileid with the new pictureId or keep the current imagefileid
+            updatedValues.imagefileid = pictureId || currentRecord.imagefileid;
+            console.log('Updated values:', updatedValues);
+            const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, updatedValues);
+            console.log('Updated record:', response.data);
+            message.success('Record updated successfully!');
         } catch (error) {
             console.error('Error updating record:', error);
         }

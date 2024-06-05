@@ -32,30 +32,10 @@ import { useFetchItemForms } from '../getters/useFetchItemForms';
 import { useFetchPurchasePlaces } from '../getters/useFetchPurchasePlaces';
 import { useFetchMints } from '../getters/useFetchMints';
 import { useFetchPurities } from '../getters/useFetchPurities';
-import { formData } from '../types';
+import { handleAddDataFields } from '../helpers/useDataConversions';
 
 const { Dragger } = Upload;
 const { Title } = Typography;
-
-
-const handleAddDataFields = (formData: formData) => {
-    let newFormData = formData;
-    let purity = Number(newFormData.purity);
-    let amount = newFormData.amount;
-    // Convert the weight to all three types of weight with their pure weight
-    newFormData.purchasedate = formatDate(newFormData.purchasedate);
-    newFormData.oztweight = convertToOzt(formData.unitweight, formData.weighttype);
-    newFormData.ozweight = convertToOz(formData.unitweight, formData.weighttype);
-    newFormData.gramweight = convertToGrams(formData.unitweight, formData.weighttype);
-    newFormData.ozweightpure = newFormData.ozweight * purity;
-    newFormData.oztweightpure = newFormData.oztweight * purity;
-    newFormData.gramweightpure = newFormData.gramweight * purity;
-    newFormData.totalpureozweight = newFormData.ozweightpure * amount;
-    newFormData.totalpureoztweight = newFormData.oztweightpure * amount;
-    newFormData.totalpuregramweight = newFormData.gramweightpure * amount;
-
-    return newFormData;
-};
 
 
 export const AddItem = () => {
@@ -147,10 +127,6 @@ export const AddItem = () => {
         setNewMetalValue(e.target.value);
         console.log(e.target.value);
     }
-
-    // const handleAddPurity = (values: any) => {
-    //     console.log("Adding new purity", values.newPurity);
-    // };
 
     const inputRef = React.useRef(null);
 

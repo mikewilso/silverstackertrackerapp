@@ -45,7 +45,7 @@ export function formatDate(dateString: string): string {
     return date.format('YYYY-MM-DD');
   }
 
-export const handleAddDataFields = async (formData: formData) => {
+export const handleAddDataFields = (formData: formData) => {
     let newFormData = formData;
     let purity = Number(newFormData.purity);
     let amount = newFormData.amount;
