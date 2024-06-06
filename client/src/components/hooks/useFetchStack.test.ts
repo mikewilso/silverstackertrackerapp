@@ -5,7 +5,7 @@ import { useFetchStack } from './useFetchStack';
 jest.mock('axios');
 
 describe('useFetchStack', () => {
-  it('fetches successfully data from an API', async () => {
+  it('fetches data successfully from an API', async () => {
     const data = [{ id: 1, name: 'Test data' }];
     (axios.get as jest.Mock).mockResolvedValueOnce({ data });
 

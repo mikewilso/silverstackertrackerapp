@@ -26,6 +26,7 @@ import { useFetchMetals } from '../hooks/useFetchMetals';
 import { useFetchItemForms } from '../hooks/useFetchItemForms';
 import { useFetchPurchasePlaces } from '../hooks/useFetchPurchasePlaces';
 import { useFetchMints } from '../hooks/useFetchMints';
+import { useFetchItemNames } from '../hooks/useFetchItemNames';
 import { useFetchPurities } from '../hooks/useFetchPurities';
 import { handleAddDataFields } from '../helpers/useDataConversions';
 
@@ -197,7 +198,13 @@ export const AddItem = () => {
                     name='name'
                     rules={[{ required: true, message: 'Please input the name of the item!' }]}
                 >
-                    <Input placeholder='Enter item name'/>
+                    <AutoComplete
+                        options={useFetchItemNames()}
+                        placeholder='Enter item name'
+                        filterOption={(inputValue: string, option: any) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                    />
                 </Form.Item>
 
                 <Form.Item 

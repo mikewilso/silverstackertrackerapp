@@ -261,6 +261,17 @@ app.delete('/itemforms/remove/:id', (req, res) => {
 });
 
 
+// ITEM NAME API
+// fetches all the item names from the database
+app.get('/itemnames', (req,res) => {
+  const q = "SELECT DISTINCT name FROM stack;"
+  db.query(q,(err, data)=>{
+    if(err) return res.json(err)
+    return res.json(data)
+  })
+});
+
+
 // PURCHASED FROM API
 // fetches all the purchased from locations from the database
 app.get('/purchasedfrom', (req,res) => {

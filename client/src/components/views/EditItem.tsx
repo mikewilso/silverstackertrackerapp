@@ -47,10 +47,14 @@ export const EditItem = () => {
 
 
     useEffect(() => {
-        const filteredData = data.filter((item: { name: string }) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredData(filteredData);
+        const filterData = async () => {
+            const dataArray = await data;
+            const filteredData = dataArray.filter((item: { name: string }) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredData(filteredData);
+        };
+        filterData();
     }, [data, searchTerm]);
     
     const columns = [
