@@ -30,6 +30,8 @@ import { useFetchItemNames } from '../hooks/useFetchItemNames';
 import { useFetchPurities } from '../hooks/useFetchPurities';
 import { handleAddDataFields } from '../helpers/useDataConversions';
 
+import '../global.css';
+
 const { Dragger } = Upload;
 const { Title } = Typography;
 
@@ -234,6 +236,7 @@ export const AddItem = () => {
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                         }
+                        size='middle'
                     />
                 </Form.Item>
 
