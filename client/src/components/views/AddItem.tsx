@@ -43,9 +43,15 @@ export const AddItem = () => {
     const [newFormValue, setNewFormValue] = useState('');
     const [newMetalValue, setNewMetalValue] = useState('');
     const [metalRefreshKey, setMetalRefreshKey] = useState(0);
+    const [nameInputValue, setNameInputValue] = useState('');
+    const [purchasePlacesInputValue, setPurchasePlacesInputValue] = useState('');
+    const [mintInputValue, setMintInputValue] = useState('');
 
     const itemForms = useFetchItemForms(formRefreshKey);
     const metals = useFetchMetals(metalRefreshKey);
+    const itemNames = useFetchItemNames();
+    const purchasePlaces = useFetchPurchasePlaces();
+    const mints = useFetchMints();
 
     const handleAddForm = async () => { 
         console.log("new form value", newFormValue);
@@ -194,15 +200,16 @@ export const AddItem = () => {
                 form={form}
                 onFinish={onFinishForm}
             >
-                {/* TODO: Add AutoComplete to name field, if item already exists, give option to update existing record */}
+                {/* TODO: if item already exists, give option to update existing record */}
                 <Form.Item 
                     label='Name of Item' 
                     name='name'
                     rules={[{ required: true, message: 'Please input the name of the item!' }]}
                 >
                     <AutoComplete
-                        options={useFetchItemNames()}
+                        options={nameInputValue ? itemNames : []}
                         placeholder='Enter item name'
+                        onSearch={setNameInputValue}
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                         }
@@ -231,8 +238,9 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input where it was purchased from!' }]}
                 >
                     <AutoComplete
-                        options={useFetchPurchasePlaces()}
+                        options={purchasePlacesInputValue ? purchasePlaces : []}
                         placeholder='Enter place of purchase(coin shop, APMEX, etc.)'
+                        onSearch={setPurchasePlacesInputValue}
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                         }
@@ -318,8 +326,9 @@ export const AddItem = () => {
                     rules={[{ required: true, message: 'Please input the maker of this item!' }]}
                 >
                     <AutoComplete
-                        options={useFetchMints()}
+                        options={mintInputValue ? mints : []}
                         placeholder='Enter maker of the item'
+                        onSearch={setMintInputValue}
                         filterOption={(inputValue: string, option: any) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                         }

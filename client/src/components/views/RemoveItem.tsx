@@ -38,7 +38,7 @@ export const RemoveItem = () => {
                 try {
                     const response = await axios.delete(`http://localhost:4000/stack/remove/${record.id}`);
                     setUpdatedData();
-                    message.success('Item removed successfully');
+                    message.success(response.data);
                 } catch (error) {
                     console.error(error);
                 }

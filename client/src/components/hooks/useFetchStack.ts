@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const useFetchStack = async () => {
+export const useFetchStack = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
