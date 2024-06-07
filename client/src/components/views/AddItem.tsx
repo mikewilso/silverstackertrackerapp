@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import ImgCrop from "antd-img-crop";
 import { 
     CloseOutlined, 
@@ -229,7 +230,9 @@ export const AddItem = () => {
                     name='purchasedate'
                     rules={[{ required: true, message: 'Please select the purchase date!' }]}
                 >
-                    <DatePicker />
+                    <DatePicker 
+                        disabledDate={(current) => current && current > moment().endOf('day')}
+                    />
                 </Form.Item>
 
                 <Form.Item 
