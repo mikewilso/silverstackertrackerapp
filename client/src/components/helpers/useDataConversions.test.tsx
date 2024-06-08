@@ -106,7 +106,7 @@ describe('handleAddDataFields', () => {
         imagefileid: 0,
     };
 
-    const result = await handleAddDataFields(mockFormData);
+    const result = handleAddDataFields(mockFormData);
         expect(result.purchasedate).toBe('2022-01-01');
         expect(result.ozweight).toBe(1);
         expect(result.oztweight).toBeCloseTo(0.911, 3);
