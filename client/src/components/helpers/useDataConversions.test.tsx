@@ -87,7 +87,7 @@ describe('handleAddDataFields', () => {
         purchasedate: '2022-01-01T00:00:00',
         purchasedfrom: 'test seller',
         purchaseprice: 1,
-        form: 'coin',
+        formtype: 'coin',
         mint: 'test mint',
         metaltype: 'gold',
         purity: 0.5,

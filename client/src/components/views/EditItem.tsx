@@ -48,7 +48,7 @@ export const EditItem = () => {
 
     useEffect(() => {
         const filterData = async () => {
-            const dataArray = await data;
+            const dataArray = data;
             const filteredData = dataArray.filter((item: { name: string }) =>
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
@@ -85,8 +85,8 @@ export const EditItem = () => {
         },
         {
             title: 'Form',
-            dataIndex: 'form',
-            key: 'form',
+            dataIndex: 'formtype',
+            key: 'formtype',
         },
         {
             title: 'Metal Type',

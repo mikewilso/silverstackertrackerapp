@@ -205,7 +205,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
 
                 <Form.Item 
                     label='Form' 
-                    name='form' 
+                    name='formtype' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
                     <Select placeholder='Select the form of the item'>

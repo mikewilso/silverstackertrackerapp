@@ -177,11 +177,16 @@ export const AddItem = () => {
     // TODO: Add a function to reset form fields after submission
     const onFinishForm = async () => {
         console.log('Received values of form: ', form.getFieldsValue());
-        const {purchasedate, ...formValues} = form.getFieldsValue();
+        const {purchasedate, formtype, metaltype, ...formValues} = form.getFieldsValue();
         // purchasedate formatted into a string so it passes correct value to backend
         const formattedDate = purchasedate ? purchasedate.format('YYYY-MM-DD') : null;
         let fullData = handleAddDataFields(formValues);
-        fullData = { ...fullData, purchasedate: formattedDate, imagefileid: pictureId ?? 0};
+        fullData = { 
+            ...fullData, 
+            purchasedate: formattedDate,
+            metaltype: metaltype.toLowerCase(),
+            formtype: formtype.toLowerCase(),
+            imagefileid: pictureId ?? 0};
         try {
             await axios.post('http://localhost:4000/stack', fullData);
         } catch (err) {
@@ -272,7 +277,7 @@ export const AddItem = () => {
                     
                 <Form.Item 
                     label='Form' 
-                    name='form' 
+                    name='formtype' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
                         <Select 

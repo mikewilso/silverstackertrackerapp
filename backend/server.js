@@ -73,7 +73,7 @@ app.post('/stack', (req,res) => {
               `purchasedate`,\
               `purchasedfrom`,\
               `purchaseprice`,\
-              `form`,\
+              `formtype`,\
               `mint`,\
               `metaltype`,\
               `purity`,\
@@ -98,7 +98,7 @@ app.post('/stack', (req,res) => {
     req.body.purchasedate,
     req.body.purchasedfrom,
     req.body.purchaseprice,
-    req.body.form,
+    req.body.formtype,
     req.body.mint,
     req.body.metaltype,
     req.body.purity,
@@ -131,7 +131,7 @@ app.put('/stack/:id', (req,res) => {
               `purchasedate` = ?,\
               `purchasedfrom` = ?,\
               `purchaseprice` = ?,\
-              `form` = ?,\
+              `formtype` = ?,\
               `mint` = ?,\
               `metaltype` = ?,\
               `purity` = ?,\
@@ -156,7 +156,7 @@ app.put('/stack/:id', (req,res) => {
     req.body.purchasedate,
     req.body.purchasedfrom,
     req.body.purchaseprice,
-    req.body.form,
+    req.body.formtype,
     req.body.mint,
     req.body.metaltype,
     req.body.purity,

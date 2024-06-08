@@ -5,7 +5,7 @@ export interface formData {
     purchasedate: string;
     purchasedfrom: string;
     purchaseprice: number;
-    form: string;
+    formtype: string;
     mint: string;
     metaltype: string;
     purity: number;
