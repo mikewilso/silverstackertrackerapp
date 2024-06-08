@@ -304,6 +304,28 @@ app.get('/purities', (req,res) => {
   })
 })
 
+// adds a new purity to the database
+app.post('/purities/add', (req,res) => {
+  const q = "INSERT INTO purity (name, purity) VALUES (?);"
+  const values = [req.body.name, req.body.purity];
+  db.query(q, [values], (err, data) => {
+    if(err) return res.json(err)
+    return res.json("New purity added successfully.");
+  });
+});
+
+// deletes a purity from the database
+app.delete('/purities/remove/:id', (req, res) => {
+  const id = req.params.id;
+  const q = 'DELETE FROM purity WHERE id = ?';
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json('Purity deleted successfully.');
+  });
+});
+
 
 // IMAGE API
 // upload an image file

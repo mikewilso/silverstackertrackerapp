@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Custom hook to fetch metals from the database
-export const useFetchPurities = () => {
+export const useFetchPurities = (refreshKey: number) => {
     const [purity, setPurity] = useState([
         {
             id: 0,
@@ -23,7 +23,7 @@ export const useFetchPurities = () => {
             }
         };
         fetchPurities();
-    }, []);
+    }, [refreshKey]);
 
     return purity;
 };

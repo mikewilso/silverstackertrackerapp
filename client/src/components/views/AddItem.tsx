@@ -32,6 +32,7 @@ import { useFetchPurities } from '../hooks/useFetchPurities';
 import { handleAddDataFields } from '../helpers/useDataConversions';
 
 import '../global.css';
+import { on } from 'events';
 
 const { Dragger } = Upload;
 const { Title } = Typography;
@@ -44,12 +45,16 @@ export const AddItem = () => {
     const [newFormValue, setNewFormValue] = useState('');
     const [newMetalValue, setNewMetalValue] = useState('');
     const [metalRefreshKey, setMetalRefreshKey] = useState(0);
+    const [purityRefreshKey, setPurityRefreshKey] = useState(0);
     const [nameInputValue, setNameInputValue] = useState('');
     const [purchasePlacesInputValue, setPurchasePlacesInputValue] = useState('');
     const [mintInputValue, setMintInputValue] = useState('');
+    const [newPurityName, setNewPurityName] = useState('');
+    const [newPurityValue, setNewPurityValue] = useState(0);
 
     const itemForms = useFetchItemForms(formRefreshKey);
     const metals = useFetchMetals(metalRefreshKey);
+    const purities = useFetchPurities(purityRefreshKey);
     const itemNames = useFetchItemNames();
     const purchasePlaces = useFetchPurchasePlaces();
     const mints = useFetchMints();
@@ -131,6 +136,47 @@ export const AddItem = () => {
     const onMetalNameChange = (e: any) => {
         setNewMetalValue(e.target.value);
         console.log(e.target.value);
+    }
+
+    const handleAddNewPurity = async () => {
+        console.log("new purity", newPurityName, newPurityValue);
+        if(newPurityName === undefined || newPurityName === '' || newPurityValue === undefined || newPurityValue === 0) {
+            return;
+        }
+        const purityName = `${newPurityName}(${newPurityValue}%)`;
+        const purityValue = newPurityValue / 100;
+
+        try {
+            await axios.post('http://localhost:4000/purities/add', { name: purityName, purity: purityValue});
+            console.log("New purity added successfully");
+            setPurityRefreshKey(prevKey => prevKey + 1);
+            setNewPurityName('');
+            setNewPurityValue(0);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    };
+
+    const onPurityNameChange = (e: any) => {
+        setNewPurityName(e.target.value);
+        console.log(e.target.value);
+    }
+
+    const onPurityValueChange = (value: number | undefined) => {
+        setNewPurityValue(value ?? 0);
+        console.log(value);
+    }
+
+    const handleRemovePurity = async (id: number) => {
+        try {
+            await axios.delete(`http://localhost:4000/purities/remove/${id}`);
+            console.log("Purity removed successfully");
+            setPurityRefreshKey(prevKey => prevKey + 1);
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     const inputRef = React.useRef(null);
@@ -417,9 +463,61 @@ export const AddItem = () => {
                     label='Purity' 
                     name='purity'
                     rules={[{ required: true, message: 'Please input the purity of the item!' }]}>                   
-                        <Select placeholder='Select purity of item'>
-                            {useFetchPurities().map((purity)=>(
-                                <Select.Option value={purity.purity}>{purity.name}</Select.Option>
+                        <Select 
+                            placeholder='Select purity of item'
+                            dropdownRender={(menu) => (
+                                <>
+                                    {menu}
+                                    <Divider
+                                        style={{
+                                        margin: '8px 0',
+                                        }}
+                                    />
+                                    <Space
+                                        style={{
+                                        padding: '0 8px 4px',
+                                        }}
+                                    >
+                                        <Input
+                                            placeholder="Purity name"
+                                            ref={inputRef}
+                                            value={newPurityName}
+                                            onChange={onPurityNameChange}
+                                            onKeyDown={(e) => e.stopPropagation()}
+                                        />
+                                        <InputNumber
+                                            placeholder="%"
+                                            min={0}
+                                            max={100}
+                                            ref={inputRef}
+                                            value={newPurityValue}
+                                            onChange={(value: number | null) => onPurityValueChange(value ?? undefined)}
+                                            formatter={value => `${value}%`}
+                                            parser={value => parseFloat(value?.replace('%', '') || '')}
+                                            onKeyDown={(e) => e.stopPropagation()}
+                                        />
+                                        <Button type="text" icon={<PlusOutlined />} onClick={handleAddNewPurity}>
+                                        Add new purity level
+                                        </Button>
+                                    </Space>
+                                </>
+                            )}
+                        >
+                            {purities.map((purity)=>(
+                                <Select.Option value={purity.purity}>
+                                    <span>{purity.name}</span>
+                                    <span style={{ float: "right" }}>
+                                    <CloseOutlined
+                                        style={{ color: 'lightgrey' }}
+                                        onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleRemovePurity(purity.id);
+                                        }}
+                                    />
+                                    </span>
+
+                                
+                                </Select.Option>
                             ))};
                         </Select>
                 </Form.Item>
