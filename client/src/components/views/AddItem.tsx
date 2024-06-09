@@ -32,7 +32,6 @@ import { useFetchPurities } from '../hooks/useFetchPurities';
 import { handleAddDataFields } from '../helpers/useDataConversions';
 
 import '../global.css';
-import { on } from 'events';
 
 const { Dragger } = Upload;
 const { Title } = Typography;
@@ -52,6 +51,7 @@ export const AddItem = () => {
     const [newPurityName, setNewPurityName] = useState('');
     const [newPurityValue, setNewPurityValue] = useState(0);
 
+    // initial fetches for dropdowns
     const itemForms = useFetchItemForms(formRefreshKey);
     const metals = useFetchMetals(metalRefreshKey);
     const purities = useFetchPurities(purityRefreshKey);
@@ -263,7 +263,7 @@ export const AddItem = () => {
                         placeholder='Enter item name'
                         onSearch={setNameInputValue}
                         filterOption={(inputValue: string, option: any) =>
-                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                         }
                     />
                 </Form.Item>
@@ -440,14 +440,14 @@ export const AddItem = () => {
                             ))}
                     </Select>
                 </Form.Item>
-                        
+
                 <Form.Item 
                     label='Unit Weight' 
                     name='unitweight'
                     rules={[{ required: true, message: 'Please input the weight!' }]}>
                     <InputNumber min={0.01} placeholder='0.01'/>
                 </Form.Item>
-
+                
                 <Form.Item 
                     label='Unit of Weight' 
                     name='weighttype'
