@@ -119,7 +119,7 @@ export const EditItem = () => {
                 width='50vw'
             >
                 {currentRecord && (
-                    <EditForm currentRecord={currentRecord}/>
+                    <EditForm currentRecord={currentRecord} onEditSuccess={onClose}/>
                 )}
 
             </Drawer>

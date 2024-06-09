@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
-    AutoComplete,
-    Button,  
-    Form,
-    Image,
-    Input,
-    InputNumber,
-    message,
-    Radio,
-    Select,
-    Tooltip,
-    Upload } from 'antd';
+        AutoComplete,
+        Button,  
+        Form,
+        Image,
+        Input,
+        InputNumber,
+        message,
+        Radio,
+        Select,
+        Tooltip,
+        Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import { formData } from './types';
 import { useFetchMetals } from './hooks/useFetchMetals'
@@ -23,6 +23,7 @@ import ImgCrop from "antd-img-crop";
 
 type EditFormProps = {
     currentRecord: formData;
+    onEditSuccess: () => void;
 }
 
 // Add Image type to window
@@ -35,7 +36,7 @@ interface Window {
 }
 
 // TODO: Add ability to change the image file
-export const EditForm = ({ currentRecord }: EditFormProps) => {
+export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
     const [form] = Form.useForm();
     const [pictureId, setPictureId] = useState(0);
     const [recordId, setRecordId] = useState({id: 0});
@@ -84,6 +85,7 @@ export const EditForm = ({ currentRecord }: EditFormProps) => {
             console.log('Updated values:', updatedValues);
             const response = await axios.put(`http://localhost:4000/stack/${recordId.id}`, updatedValues);
             console.log('Updated record:', response.data);
+            onEditSuccess();
             message.success('Record updated successfully!');
         } catch (error) {
             console.error('Error updating record:', error);
