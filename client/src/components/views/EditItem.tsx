@@ -17,9 +17,11 @@ export const EditItem = () => {
     const [data, setData] = useState(fetchStack);
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setData(fetchStack);
+        setIsLoading(false);
     }, [fetchStack]);
 
     const showDrawer = (record: formData) => {
@@ -32,6 +34,7 @@ export const EditItem = () => {
       };
 
     const setUpdatedData = async () => {
+        setIsLoading(true); 
         try {
             const response = await axios.get('http://localhost:4000/stack');
             console.log("response.data",response.data);
@@ -39,6 +42,7 @@ export const EditItem = () => {
         } catch (error) {
             console.error('Error fetching data: ', error);
         }
+        setIsLoading(false);
     };
     const onClose = () => {
         setdrawerOpen(false);
@@ -133,7 +137,7 @@ export const EditItem = () => {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} 
             />
             <br />
-            <Table columns={columns} dataSource={filteredData} />
+            <Table columns={columns} dataSource={filteredData} loading={isLoading}/>
         </div>
     );
 };
