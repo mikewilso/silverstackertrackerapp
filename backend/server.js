@@ -193,6 +193,48 @@ app.delete('/stack/remove/:id', (req, res) => {
   });
 });
 
+// // fetches total sum of gold in the stack
+app.get('/stack/totals/gold', (req, res) => {
+  console.log("fetching total ozt of gold in the stack")
+  const q = 'SELECT SUM(totalpureoztweight) AS totalozt FROM stack WHERE metaltype = "gold";'
+  console.log(q);
+  db.query(q, (err, data)=>{
+    if(err) return res.json(err)
+    console.log(data);
+    return res.json(data)
+  })
+});
+
+// fetches total sums of silver in the stack
+app.get('/stack/totals/silver', (req, res) => {
+  console.log("fetching total ozt of silver in the stack")
+  const q = 'SELECT \
+            SUM(totalpureoztweight) AS totalozt, \
+            SUM(totalpureozweight) AS totaloz, \
+            SUM(totalpuregramweight) AS totalgrams \
+            FROM stack WHERE metaltype = "silver";'
+  console.log(q);
+  db.query(q, (err, data)=>{
+    if(err) return res.json(err)
+    console.log(data);
+    return res.json(data)
+  })
+});
+
+// fetches total sum of copper (ozt) in the stack
+app.get('/stack/totals/copper', (req, res) => {
+  console.log("fetching total ozt of copper in the stack")
+  const q = 'SELECT SUM(totalpureoztweight) AS totalozt FROM stack WHERE metaltype = "copper";'
+  console.log(q);
+  db.query(q, (err, data)=>{
+    if(err) return res.json(err)
+    console.log(data);
+    return res.json(data)
+  })
+});
+
+
+
 
 // METALS API
 // fetches all the metals from the database
