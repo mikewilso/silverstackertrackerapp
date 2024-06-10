@@ -247,7 +247,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                     label='Unit Weight' 
                     name='unitweight'
                     rules={[{ required: true, message: 'Please input the weight!' }]}>
-                    <InputNumber min={0.01} placeholder='0.01'/>
+                    <InputNumber min={0.001} placeholder='0.001'/>
                 </Form.Item>
            
                 <Form.Item 
