@@ -87,11 +87,15 @@ export const EditItem = () => {
             title: 'Form',
             dataIndex: 'formtype',
             key: 'formtype',
+            render: (text: string) => text.charAt(0).toUpperCase() + text.slice(1),
+
         },
         {
             title: 'Metal Type',
             dataIndex: 'metaltype',
             key: 'metaltype',
+            render: (text: string) => text.charAt(0).toUpperCase() + text.slice(1),
+
         },
         {
             title: 'Amount',

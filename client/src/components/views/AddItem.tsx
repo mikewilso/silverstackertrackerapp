@@ -235,6 +235,7 @@ export const AddItem = () => {
             imagefileid: pictureId ?? 0};
         try {
             await axios.post('http://localhost:4000/stack', fullData);
+            message.success('Item added to the stack!');
         } catch (err) {
             console.log(err);
         }
