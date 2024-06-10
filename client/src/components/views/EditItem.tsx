@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
     Button,
-    Drawer, 
+    Drawer,
+    Image, 
     Input,
     Table
         } from 'antd';
@@ -67,10 +68,12 @@ export const EditItem = () => {
             dataIndex: 'imagefileid', 
             key: 'image',
             render: (imagefileid: string) => 
-                <img 
+                <Image 
+                    width={50} 
+                    height={50}
                     src={`http://localhost:4000/image/${imagefileid}`} 
-                    alt="item" style={{width: '50px', height: '50px'}}
-                /> 
+                    alt="item"
+                />  
         },
         {
             title: 'Name',

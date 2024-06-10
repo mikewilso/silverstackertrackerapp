@@ -1,3 +1,7 @@
 .ant-select-selection-search-input {
   font-size: 14px;
 }
+
+div.ant-image-mask-info {
+  display: none;
+}
