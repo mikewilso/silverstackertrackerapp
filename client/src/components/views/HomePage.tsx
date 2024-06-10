@@ -77,9 +77,9 @@ export const HomePage = () => {
         <div>
             <Title>Michael's Home Page</Title>
             <div>
-                <Title>TOTAL GOLD: {totalGoldWeights} OZT</Title>
-                <Title>TOTAL SILVER: {totalSilverWeights} OZT</Title>
-                <Title>TOTAL COPPER: {totalCopperWeights} OZT</Title>
+                <Title level={3}>TOTAL GOLD: {totalGoldWeights} OZT</Title>
+                <Title level={3}>TOTAL SILVER: {totalSilverWeights} OZT</Title>
+                <Title level={3}>TOTAL COPPER: {totalCopperWeights} OZT</Title>
             </div>
             <div className='stackList'>
                 {stack.map((item) => (
