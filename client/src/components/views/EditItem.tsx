@@ -5,8 +5,8 @@ import {
     Drawer,
     Image, 
     Input,
-    Table
-        } from 'antd';
+    Spin,
+    Table } from 'antd';
 import { formData } from '../types';
 import { EditForm } from '../EditForm';
 import { useFetchStack } from '../hooks/useFetchStack';
@@ -19,6 +19,7 @@ export const EditItem = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+    console.log("fetchStack",fetchStack);
 
     useEffect(() => {
         setData(fetchStack);
@@ -35,7 +36,6 @@ export const EditItem = () => {
       };
 
     const setUpdatedData = async () => {
-        setIsLoading(true); 
         try {
             const response = await axios.get('http://localhost:4000/stack');
             console.log("response.data",response.data);
@@ -43,7 +43,6 @@ export const EditItem = () => {
         } catch (error) {
             console.error('Error fetching data: ', error);
         }
-        setIsLoading(false);
     };
     const onClose = () => {
         setdrawerOpen(false);
@@ -140,7 +139,7 @@ export const EditItem = () => {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} 
             />
             <br />
-            <Table columns={columns} dataSource={filteredData} loading={isLoading}/>
+            <Table columns={columns} dataSource={filteredData} loading={isLoading}/>   
         </div>
     );
 };
