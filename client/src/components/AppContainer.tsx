@@ -85,7 +85,7 @@ export const AppContainer = () => {
                 <Menu theme='dark' mode='inline' items={items} defaultSelectedKeys={['4']}/>
             </Sider>
             <Layout style={{ marginLeft: 200 }}>
-                <Header style={{ padding: 0 }}> SILVER STACKER TRACKER</Header>
+                <Header style={{ padding: 0, color: 'white', fontSize: '33px' }}> SILVER STACKER TRACKER</Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <Routes>
                         <Route path='/' element={<HomePage />} />

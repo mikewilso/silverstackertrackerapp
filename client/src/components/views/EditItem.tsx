@@ -5,7 +5,6 @@ import {
     Drawer,
     Image, 
     Input,
-    Spin,
     Table } from 'antd';
 import { formData } from '../types';
 import { EditForm } from '../EditForm';
@@ -19,7 +18,6 @@ export const EditItem = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    console.log("fetchStack",fetchStack);
 
     useEffect(() => {
         setData(fetchStack);
@@ -30,7 +28,7 @@ export const EditItem = () => {
         setCurrentRecord(record);
         setdrawerOpen(true);
     };
-    const handleButtonClick = (record: formData) => {
+    const handleEditButtonClick = (record: formData) => {
         setCurrentRecord(record);  // Update the currentRecord state
         showDrawer(record);
       };
@@ -113,7 +111,7 @@ export const EditItem = () => {
             title: '',
             key: 'edit',
             render: (record: formData) => (
-                <Button onClick={() => handleButtonClick(record)} type="primary">Edit</Button>
+                <Button onClick={() => handleEditButtonClick(record)} type="primary">Edit</Button>
             ),
         },
     ];

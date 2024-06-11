@@ -236,6 +236,7 @@ export const AddItem = () => {
         try {
             await axios.post('http://localhost:4000/stack', fullData);
             message.success('Item added to the stack!');
+            form.resetFields();
         } catch (err) {
             console.log(err);
         }

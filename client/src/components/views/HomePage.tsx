@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Typography } from 'antd';
+import { 
+    Card,
+    Col, 
+    Row, 
+    Typography } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
@@ -55,6 +59,7 @@ export const HomePage = () => {
             metaltype: '',
             weight: 0,
             amount: 0,
+            imagefileid: 0,
         },
     ]);
 
@@ -82,18 +87,19 @@ export const HomePage = () => {
                 <Title level={3}>TOTAL COPPER: {totalCopperWeights} OZT</Title>
             </div>
             <div className='stackList'>
+            <Row gutter={16}>
                 {stack.map((item) => (
-                    <div className='item' key={item.id}>
-                        <h1>{item.name}</h1>
-                        <ul>
-                            <li>{item.description}</li>
-                            <li>{item.purchasedate}</li>
-                            <li>{item.metaltype}</li>
-                            <li>{item.weight}</li>
-                            <li>{item.amount}</li>
-                        </ul>
-                    </div>
+                    <Col key={item.id} span={6}>
+                        <Card 
+                            title={item.name} 
+                            bordered={true}
+                            cover={<img alt="example" src={`http://localhost:4000/image/${item.imagefileid}`} />}
+                        >
+                            {item.description}
+                        </Card>                      
+                    </Col>
                 ))}
+            </Row>
             </div>
         </div>
     );
