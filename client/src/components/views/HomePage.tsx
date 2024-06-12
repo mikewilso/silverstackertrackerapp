@@ -93,6 +93,7 @@ export const HomePage = () => {
                         <Card 
                             title={item.name} 
                             bordered={true}
+                            hoverable={true}
                             cover={<img alt="example" src={`http://localhost:4000/image/${item.imagefileid}`} />}
                         >
                             {item.description}
