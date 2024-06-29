@@ -48,7 +48,7 @@ const upload = multer({ storage: storage, dest: 'uploads/'});
 // STACK API
 // fetches all the stack items from the database
 app.get('/stack', (req,res) => {
-  const q = "SELECT * FROM stack;"
+  const q = "SELECT * FROM stack WHERE archived = 0;"
   db.query(q,(err, data)=>{
     if(err) return res.json(err)
     return res.json(data)
@@ -122,6 +122,16 @@ app.post('/stack', (req,res) => {
     return res.json("New addition to the stack officially added.");
   })
 })
+
+//archives an item in the database
+app.put('/stack/archive/:id', (req,res) => {
+  const q = "UPDATE stack SET archived = 1 WHERE id = ?;"
+  const id = req.params.id;
+  db.query(q, [id], (err, data) => {
+    if(err) return res.json(err)
+    return res.json("Stack item archived successfully.");
+  });
+});
 
 // updates a stack item in the database
 app.put('/stack/:id', (req,res) => {

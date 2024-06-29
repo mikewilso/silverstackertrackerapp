@@ -11,9 +11,10 @@ import { EditForm } from '../EditForm';
 import { useFetchStack } from '../hooks/useFetchStack';
 
 export const EditItem = () => {
+    let fetchStack = useFetchStack();
+
     const [drawerOpen, setdrawerOpen] = useState(false);
     const [currentRecord, setCurrentRecord] = React.useState<formData | undefined>();
-    let fetchStack = useFetchStack();
     const [data, setData] = useState(fetchStack);
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");

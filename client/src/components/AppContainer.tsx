@@ -3,7 +3,7 @@ import { useNavigate, Route, Routes } from 'react-router-dom'
 import { Layout, Menu } from 'antd';
 import { HomePage } from './views/HomePage';
 import { AddItem } from './views/AddItem';
-import { RemoveItem } from './views/RemoveItem';
+import { ArchiveItem } from './views/ArchiveItem';
 import { EditItem } from './views/EditItem';
 import {
     UserOutlined,
@@ -42,10 +42,10 @@ export const AppContainer = () => {
             onClick: () => { navigate('/edititem')}
         },
         {
-            key: 'remove',
-            label: 'Remove Item',
+            key: 'archive',
+            label: 'Archive Item',
             icon: <MinusCircleOutlined/>,
-            onClick: () => { navigate('/removeitem')}
+            onClick: () => { navigate('/archiveitem')}
         },
         {
             key: 'about',
@@ -91,7 +91,7 @@ export const AppContainer = () => {
                         <Route path='/' element={<HomePage />} />
                         <Route path='/additem' element={<AddItem />} />
                         <Route path='/edititem' element={<EditItem />} />
-                        <Route path='/removeitem' element={<RemoveItem />} />
+                        <Route path='/archiveitem' element={<ArchiveItem />} />
                         <Route path='/about' element={<AboutUs />} />
                         <Route path='/contact' element={<ContactUs />} />
                     </Routes>

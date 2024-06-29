@@ -12,7 +12,7 @@ import { useFetchStack } from '../hooks/useFetchStack';
 
 const { confirm } = Modal;
 
-export const RemoveItem = () => {
+export const ArchiveItem = () => {
     let fetchStack = useFetchStack();
     const [data, setData] = useState(fetchStack);
     const [filteredData, setFilteredData] = useState([]);
@@ -31,12 +31,12 @@ export const RemoveItem = () => {
         }
     };
 
-    const confirmRemoval = async (record: formData) => {
+    const confirmArchiveItem = async (record: formData) => {
         confirm({
-            title: 'Are you sure you want to delete this item?',
+            title: 'Are you sure you want to archive this item?',
             onOk: async () => {
                 try {
-                    const response = await axios.delete(`http://localhost:4000/stack/remove/${record.id}`);
+                    const response = await axios.put(`http://localhost:4000/stack/archive/${record.id}`);
                     setUpdatedData();
                     message.success(response.data);
                 } catch (error) {
@@ -106,14 +106,14 @@ export const RemoveItem = () => {
         },
         {
             title: '',
-            key: 'remove',
+            key: 'archive',
             render: (record: formData) => (
                 <Button 
-                    onClick={() => confirmRemoval(record)}
+                    onClick={() => confirmArchiveItem(record)}
                     type="primary" 
                     danger
                 >
-                    Remove
+                    Archive
                 </Button>
             ),
         },

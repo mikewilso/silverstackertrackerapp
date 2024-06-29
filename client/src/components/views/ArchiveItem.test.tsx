@@ -1,7 +1,7 @@
 import React from 'react';
 import {act} from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { RemoveItem } from './RemoveItem'; // adjust this import to your file structure
+import { ArchiveItem } from './ArchiveItem'; // adjust this import to your file structure
 import '@testing-library/jest-dom';
 
 beforeAll(() => {
@@ -20,28 +20,28 @@ beforeAll(() => {
     });
   });
 
-describe('RemoveItem', () => {
+describe('ArchiveItem', () => {
   test('renders search input', async () => {
-      render(<RemoveItem />);
+      render(<ArchiveItem />);
       const searchInput = screen.getByPlaceholderText('Search') as HTMLInputElement;
       expect(searchInput).toBeInTheDocument();
   });
 
   test('updates search input value on change', async () => {
-      render(<RemoveItem />);
+      render(<ArchiveItem />);
       const searchInput = screen.getByPlaceholderText('Search') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'test' } });
       expect(searchInput.value).toBe('test');
   });
 
   test('renders table', async () => {
-      render(<RemoveItem />);
+      render(<ArchiveItem />);
       const table = screen.getByRole('table');
       expect(table).toBeInTheDocument();
   });
 
   test('renders columns', async () => {
-      render(<RemoveItem />);
+      render(<ArchiveItem />);
       const columns = screen.getAllByRole('columnheader');
       expect(columns).toHaveLength(8);
   });
