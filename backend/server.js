@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from 'fs';
 import path from 'path';
+import { arch } from 'os';
 
 // create the express app
 const app = express();
@@ -206,7 +207,7 @@ app.delete('/stack/remove/:id', (req, res) => {
 // // fetches total sum of gold in the stack
 app.get('/stack/totals/gold', (req, res) => {
   console.log("fetching total ozt of gold in the stack")
-  const q = 'SELECT SUM(totalpureoztweight) AS totalozt FROM stack WHERE metaltype = "gold";'
+  const q = 'SELECT SUM(totalpureoztweight) AS totalozt FROM stack WHERE metaltype = "gold" AND archived = 0;'
   console.log(q);
   db.query(q, (err, data)=>{
     if(err) return res.json(err)
@@ -222,7 +223,8 @@ app.get('/stack/totals/silver', (req, res) => {
             SUM(totalpureoztweight) AS totalozt, \
             SUM(totalpureozweight) AS totaloz, \
             SUM(totalpuregramweight) AS totalgrams \
-            FROM stack WHERE metaltype = "silver";'
+            FROM stack WHERE metaltype = "silver" \
+            AND archived = 0;'
   console.log(q);
   db.query(q, (err, data)=>{
     if(err) return res.json(err)
@@ -234,7 +236,7 @@ app.get('/stack/totals/silver', (req, res) => {
 // fetches total sum of copper (ozt) in the stack
 app.get('/stack/totals/copper', (req, res) => {
   console.log("fetching total ozt of copper in the stack")
-  const q = 'SELECT SUM(totalpureoztweight) AS totalozt FROM stack WHERE metaltype = "copper";'
+  const q = 'SELECT SUM(totalpureoztweight) AS totalozt FROM stack WHERE metaltype = "copper" AND archived = 0;'
   console.log(q);
   db.query(q, (err, data)=>{
     if(err) return res.json(err)
