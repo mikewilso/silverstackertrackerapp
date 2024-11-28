@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { formData } from '../types';
+import { formData } from '../../types/types';
 
 export const convertToOzt = (weight: number, type: string) => {
     if(type === 'grams') {

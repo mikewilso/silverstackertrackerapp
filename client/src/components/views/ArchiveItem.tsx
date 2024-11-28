@@ -7,7 +7,7 @@ import {
     Table,
     message
         } from 'antd';
-import { formData } from '../types';
+import { formData } from '../../types/types';
 import { useFetchStack } from '../hooks/useFetchStack';
 
 const { confirm } = Modal;

@@ -6,6 +6,7 @@ import { AddItem } from './views/AddItem';
 import { ArchiveItem } from './views/ArchiveItem';
 import { EditItem } from './views/EditItem';
 import {
+    BankOutlined,
     UserOutlined,
     PlusCircleOutlined,
     MinusCircleOutlined,
@@ -15,6 +16,7 @@ import {
 } from '@ant-design/icons';
 import { AboutUs } from './views/AboutUs';
 import { ContactUs } from './views/ContactUs';
+import { TheStack } from './views/TheStack';
 
 const { Content, Footer, Header, Sider } = Layout;
 
@@ -34,6 +36,12 @@ export const AppContainer = () => {
             label: 'Add to Stack',
             icon: <PlusCircleOutlined/>,
             onClick: () => { navigate('/additem')}
+        },
+        {
+            key: 'stack',
+            label: 'The Stack',
+            icon: <BankOutlined />,
+            onClick: () => { navigate('/thestack')}
         },
         {
             key: 'edit',
@@ -90,6 +98,7 @@ export const AppContainer = () => {
                     <Routes>
                         <Route path='/' element={<HomePage />} />
                         <Route path='/additem' element={<AddItem />} />
+                        <Route path='/thestack' element={<TheStack />} />
                         <Route path='/edititem' element={<EditItem />} />
                         <Route path='/archiveitem' element={<ArchiveItem />} />
                         <Route path='/about' element={<AboutUs />} />

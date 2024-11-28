@@ -13,7 +13,7 @@ import {
         Tooltip,
         Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
-import { formData } from './types';
+import { formData } from '../types/types';
 import { useFetchMetals } from './hooks/useFetchMetals'
 import { useFetchItemForms } from './hooks/useFetchItemForms'
 import { useFetchPurchasePlaces } from './hooks/useFetchPurchasePlaces'

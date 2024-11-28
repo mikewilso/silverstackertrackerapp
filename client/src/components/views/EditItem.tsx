@@ -6,7 +6,7 @@ import {
     Image, 
     Input,
     Table } from 'antd';
-import { formData } from '../types';
+import { formData } from '../../types/types';
 import { EditForm } from '../EditForm';
 import { useFetchStack } from '../hooks/useFetchStack';
 
