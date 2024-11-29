@@ -14,11 +14,6 @@ export const HomePage = () => {
     const [totalGoldWeights, setTotalGoldWeights] = useState(0);
     const [totalSilverWeights, setTotalSilverWeights] = useState(0);
     const [totalCopperWeights, setTotalCopperWeights] = useState(0);
-    const [showInterstitial, setShowInterstitial] = useState(true);
-
-    const handleContinue = () => {
-        setShowInterstitial(false);
-    };
 
     useEffect(() => {
         const fetchTotaloztweight = async () => {
@@ -60,20 +55,6 @@ export const HomePage = () => {
 
     return (
         <div>
-            {showInterstitial && (
-                <div style={overlayStyle}>
-                    <Card
-                        title="Welcome to Michael's Home Page"
-                        bordered={false}
-                        style={cardStyle}
-                        actions={[
-                            <Button type="primary" onClick={handleContinue}>Continue</Button>
-                        ]}
-                    >
-                        <p>This is an interstitial card. You can put any content here.</p>
-                    </Card>
-                </div>
-            )}
             <Title>Michael's Home Page</Title>
             <div>
                 <Title level={3}>TOTAL GOLD: {totalGoldWeights} OZT</Title>
