@@ -7,6 +7,7 @@ import {
     Row,
     Spin } from 'antd';
 import axios from 'axios';
+import { format } from 'date-fns';
 
 const { Search } = Input;
 
@@ -109,8 +110,9 @@ export const TheStack: FC = () => {
         >
             {selectedItem && (
                 <div>
+                    <script>console.log(selectedItem)</script>
                     <p><strong>Description:</strong> {selectedItem.description}</p>
-                    <p><strong>Purchase Date:</strong> {selectedItem.purchasedate}</p>
+                    <p><strong>Purchase Date:</strong> {selectedItem ? format(new Date(selectedItem.purchasedate), "MMMM do, yyyy") : ''}</p>
                     <p><strong>Metal Type:</strong> {selectedItem.metaltype}</p>
                     <p><strong>Weight:</strong> {selectedItem.weight}</p>
                     <p><strong>Amount:</strong> {selectedItem.amount}</p>
