@@ -3,11 +3,23 @@ import {
     Card,
     Col,
     Input,
+    Modal,
     Row,
     Spin } from 'antd';
 import axios from 'axios';
 
 const { Search } = Input;
+
+interface SelectedItem {
+    id: string;
+    name: string;
+    description: string;
+    purchasedate: string;
+    metaltype: string;
+    weight: number;
+    amount: number;
+    imagefileid: number;
+}
 
 export const TheStack: FC = () => {
     const [stack, setStack] = useState([
@@ -24,6 +36,8 @@ export const TheStack: FC = () => {
     ]);
     const [filterText, setFilterText] = useState('');
     const [loading, setLoading] = useState(true);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
 
     useEffect(() => {
         const fetchStack = async () => {
@@ -45,6 +59,19 @@ export const TheStack: FC = () => {
         item.description.toLowerCase().includes(filterText.toLowerCase())
     );
 
+    const showModal = (item: SelectedItem) => {
+        setSelectedItem(item);
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
     return <div>
         <Search
                 placeholder="Search stack"
@@ -65,6 +92,7 @@ export const TheStack: FC = () => {
                                     bordered={true}
                                     hoverable={true}
                                     cover={<img alt="example" src={`http://localhost:4000/image/${item.imagefileid}`} />}
+                                    onClick={() => showModal(item)}
                                 >
                                     {item.description}
                                 </Card>                      
@@ -73,5 +101,22 @@ export const TheStack: FC = () => {
                     </Row>
                 </div>
             )}
+        <Modal
+            title={selectedItem?.name}
+            open={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+        >
+            {selectedItem && (
+                <div>
+                    <p><strong>Description:</strong> {selectedItem.description}</p>
+                    <p><strong>Purchase Date:</strong> {selectedItem.purchasedate}</p>
+                    <p><strong>Metal Type:</strong> {selectedItem.metaltype}</p>
+                    <p><strong>Weight:</strong> {selectedItem.weight}</p>
+                    <p><strong>Amount:</strong> {selectedItem.amount}</p>
+                    <img alt="example" src={`http://localhost:4000/image/${selectedItem.imagefileid}`} style={{ width: '100%' }} />
+                </div>
+            )}
+        </Modal>
     </div>;
 };
