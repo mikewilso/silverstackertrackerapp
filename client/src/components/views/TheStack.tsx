@@ -113,7 +113,7 @@ export const TheStack: FC = () => {
                     <script>console.log(selectedItem)</script>
                     <p><strong>Description:</strong> {selectedItem.description}</p>
                     <p><strong>Purchase Date:</strong> {selectedItem ? format(new Date(selectedItem.purchasedate), "MMMM do, yyyy") : ''}</p>
-                    <p><strong>Metal Type:</strong> {selectedItem.metaltype}</p>
+                    <p><strong>Metal Type:</strong> {selectedItem ? selectedItem.metaltype.charAt(0).toUpperCase() + selectedItem.metaltype.slice(1) : ''}</p>                    
                     <p><strong>Weight:</strong> {selectedItem.weight}</p>
                     <p><strong>Amount:</strong> {selectedItem.amount}</p>
                     <img alt="example" src={`http://localhost:4000/image/${selectedItem.imagefileid}`} style={{ width: '100%' }} />
