@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { Typography } from 'antd';
-import WeightPieChart from '../charts/WeightPieChart';
+import StackPieChart from '../charts/StackPieChart';
 import axios from 'axios';
 
 const { Title } = Typography;
 
-const COLORS = ['#FFD700', '#C0C0C0', '#B87333'];
-
 export const HomePage = () => {
-    const silverPrice = 30;
-    const goldPrice = 2500;
-    const copperPrice = 0.25;
+
+    const metalPrices = {
+        gold: 2500,
+        silver: 30,
+        copper: 0.25,
+    };
 
     const [totalGoldWeights, setTotalGoldWeights] = useState(0);
     const [totalSilverWeights, setTotalSilverWeights] = useState(0);
@@ -60,9 +61,9 @@ export const HomePage = () => {
     ];
 
     const totalValueData = [
-        { name: 'Gold', value: Number(totalGoldWeights) * goldPrice },
-        { name: 'Silver', value: Number(totalSilverWeights) * silverPrice },
-        { name: 'Copper', value: Number(totalCopperWeights) * copperPrice },
+        { name: 'Gold', value: Number(totalGoldWeights) * metalPrices.gold },
+        { name: 'Silver', value: Number(totalSilverWeights) * metalPrices.silver }, 
+        { name: 'Copper', value: Number(totalCopperWeights) * metalPrices.copper },
     ];
 
     return (
@@ -74,26 +75,9 @@ export const HomePage = () => {
                 <Title level={3}>TOTAL COPPER: {totalCopperWeights} OZT</Title>
             </div>
 
-            <WeightPieChart data={totalWeightData} />
+            <StackPieChart data={totalWeightData} />
+            <StackPieChart data={totalValueData} />
 
-            <PieChart width={450} height={450}>
-                <Pie
-                    data={totalValueData}
-                    cx={200}
-                    cy={200}
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}`}
-                    outerRadius={150}
-                    fill="#8884d8"
-                    dataKey="value"
-                >
-                    {totalValueData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-            </PieChart>
         </div>
     );
 };

@@ -3,11 +3,11 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 const COLORS = ['#FFD700', '#C0C0C0', '#B87333'];
 
-interface WeightPieChartProps {
+interface StackPieChartProps {
   data: { name: string; value: number }[];
 }
 
-const WeightPieChart: React.FC<WeightPieChartProps> = ({ data }) => {
+const StackPieChart: React.FC<StackPieChartProps> = ({ data }) => {
   return (
     <PieChart width={450} height={450}>
       <Pie
@@ -30,4 +30,4 @@ const WeightPieChart: React.FC<WeightPieChartProps> = ({ data }) => {
   );
 };
 
-export default WeightPieChart;
+export default StackPieChart;
