@@ -155,7 +155,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Name"
+                    label={<span style={{ fontWeight: 'bold' }}>Name</span>}
                     name="name"
                     rules={[{ required: true, message: 'Please enter a name' }]}
                 >
@@ -163,7 +163,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Description"
+                    label={<span style={{ fontWeight: 'bold' }}>Description</span>}
                     name="description"
                     rules={[{ required: true, message: 'Please enter a description' }]}
                 >
@@ -171,7 +171,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Purchase Date' 
+                    label={<span style={{ fontWeight: 'bold' }}>Purchase Date</span>}
                     name='purchasedate'
                     rules={[{ required: true, message: 'Please select the purchase date!' },
                     { pattern: /^\d{4}-\d{2}-\d{2}$/, message: 'Please enter a date in the format YYYY-MM-DD!' }]}        
@@ -180,7 +180,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Purchased From' 
+                    label={<span style={{ fontWeight: 'bold' }}>Purchased From</span>} 
                     name='purchasedfrom'
                     rules={[{ required: true, message: 'Please input where it was purchased from!' }]}
                 >
@@ -196,7 +196,8 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 <Form.Item 
                     label={
                         <span>
-                            Unit Price <Tooltip title="Price per unit at time of purchase.">
+                            {<span style={{ fontWeight: 'bold' }}>Unit Price </span>} 
+                                        <Tooltip title="Price per unit at time of purchase.">
                                             <InfoCircleOutlined />
                                         </Tooltip>
                         </span>
@@ -213,7 +214,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Form' 
+                    label={<span style={{ fontWeight: 'bold' }}>Form</span>} 
                     name='formtype' 
                     rules={[{ required: true, message: 'Please input the form of the metal!' }]}
                 >
@@ -225,7 +226,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Mint' 
+                    label={<span style={{ fontWeight: 'bold' }}>Mint</span>} 
                     name='mint'
                     rules={[{ required: true, message: 'Please input the maker of this item!' }]}
                 >
@@ -239,7 +240,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Metal Type' 
+                    label={<span style={{ fontWeight: 'bold' }}>Metal Type</span>} 
                     name='metaltype'
                     rules={[{ required: true, message: 'Please choose the precious metal type!' }]}
                 >
@@ -251,14 +252,14 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Unit Weight' 
+                    label={<span style={{ fontWeight: 'bold' }}>Unit Weight</span>} 
                     name='unitweight'
                     rules={[{ required: true, message: 'Please input the weight!' }]}>
                     <InputNumber min={0.001} placeholder='0.001'/>
                 </Form.Item>
            
                 <Form.Item 
-                    label='Unit of Weight' 
+                    label={<span style={{ fontWeight: 'bold' }}>Unit of Weight</span>}
                     name='weighttype'
                     rules={[{ required: true, message: 'Please choose the unit of weight!' }]}>
                     <Radio.Group>
@@ -269,7 +270,7 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Purity' 
+                    label={<span style={{ fontWeight: 'bold' }}>Purity</span>}
                     name='purity'
                     rules={[{ required: true, message: 'Please input the purchase price!' }]}>                    
                     <Select placeholder='Select purity of item'>
@@ -283,11 +284,13 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                    label='Amount' 
+                    label={<span style={{ fontWeight: 'bold' }}>Amount</span>}
                     name='amount'
                     rules={[{ required: true, message: 'Please input the amount!' }]}>
                     <InputNumber min={1} placeholder='0'/>
                 </Form.Item>
+
+                <Divider />
 
                 <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button type="primary" htmlType="submit" style={{ width: '200px' }}>
