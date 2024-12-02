@@ -3,6 +3,7 @@ import {
     Card,
     Col,
     Divider,
+    Image,
     Input,
     Modal,
     Row,
@@ -109,7 +110,7 @@ export const TheStack: FC = () => {
                 </div>
             )}
         <Modal
-            title={selectedItem?.name}
+            title={<span style={{ fontSize: '24px' }}>{selectedItem?.name}</span>}
             open={isModalVisible}
             onCancel={handleCancel}
             footer={null}
@@ -118,7 +119,9 @@ export const TheStack: FC = () => {
             {selectedItem && (
                 <div>
                     <Divider />
-                    <img alt={selectedItem.name} src={`http://localhost:4000/image/${selectedItem.imagefileid}`} style={{  display: 'block', margin: 'auto', width: '400px' }} />
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Image alt={selectedItem.name} src={`http://localhost:4000/image/${selectedItem.imagefileid}`} style={{ width: '400px' }} />
+                    </div>
                     <p style={{ textAlign: 'center' }}><i>{selectedItem.description}</i></p>
                     <Divider />
                     <Row>
