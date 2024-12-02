@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
         AutoComplete,
-        Button,  
+        Button,
+        Divider, 
         Form,
         Image,
         Input,
@@ -100,12 +101,13 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Image 
                     src={imageUrl}
                     width={250} 
                     height={250}
                 />
+                <br />
                 <ImgCrop showGrid rotationSlider showReset>
                     <Upload 
                         name= 'imagefile'
@@ -136,8 +138,15 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                     </Upload>   
                 </ImgCrop>
             </div>
-            <br />
-            <Form form={form} onFinish={onFinish}>
+
+            <Divider />
+
+            <Form 
+                form={form} 
+                onFinish={onFinish}
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 16 }}
+            >
                 <Form.Item
                     name="imagefileid"
                     hidden
@@ -162,14 +171,12 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                 </Form.Item>
 
                 <Form.Item 
-                        label='Purchase Date' 
-                        name='purchasedate'
-                        rules={[{ required: true, message: 'Please select the purchase date!' },
-                        { pattern: /^\d{4}-\d{2}-\d{2}$/, message: 'Please enter a date in the format YYYY-MM-DD!' }]}
-                        style={{ width: '35%' }}
-                        
+                    label='Purchase Date' 
+                    name='purchasedate'
+                    rules={[{ required: true, message: 'Please select the purchase date!' },
+                    { pattern: /^\d{4}-\d{2}-\d{2}$/, message: 'Please enter a date in the format YYYY-MM-DD!' }]}        
                     >
-                        <Input  placeholder='YYYY-MM-DD'/>
+                    <Input  placeholder='YYYY-MM-DD'/>
                 </Form.Item>
 
                 <Form.Item 
@@ -282,8 +289,8 @@ export const EditForm = ({ currentRecord, onEditSuccess }: EditFormProps) => {
                     <InputNumber min={1} placeholder='0'/>
                 </Form.Item>
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button type="primary" htmlType="submit" style={{ width: '200px' }}>
                         Save
                     </Button>
                 </Form.Item>
