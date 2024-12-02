@@ -93,7 +93,7 @@ export const TheStack: FC = () => {
                 <div className='stackList'>
                     <Row gutter={16}>
                         {filteredStack.map((item) => (
-                            <Col key={item.id} span={6}>
+                            <Col key={item.id} span={6} style={{ marginBottom: '8px' }}>
                                 <Card 
                                     title={item.name} 
                                     bordered={true}
@@ -101,7 +101,6 @@ export const TheStack: FC = () => {
                                     cover={<img alt="example" src={`http://localhost:4000/image/${item.imagefileid}`} />}
                                     onClick={() => showModal(item)}
                                 >
-                                    {item.description}
                                 </Card>                      
                             </Col>
                         ))}
