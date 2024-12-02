@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import { Typography } from 'antd';
+import { Divider, Col, Row, Typography } from 'antd';
 import StackPieChart from '../charts/StackPieChart';
 import axios from 'axios';
 
@@ -74,10 +74,16 @@ export const HomePage = () => {
                 <Title level={3}>TOTAL SILVER: {totalSilverWeights} OZT</Title>
                 <Title level={3}>TOTAL COPPER: {totalCopperWeights} OZT</Title>
             </div>
-
-            <StackPieChart data={totalWeightData} />
-            <StackPieChart data={totalValueData} />
-
+            <Divider />
+            <Row>
+                <Col span={12}>
+                    <StackPieChart data={totalWeightData} />
+                </Col>
+                <Col span={12}>
+                    <StackPieChart data={totalValueData} />
+                </Col>
+            </Row>
+            <Divider />
         </div>
     );
 };

@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { 
     Card,
     Col,
+    Divider,
     Input,
     Modal,
     Row,
@@ -16,8 +17,12 @@ interface SelectedItem {
     name: string;
     description: string;
     purchasedate: string;
+    purchasedfrom: string;
+    purchaseprice: number;
     metaltype: string;
-    weight: number;
+    formtype: string;
+    mint: string;
+    oztweight: number;
     amount: number;
     imagefileid: number;
 }
@@ -29,8 +34,12 @@ export const TheStack: FC = () => {
             name: '',
             description: '',
             purchasedate: '',
+            purchasedfrom: '',
+            purchaseprice: 0,
             metaltype: '',
-            weight: 0,
+            formtype: '',
+            mint: '',
+            oztweight: 0,
             amount: 0,
             imagefileid: 0,
         },
@@ -65,10 +74,6 @@ export const TheStack: FC = () => {
         setIsModalVisible(true);
     };
 
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -100,23 +105,38 @@ export const TheStack: FC = () => {
                             </Col>
                         ))}
                     </Row>
+                    <Divider />
                 </div>
             )}
         <Modal
             title={selectedItem?.name}
             open={isModalVisible}
-            onOk={handleOk}
             onCancel={handleCancel}
+            footer={null}
+            width={800}
         >
             {selectedItem && (
                 <div>
-                    <script>console.log(selectedItem)</script>
-                    <p><strong>Description:</strong> {selectedItem.description}</p>
-                    <p><strong>Purchase Date:</strong> {selectedItem ? format(new Date(selectedItem.purchasedate), "MMMM do, yyyy") : ''}</p>
+                    <Divider />
+                    <img alt={selectedItem.name} src={`http://localhost:4000/image/${selectedItem.imagefileid}`} style={{  display: 'block', margin: 'auto', width: '400px' }} />
+                    <p style={{ textAlign: 'center' }}><i>{selectedItem.description}</i></p>
+                    <Divider />
+                    <Row>
+                        <Col span={8}>
+                            <p><strong>Purchased:</strong> {selectedItem ? format(new Date(selectedItem.purchasedate), "MMMM do, yyyy") : ''}</p>
+                        </Col>
+                        <Col span={8}>
+                            <p><strong>Purchased From:</strong> {selectedItem.purchasedfrom}</p>
+                        </Col>
+                        <Col span={8}>
+                            <p><strong>Purchase Price:</strong> ${selectedItem.purchaseprice}</p>
+                        </Col>
+                    </Row>
                     <p><strong>Metal Type:</strong> {selectedItem ? selectedItem.metaltype.charAt(0).toUpperCase() + selectedItem.metaltype.slice(1) : ''}</p>                    
-                    <p><strong>Weight:</strong> {selectedItem.weight}</p>
+                    <p><strong>Form:</strong> {selectedItem.formtype}</p>
+                    <p><strong>Mint:</strong> {selectedItem.mint}</p>
+                    <p><strong>Weight:</strong> {selectedItem.oztweight}</p>
                     <p><strong>Amount:</strong> {selectedItem.amount}</p>
-                    <img alt="example" src={`http://localhost:4000/image/${selectedItem.imagefileid}`} style={{ width: '100%' }} />
                 </div>
             )}
         </Modal>
