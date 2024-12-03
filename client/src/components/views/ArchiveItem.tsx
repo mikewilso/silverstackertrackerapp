@@ -53,7 +53,7 @@ export const ArchiveItem = () => {
 
     useEffect(() => {
         const filterData = async () => {
-            const dataArray = await data;
+            const dataArray = data;
             const filteredData = dataArray.filter((item: { name: string }) =>
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
             );

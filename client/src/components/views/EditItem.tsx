@@ -6,12 +6,16 @@ import {
     Drawer,
     Image, 
     Input,
+    message,
+    Modal,
     Row,
     Switch,
     Table } from 'antd';
 import { formData } from '../../types/types';
 import { EditForm } from '../EditForm';
 import { useFetchStack } from '../hooks/useFetchStack';
+
+const { confirm } = Modal;
 
 export const EditItem = () => {
     let fetchStack = useFetchStack();
@@ -61,6 +65,25 @@ export const EditItem = () => {
                 unCheckedChildren="Archive"
             />
         )
+    };
+
+    const confirmArchiveItem = async (record: formData) => {
+        confirm({
+            title: 'Are you sure you want to archive this item?',
+            onOk: async () => {
+                try {
+                    const response = await axios.put(`http://localhost:4000/stack/archive/${record.id}`);
+                    setUpdatedData();
+                    message.success(response.data);
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            onCancel() {
+                message.error('Phew, that was a close one!');
+                console.log('Cancel');
+            },
+        });
     };
 
 
@@ -129,7 +152,7 @@ export const EditItem = () => {
             render: (record: formData) => (
                 editArchiveToggle ? 
                     <Button onClick={() => handleEditButtonClick(record)} type="primary">Edit</Button> : 
-                    <Button onClick={() => handleEditButtonClick(record)} type="primary" danger>Archive</Button>
+                    <Button onClick={() => confirmArchiveItem(record)} type="primary" danger>Archive</Button>
             ),
         },
     ];
