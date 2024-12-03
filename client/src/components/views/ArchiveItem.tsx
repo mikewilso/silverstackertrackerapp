@@ -12,7 +12,7 @@ import { useFetchStack } from '../hooks/useFetchStack';
 
 const { confirm } = Modal;
 
-export const ArchiveItem = () => {
+export const ArchiveItem = () => { 
     let fetchStack = useFetchStack();
     const [data, setData] = useState(fetchStack);
     const [filteredData, setFilteredData] = useState([]);

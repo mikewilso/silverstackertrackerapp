@@ -151,7 +151,7 @@ export const EditItem = () => {
             key: 'edit',
             render: (record: formData) => (
                 editArchiveToggle ? 
-                    <Button onClick={() => handleEditButtonClick(record)} type="primary">Edit</Button> : 
+                    <Button onClick={() => handleEditButtonClick(record)} type="primary" style={{ width: '80px' }}>Edit</Button> : 
                     <Button onClick={() => confirmArchiveItem(record)} type="primary" danger>Archive</Button>
             ),
         },
