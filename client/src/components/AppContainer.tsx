@@ -3,13 +3,11 @@ import { useNavigate, Route, Routes } from 'react-router-dom'
 import { Layout, Menu } from 'antd';
 import { HomePage } from './views/HomePage';
 import { AddItem } from './views/AddItem';
-import { ArchiveItem } from './views/ArchiveItem';
 import { EditItem } from './views/EditItem';
 import {
     BankOutlined,
     UserOutlined,
     PlusCircleOutlined,
-    MinusCircleOutlined,
     SmileOutlined,
     MailOutlined,
     EditOutlined,
@@ -48,12 +46,6 @@ export const AppContainer = () => {
             label: 'Edit Item',
             icon: <EditOutlined/>,
             onClick: () => { navigate('/edititem')}
-        },
-        {
-            key: 'archive',
-            label: 'Archive Item',
-            icon: <MinusCircleOutlined/>,
-            onClick: () => { navigate('/archiveitem')}
         },
         {
             key: 'about',
@@ -100,7 +92,6 @@ export const AppContainer = () => {
                         <Route path='/additem' element={<AddItem />} />
                         <Route path='/thestack' element={<TheStack />} />
                         <Route path='/edititem' element={<EditItem />} />
-                        <Route path='/archiveitem' element={<ArchiveItem />} />
                         <Route path='/about' element={<AboutUs />} />
                         <Route path='/contact' element={<ContactUs />} />
                     </Routes>
