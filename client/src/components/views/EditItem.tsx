@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
     Button,
+    Col,
     Drawer,
     Image, 
     Input,
+    Row,
+    Switch,
     Table } from 'antd';
 import { formData } from '../../types/types';
 import { EditForm } from '../EditForm';
@@ -19,6 +22,7 @@ export const EditItem = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+    const [editArchiveToggle, setEditArchiveToggle] = useState(true);
 
     useEffect(() => {
         setData(fetchStack);
@@ -46,6 +50,17 @@ export const EditItem = () => {
     const onClose = () => {
         setdrawerOpen(false);
         setUpdatedData();
+    };
+    
+    const getEditArchiveToggle = () => {
+        return (
+            <Switch
+                checked={editArchiveToggle}
+                onChange={() => setEditArchiveToggle(!editArchiveToggle)}
+                checkedChildren="Edit"
+                unCheckedChildren="Archive"
+            />
+        )
     };
 
 
@@ -109,10 +124,12 @@ export const EditItem = () => {
             sorter: (a:any, b:any) => a.amount - b.amount,
         },
         {
-            title: '',
+            title: getEditArchiveToggle(),
             key: 'edit',
             render: (record: formData) => (
-                <Button onClick={() => handleEditButtonClick(record)} type="primary">Edit</Button>
+                editArchiveToggle ? 
+                    <Button onClick={() => handleEditButtonClick(record)} type="primary">Edit</Button> : 
+                    <Button onClick={() => handleEditButtonClick(record)} type="primary" danger>Archive</Button>
             ),
         },
     ];
@@ -132,11 +149,17 @@ export const EditItem = () => {
                 )}
 
             </Drawer>
-            <Input
-                style={{ width: '25%' }} 
-                type="text" placeholder="Search" 
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} 
-            />
+            <Row>
+                <Col span={20}>
+                    <Input
+                        style={{ width: '25%' }} 
+                        type="text" placeholder="Search" 
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setSearchTerm(event.target.value)}} 
+                    />
+                </Col>
+            <Col span={4}>
+            </Col>
+            </Row>
             <br />
             <Table columns={columns} dataSource={filteredData} loading={isLoading}/>   
         </div>
