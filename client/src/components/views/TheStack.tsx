@@ -9,7 +9,7 @@ import {
     Row,
     Spin } from 'antd';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 
 const { Search } = Input;
 
@@ -49,6 +49,7 @@ export const TheStack: FC = () => {
     const [loading, setLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
+    const [shuffled, setShuffled] = useState(false);
 
     useEffect(() => {
         const fetchStack = async () => {
@@ -65,10 +66,13 @@ export const TheStack: FC = () => {
         fetchStack();
     }, []);
 
-    const filteredStack = stack.filter(item => 
-        item.name.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.description.toLowerCase().includes(filterText.toLowerCase())
-    );
+    const shuffleArray = (array: any) => {
+        return array.sort(() => Math.random() - 0.5);
+    };
+
+    const handleShuffle = () => {
+        setShuffled(!shuffled);
+    };
 
     const showModal = (item: SelectedItem) => {
         setSelectedItem(item);
@@ -78,6 +82,15 @@ export const TheStack: FC = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    let filteredStack = stack.filter(item =>
+        item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.description.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    if (shuffled) {
+        filteredStack = shuffleArray(filteredStack);
+    }
 
     return <div>
         <Search
@@ -91,19 +104,21 @@ export const TheStack: FC = () => {
                 </div>
             ) : (
                 <div className='stackList'>
+                    <button onClick={handleShuffle}>Shuffle</button>
                     <Row gutter={16}>
-                        {filteredStack.map((item) => (
-                            <Col key={item.id} span={6} style={{ marginBottom: '8px' }}>
-                                <Card 
-                                    title={item.name} 
-                                    bordered={true}
-                                    hoverable={true}
-                                    cover={<img alt="example" src={`http://localhost:4000/image/${item.imagefileid}`} />}
-                                    onClick={() => showModal(item)}
-                                >
-                                </Card>                      
-                            </Col>
-                        ))}
+                        {filteredStack.map((item: any) => (
+                                <Col key={item.id} span={6} style={{ marginBottom: '8px' }}>
+                                    <Card 
+                                        title={item.name} 
+                                        bordered={true}
+                                        hoverable={true}
+                                        cover={<img alt="example" src={`http://localhost:4000/image/${item.imagefileid}`} />}
+                                        onClick={() => showModal(item)}
+                                    >
+                                    </Card>                      
+                                </Col>
+                            ))
+                        }
                     </Row>
                     <Divider />
                 </div>
