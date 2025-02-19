@@ -55,6 +55,15 @@ app.get('/stack', (req,res) => {
   })
 })
 
+// fetches all the stack items from the database but random order
+app.get('/randomstack', (req, res) => {
+  const q = "SELECT * FROM stack WHERE archived = 0 ORDER BY RAND();"
+  db.query(q, (err, data) => {
+    if (err) return res.json(err)
+    return res.json(data)
+  })
+})
+
 // fetches single stack item from the database
 app.get('/stack/:id', (req,res) => {
   const q = "SELECT * FROM stack WHERE id = ?;"

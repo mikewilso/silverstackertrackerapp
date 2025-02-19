@@ -9,7 +9,7 @@ import {
     Row,
     Spin } from 'antd';
 import axios from 'axios';
-import { format, set } from 'date-fns';
+import { format } from 'date-fns';
 
 const { Search } = Input;
 
@@ -49,7 +49,6 @@ export const TheStack: FC = () => {
     const [loading, setLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
-    const [shuffled, setShuffled] = useState(false);
 
     useEffect(() => {
         const fetchStack = async () => {
@@ -66,13 +65,20 @@ export const TheStack: FC = () => {
         fetchStack();
     }, []);
 
-    const shuffleArray = (array: any) => {
-        return array.sort(() => Math.random() - 0.5);
-    };
-
-    const handleShuffle = () => {
-        setShuffled(!shuffled);
-    };
+    const fetchRandomStack = async () => {
+        const fetchStack = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/randomstack');
+                console.log(res.data);
+                setStack(res.data);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStack();
+    }
 
     const showModal = (item: SelectedItem) => {
         setSelectedItem(item);
@@ -88,9 +94,6 @@ export const TheStack: FC = () => {
         item.description.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    if (shuffled) {
-        filteredStack = shuffleArray(filteredStack);
-    }
 
     return <div>
         <Search
@@ -104,7 +107,7 @@ export const TheStack: FC = () => {
                 </div>
             ) : (
                 <div className='stackList'>
-                    <button onClick={handleShuffle}>Shuffle</button>
+                    <button onClick={fetchRandomStack}>Shuffle</button>
                     <Row gutter={16}>
                         {filteredStack.map((item: any) => (
                                 <Col key={item.id} span={6} style={{ marginBottom: '8px' }}>
