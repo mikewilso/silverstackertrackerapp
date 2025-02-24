@@ -73,6 +73,11 @@ export const HomePage = () => {
                 <Title level={3}>TOTAL GOLD: {totalGoldWeights} OZT</Title>
                 <Title level={3}>TOTAL SILVER: {totalSilverWeights} OZT</Title>
                 <Title level={3}>TOTAL COPPER: {totalCopperWeights} OZT</Title>
+                <Title level={3}>TOTAL WEIGHT: {Number(totalGoldWeights) + Number(totalSilverWeights) + Number(totalCopperWeights)} OZT</Title>
+                <Title level={3}>TOTAL GOLD VALUE: ${(totalGoldWeights * metalPrices.gold).toFixed(2)}</Title>
+                <Title level={3}>TOTAL SILVER VALUE: ${(totalSilverWeights * metalPrices.silver).toFixed(2)}</Title>
+                <Title level={3}>TOTAL COPPER VALUE: ${(totalCopperWeights * metalPrices.copper).toFixed(2)}</Title>
+                <Title level={3}>TOTAL VALUE: ${((totalGoldWeights * metalPrices.gold) + (totalSilverWeights * metalPrices.silver) + (totalCopperWeights * metalPrices.copper)).toFixed(2)}</Title>
             </div>
             <Divider />
             <Row>
